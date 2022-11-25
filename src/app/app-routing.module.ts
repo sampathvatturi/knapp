@@ -7,14 +7,14 @@ import { DashboardComponent } from './layouts/dashboard/dashboard.component';
 //   { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
 // ];
 
-const routes: Routes = [
+const routes: Routes = [  
   {
     path: '',
     redirectTo: '',
     pathMatch: 'full'
   },
   {
-    path: 'modules',
+    path: 'dept',
     loadChildren: () => import('./modules/modules.module').then(m => m.ModulesModule)
   },
 ];
