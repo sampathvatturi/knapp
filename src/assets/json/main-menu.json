@@ -1,0 +1,59 @@
+{
+    "mainMenu": [
+      {
+        "title": "Dashboard",
+        "path": "/dashboard",
+        "route": "dashboard"
+      },
+      {
+        "title": "Appointments",
+        "path": "/appointments",
+        "route": "fact_check"
+      },
+      {
+        "title": "Q & A",
+        "path": "/qanda",
+        "route": "quiz"
+      },
+      {
+        "title": "Registered Users",
+        "path": "/registered_users",
+        "route": "group"
+      },
+      {
+        "title": "About Me",
+        "path": "/about_me",
+        "route": "person_filled"
+      },
+      {
+        "title": "Articles",
+        "path": "/articles",
+        "route": "article"
+      },
+      {
+        "title": "Gallery",
+        "path": "/gallery",
+        "route": "gallery_thumbnail"
+      },
+      {
+        "title": "FAQ",
+        "path": "/faq",
+        "route": "description"
+      },
+      {
+        "title": "Testimonials",
+        "path": "/testimonials",
+        "route": "newspaper"
+      },
+      {
+        "title": "Settings",
+        "path": "/settings",
+        "route": "settings"
+      },
+      {
+        "title": "Reset Password",
+        "path": "/reset_password",
+        "route": "lock_reset"
+      }
+    ]
+  }

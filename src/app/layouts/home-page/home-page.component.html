@@ -1,0 +1,18 @@
+<nz-layout>
+  <nz-header>
+    <div class="logo">My website</div>
+  </nz-header>
+
+  <nz-layout>
+    <nz-sider nzWidth="200px" nzTheme="light" >
+      <ul nz-menu nzMode="inline" class="sider-menu" >
+        <li nz-menu-item routerLink={{item.route}} *ngFor="let item of menuItems" [nzMatchRouter]="true" [nzSelected]="true">
+          <span class="material-symbols-outlined"> {{item.icon}} </span> &nbsp; {{item.title}}
+        </li>
+      </ul>
+    </nz-sider>
+    <nz-layout class="inner-layout">
+       <router-outlet></router-outlet>
+    </nz-layout>
+  </nz-layout>
+</nz-layout>
