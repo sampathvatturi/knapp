@@ -5,9 +5,10 @@ import { DepartmentViewComponent } from './components/department-view/department
 export const DEPARTMENT_COMPONENTS = [
     DepartmentCreateEditComponent,
     DepartmentViewComponent,
+    DepartmentListComponent
 ];
 
-export const DEPARTMENT_ROUTES = [   
+export const DEPARTMENT_ROUTES = [
     {
         path: 'department',
         component: DepartmentListComponent,
@@ -39,9 +40,9 @@ export const DEPARTMENT_ROUTES = [
             title: 'View Department',
             breadcrumb: 'View Department',
         },
-    }, 
+    },
     {
-        path: '',        
+        path: '',
         component: DepartmentListComponent,
         data: {
             title: 'Departments',

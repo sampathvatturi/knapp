@@ -1,6 +1,4 @@
-import {
-    NgModule,
-} from '@angular/core';
+import { NgModule } from '@angular/core';
 import { ModulesRoutingModule } from './modules-routing.module';
 import { DEPARTMENT_COMPONENTS } from './department';
 
@@ -16,14 +14,22 @@ import { PaymentProceedingsComponent } from './payment-proceedings/payment-proce
 import { TenderDetailsComponent } from './tender-details/tender-details.component';
 import { NgAntdModule } from '../shared/ng-antd.module';
 import { ReactiveFormsModule } from '@angular/forms';
-
-
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-    declarations: [
-        ...DEPARTMENT_COMPONENTS, TenderDetailsComponent, InvoicesComponent, ApprovalsComponent, PaymentProceedingsComponent, InventoryItemsComponent, FundsComponent, ExpenditureComponent, LoginComponent, RegisterComponent, ForgotPasswordComponent,
-    ],
-    imports: [ModulesRoutingModule,NgAntdModule,ReactiveFormsModule],
+  declarations: [
+    ...DEPARTMENT_COMPONENTS,
+    TenderDetailsComponent,
+    InvoicesComponent,
+    ApprovalsComponent,
+    PaymentProceedingsComponent,
+    InventoryItemsComponent,
+    FundsComponent,
+    ExpenditureComponent,
+    LoginComponent,
+    RegisterComponent,
+    ForgotPasswordComponent,
+  ],
+  imports: [ModulesRoutingModule, NgAntdModule, ReactiveFormsModule,CommonModule],
 })
-
-export class ModulesModule { }
+export class ModulesModule {}
