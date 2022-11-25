@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -11,7 +12,7 @@ export class RegisterComponent implements OnInit {
   validateForm!: FormGroup;
 
 
-  constructor(private fb: UntypedFormBuilder) { }
+  constructor(private fb: UntypedFormBuilder,private router:Router) { }
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
@@ -27,7 +28,7 @@ export class RegisterComponent implements OnInit {
     });
   }
   signIn(){
-    
+    this.router.navigateByUrl('/login')
   }
 
 }

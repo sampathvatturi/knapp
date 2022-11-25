@@ -25,5 +25,11 @@ export class LoginComponent implements OnInit {
   forgot(){
     this.route.navigateByUrl('/forgot-password');
   }
+  onSubmit(){
+    if (this.validateForm.valid){
+      this.route.navigateByUrl('/modules/approvals');
+    }
+  }
+
 
 }

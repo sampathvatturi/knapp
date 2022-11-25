@@ -6,7 +6,7 @@
             <div style="border: 1px solid #d9d9d9;border-radius: 6px; padding:12px;" class="shadow box">
 
                 <h1 class="text-center">LogIn</h1>
-                <form nz-form [formGroup]="validateForm" class="inputs" >
+                <form nz-form [formGroup]="validateForm" class="inputs" (ngSubmit)="onSubmit()">
                     <nz-form-item>
                         <nz-form-control nzErrorTip="Please input your username!">
                         <nz-form-label>Username</nz-form-label>
@@ -35,7 +35,7 @@
                         <div nz-col [nzSpan]="12">
                           <a class="login-form-forgot text-primary" (click)="forgot()">Forgot password</a>
                         </div>
-                        <button nz-button class="login-form-margin login-form-button" [nzType]="'primary'" nz-col [nzSpan] = "24">Log in</button>
+                        <button nz-button class="login-form-margin login-form-button" [nzType]="'primary'" nz-col [nzSpan] = "24" type="submit">Log in</button>
                         Or &nbsp;
                       <a (click)="signup()" class="text-primary">register now!</a>
                       </div>
