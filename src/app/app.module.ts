@@ -15,13 +15,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomePageComponent } from './layouts/home-page/home-page.component';
 import { NgAntdModule } from './shared/ng-antd.module';
 
+
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
-    HomePageComponent,
+    HomePageComponent
   ],
   imports: [
     BrowserModule,
