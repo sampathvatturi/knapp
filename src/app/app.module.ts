@@ -9,7 +9,7 @@ import en from '@angular/common/locales/en';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './layouts/dashboard/dashboard.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomePageComponent } from './layouts/home-page/home-page.component';
@@ -22,7 +22,8 @@ registerLocaleData(en);
   declarations: [
     AppComponent,
     DashboardComponent,
-    HomePageComponent
+    HomePageComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -31,7 +32,8 @@ registerLocaleData(en);
     HttpClientModule,
     BrowserAnimationsModule,
     CommonModule,
-    NgAntdModule
+    NgAntdModule,
+    ReactiveFormsModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US }

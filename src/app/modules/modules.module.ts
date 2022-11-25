@@ -14,13 +14,16 @@ import { InventoryItemsComponent } from './inventory-items/inventory-items.compo
 import { InvoicesComponent } from './invoices/invoices.component';
 import { PaymentProceedingsComponent } from './payment-proceedings/payment-proceedings.component';
 import { TenderDetailsComponent } from './tender-details/tender-details.component';
+import { NgAntdModule } from '../shared/ng-antd.module';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 
 @NgModule({
     declarations: [
         ...DEPARTMENT_COMPONENTS, TenderDetailsComponent, InvoicesComponent, ApprovalsComponent, PaymentProceedingsComponent, InventoryItemsComponent, FundsComponent, ExpenditureComponent, LoginComponent, RegisterComponent, ForgotPasswordComponent,
     ],
-    imports: [ModulesRoutingModule],
+    imports: [ModulesRoutingModule,NgAntdModule,ReactiveFormsModule],
 })
 
 export class ModulesModule { }
