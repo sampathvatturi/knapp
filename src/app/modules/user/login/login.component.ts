@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,7 @@ import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 export class LoginComponent implements OnInit {
   validateForm!: FormGroup;
 
-  constructor(private fb: UntypedFormBuilder) { }
+  constructor(private fb: UntypedFormBuilder,private route:Router) { }
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
@@ -19,10 +20,10 @@ export class LoginComponent implements OnInit {
     });
   }
   signup(){
-    
+    this.route.navigateByUrl('/register');
   }
-  reset(){
-    
+  forgot(){
+    this.route.navigateByUrl('/forgot-password');
   }
 
 }
