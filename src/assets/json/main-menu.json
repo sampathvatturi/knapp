@@ -1,59 +1,44 @@
 {
     "mainMenu": [
       {
-        "title": "Dashboard",
-        "path": "/dashboard",
-        "route": "dashboard"
+        "title": "Approvals",
+        "route": "modules/approvals",
+        "icon": "assignment_turned_in"
       },
       {
-        "title": "Appointments",
-        "path": "/appointments",
-        "route": "fact_check"
+        "title": "Department",
+        "route": "modules/department",
+        "icon": "fact_check"
       },
       {
-        "title": "Q & A",
-        "path": "/qanda",
-        "route": "quiz"
+        "title": "Expenditure",
+        "route": "modules/expenditure",
+        "icon": "request_quote"
       },
       {
-        "title": "Registered Users",
-        "path": "/registered_users",
-        "route": "group"
+        "title": "Funds",
+        "route": "modules/funds",
+        "icon": "attach_money"
       },
       {
-        "title": "About Me",
-        "path": "/about_me",
-        "route": "person_filled"
+        "title": "Inventory Items",
+        "route": "modules/inventory-items",
+        "icon": "category"
       },
       {
-        "title": "Articles",
-        "path": "/articles",
-        "route": "article"
+        "title": "Invoices",
+        "route": "modules/invoices",
+        "icon": "receipt_long"
       },
       {
-        "title": "Gallery",
-        "path": "/gallery",
-        "route": "gallery_thumbnail"
+        "title": "Payment Proceedings",
+        "route": "modules/payment-proceedings",
+        "icon": "payments"
       },
       {
-        "title": "FAQ",
-        "path": "/faq",
-        "route": "description"
-      },
-      {
-        "title": "Testimonials",
-        "path": "/testimonials",
-        "route": "newspaper"
-      },
-      {
-        "title": "Settings",
-        "path": "/settings",
-        "route": "settings"
-      },
-      {
-        "title": "Reset Password",
-        "path": "/reset_password",
-        "route": "lock_reset"
+        "title": "Tender Details",
+        "route": "modules/tender-details",
+        "icon": "info"
       }
     ]
   }
