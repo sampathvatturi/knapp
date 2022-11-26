@@ -1,6 +1,6 @@
 <nz-header> Departments</nz-header>
 <nz-content>
-  <button nz-button nzType="primary" (click)="open()">Create</button>
+  <button nz-button nzType="primary" (click)="open()" class="mb-1">Create</button>
   <nz-table #basicTable [nzData]="listOfData">
     <thead>
       <tr>
@@ -13,6 +13,7 @@
         <th>Update Date</th>
         <th>Update By</th>
         <th>Department Code</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -26,7 +27,7 @@
         <td>{{ data.updated_date }}</td>
         <td>{{ data.updated_by }}</td>
         <td>{{ data.department_code }}</td>
-
+        <td><button nz-button nzType='primary' (click)="edit(data)">Edit</button></td>
       </tr>
     </tbody>
   </nz-table>
@@ -36,25 +37,27 @@
       [nzMaskClosable]="false"
       [nzWidth]="720"
       [nzVisible]="visible"
-      nzTitle="Create"
+      [nzTitle]="drawerTitle"
       [nzFooter]="footerTpl"
       (nzOnClose)="close()"
     >
-      <form nz-form *nzDrawerContent>
+      <form nz-form *nzDrawerContent [formGroup]="departmentform" >
         <div nz-row [nzGutter]="8">
           <div nz-col nzSpan="12">
             <nz-form-item>
               <nz-form-label>Department ID</nz-form-label>
               <nz-form-control>
-                <input nz-input placeholder="please enter Department ID" />
+                <input nz-input formControlName="department_id" placeholder="please enter Department ID" />
               </nz-form-control>
             </nz-form-item>
           </div>
+        </div>
+        <div nz-row [nzGutter]="8">
           <div nz-col nzSpan="12">
             <nz-form-item>
               <nz-form-label>Department Name</nz-form-label>
               <nz-form-control>
-                  <input nz-input  type="text" nz-input placeholder="please enter Department Name" />
+                  <input nz-input formControlName="department_name" type="text" nz-input placeholder="please enter Department Name" />
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -64,16 +67,18 @@
             <nz-form-item>
               <nz-form-label>Ranking</nz-form-label>
               <nz-form-control>
-                <input nz-input  type="number" nz-input placeholder="please enter Rank" />
+                <input nz-input formControlName="ranking" type="number" nz-input placeholder="please enter Rank" />
 
               </nz-form-control>
             </nz-form-item>
           </div>
+        </div>
+        <div nz-row [nzGutter]="8">
           <div nz-col nzSpan="12">
             <nz-form-item>
               <nz-form-label>Status</nz-form-label>
               <nz-form-control>
-                <input  nz-input type="text" nz-input placeholder="please enter Status" />
+                <input  nz-input formControlName="status" type="text" nz-input placeholder="please enter Status" />
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -83,7 +88,10 @@
             <nz-form-item>
               <nz-form-label>Created Date</nz-form-label>
               <nz-form-control>
-                <nz-date-picker></nz-date-picker>
+                <nz-date-picker
+                formControlName="created_date"
+                nzShowTime
+                ></nz-date-picker>
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -91,7 +99,7 @@
             <nz-form-item>
               <nz-form-label>Created By</nz-form-label>
               <nz-form-control>
-                <input  nz-input type="number" nz-input placeholder="Created by..." />
+                <input  nz-input formControlName="created_by" type="number" nz-input placeholder="Created by..." />
 
               </nz-form-control>
             </nz-form-item>
@@ -102,7 +110,10 @@
             <nz-form-item>
               <nz-form-label>Update Date</nz-form-label>
               <nz-form-control>
-                <nz-date-picker></nz-date-picker>
+                <nz-date-picker
+                formControlName="updated_date"
+                nzShowTime
+                ></nz-date-picker>
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -111,7 +122,7 @@
             <nz-form-item>
               <nz-form-label>Update By</nz-form-label>
               <nz-form-control>
-                <input  nz-input type="number" nz-input placeholder="Updated by..." />
+                <input  nz-input formControlName="updated_by" type="number" nz-input placeholder="Updated by..." />
 
               </nz-form-control>
             </nz-form-item>
@@ -122,7 +133,7 @@
             <nz-form-item>
               <nz-form-label>Department Code</nz-form-label>
               <nz-form-control>
-                <input  nz-input type="text" nz-input placeholder="please enter Department code" />
+                <input  nz-input formControlName="department_code" type="text" nz-input placeholder="please enter Department code" />
 
               </nz-form-control>
             </nz-form-item>
