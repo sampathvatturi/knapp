@@ -3,29 +3,28 @@ import { ModulesRoutingModule } from './modules-routing.module';
 import { DEPARTMENT_COMPONENTS } from './department';
 import { APPROVALS_COMPONENTS } from './approvals';
 import { DASHBOARD_COMPONENTS } from './dashboard'
-import { ExpenditureComponent } from './expenditure/expenditure.component';
-import { FundsComponent } from './funds/funds.component';
-import { InventoryItemsComponent } from './inventory-items/inventory-items.component';
-import { InvoicesComponent } from './invoices/invoices.component';
-import { PaymentProceedingsComponent } from './payment-proceedings/payment-proceedings.component';
-import { TenderDetailsComponent } from './tender-details/tender-details.component';
+
 import { NgAntdModule } from '../shared/ng-antd.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { DashboardComponent } from './dashboard/components/dashboard/dashboard.component';
+import { EXPENDITURE_COMPONENTS } from './expenditure';
+import { FUNDS_COMPONENTS } from './funds';
+import { INVENTORY_ITEMS_COMPONENTS } from './inventory-items';
+import { INVOICES_COMPONENTS } from './invoices';
+import { PAYMENT_PROCEEDINGS_COMPONENTS } from './payment-proceedings';
+import { TENDER_DETAILS_COMPONENTS } from './tender-details';
 
 @NgModule({
   declarations: [
     ...DASHBOARD_COMPONENTS,
     ...DEPARTMENT_COMPONENTS,
     ...APPROVALS_COMPONENTS,
-    TenderDetailsComponent,
-    InvoicesComponent,
-    PaymentProceedingsComponent,
-    InventoryItemsComponent,
-    FundsComponent,
-    ExpenditureComponent,
-    DashboardComponent,
+    ...EXPENDITURE_COMPONENTS,
+    ...FUNDS_COMPONENTS,
+    ...INVENTORY_ITEMS_COMPONENTS,
+    ...INVOICES_COMPONENTS,
+    ...PAYMENT_PROCEEDINGS_COMPONENTS,
+    ...TENDER_DETAILS_COMPONENTS
   ],
   imports: [ModulesRoutingModule, NgAntdModule, ReactiveFormsModule,CommonModule],
 })

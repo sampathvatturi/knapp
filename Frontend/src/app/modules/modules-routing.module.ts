@@ -3,12 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { DEPARTMENT_ROUTES } from './department';
 import { APPROVALS_ROUTES } from './approvals';
 import { DASHBOARD_ROUTES } from './dashboard'
-import { ExpenditureComponent } from './expenditure/expenditure.component';
-import { FundsComponent } from './funds/funds.component';
-import { InventoryItemsComponent } from './inventory-items/inventory-items.component';
-import { InvoicesComponent } from './invoices/invoices.component';
-import { PaymentProceedingsComponent } from './payment-proceedings/payment-proceedings.component';
-import { TenderDetailsComponent } from './tender-details/tender-details.component';
+import { EXPENDITURE_ROUTES } from './expenditure';
+import { FUNDS_ROUTES } from './funds';
+import { INVENTORY_ITEMS_ROUTES } from './inventory-items';
+import { INVOICES_ROUTES } from './invoices';
+import { PAYMENT_PROCEEDINGS_ROUTES } from './payment-proceedings';
+import { TENDER_DETAILS_ROUTES } from './tender-details';
 
 
 const routes: Routes = [
@@ -18,12 +18,12 @@ const routes: Routes = [
   ...DASHBOARD_ROUTES,
   ...DEPARTMENT_ROUTES,
   ...APPROVALS_ROUTES,
-  { path: 'expenditure', component: ExpenditureComponent },
-  { path: 'funds', component: FundsComponent },
-  { path: 'inventory-items', component: InventoryItemsComponent },
-  { path: 'invoices', component: InvoicesComponent },
-  { path: 'payment-proceedings', component: PaymentProceedingsComponent },
-  { path: 'tender-details', component: TenderDetailsComponent },
+  ...EXPENDITURE_ROUTES,
+  ...FUNDS_ROUTES,
+  ...INVENTORY_ITEMS_ROUTES,
+  ...INVOICES_ROUTES,
+  ...PAYMENT_PROCEEDINGS_ROUTES,
+  ...TENDER_DETAILS_ROUTES
 ];
 
 @NgModule({

@@ -41,13 +41,13 @@
       [nzFooter]="footerTpl"
       (nzOnClose)="close()"
     >
-      <form nz-form *nzDrawerContent [formGroup]="departmentform" >
+      <form nz-form *nzDrawerContent [formGroup]="departmentform"  >
         <div nz-row [nzGutter]="8">
-          <div nz-col nzSpan="12">
+          <div >
             <nz-form-item>
               <nz-form-label>Dept ID</nz-form-label>
-              <nz-form-control>
-                <input nz-input formControlName="department_id" placeholder="please enter Department ID" />
+              <nz-form-control nz-col nzOffset="6">
+                <input nz-input  formControlName="department_id" placeholder="please enter Department ID" />
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -144,7 +144,7 @@
       <ng-template #footerTpl>
         <div style="float: right">
           <button nz-button style="margin-right: 8px;" (click)="close()">Cancel</button>
-          <button nz-button nzType="primary" (click)="close()">Submit</button>
+          <button nz-button nzType="primary" (click)="submit()">Submit</button>
         </div>
       </ng-template>
     </nz-drawer>
