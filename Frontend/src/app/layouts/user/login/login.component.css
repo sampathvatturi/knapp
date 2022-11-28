@@ -6,7 +6,7 @@
 }
 .c1{
     height:100vh;
-    width:400px;
+    width:550px;
     background-color:white;
     display: flex;
     flex-direction:column;
@@ -17,7 +17,7 @@
 }
 
 .inputs{
-    width:250px;
+    width:320px;
     
 }
 .heading{
@@ -35,7 +35,12 @@
   }
   .box{
     height:400px;
-    width: 300px;;
+    width: 360px;;
   }
-  
-
+  nz-form-label{
+    margin-bottom:-10px;
+  }
+  form{
+    margin-left:auto;
+    margin-right: auto;
+  }

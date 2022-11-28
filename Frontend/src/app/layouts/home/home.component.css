@@ -1,11 +1,4 @@
-.logo {
-  width: 120px;
-  height: 31px;
-  /* background: rgba(255, 255, 255, 0.2); */
-  /* margin: auto 30px auto 15px; */
-  float: left;
 
-}
 
 .header-menu {
   line-height: 64px;
@@ -30,6 +23,16 @@ nz-content {
   min-height: 280px;
 }
 nz-header {
-background: white;
-border-bottom: 1px solid black;
+  background: white;
+  border-bottom: 1px solid gainsboro;
+  padding:0px 10px;
+  }
+.img{
+  height:55px;
+  width:65px;
+}
+.para{
+  color: black;
+  font-family:"Fantasy";
+  font-size:20px;
 }

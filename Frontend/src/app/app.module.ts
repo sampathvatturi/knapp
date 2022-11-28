@@ -15,6 +15,7 @@ import { HomeComponent } from './layouts/home/home.component';
 import { NgAntdModule } from './shared/ng-antd.module';
 import { USER_COMPONENTS } from './layouts/user';
 import { NgxUiLoaderConfig, NgxUiLoaderModule, PB_DIRECTION, SPINNER } from 'ngx-ui-loader';
+import { HeaderComponent } from './layouts/common/header/header.component';
 
 
 registerLocaleData(en);
@@ -36,7 +37,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   declarations: [
     AppComponent,
     HomeComponent,
-    ...USER_COMPONENTS,    
+    ...USER_COMPONENTS,HeaderComponent  
   ],
   imports: [
     BrowserModule,
