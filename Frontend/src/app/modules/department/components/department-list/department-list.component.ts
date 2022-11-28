@@ -6,34 +6,38 @@ import { DepartmentService } from 'src/app/services/department.service';
 @Component({
   selector: 'app-department-list',
   templateUrl: './department-list.component.html',
-  styleUrls: ['./department-list.component.css']
+  styleUrls: ['./department-list.component.css'],
 })
 export class DepartmentListComponent implements OnInit {
-  listOfData: any[] =[];
+  listOfData: any[] = [];
   visible = false;
-  drawerTitle:string='';
-  departmentform!:FormGroup
-  constructor(private departmentservice: DepartmentService, private fb:UntypedFormBuilder,private api:ApiService) { }
+  drawerTitle: string = '';
+  departmentform!: FormGroup;
+  constructor(
+    private departmentservice: DepartmentService,
+    private fb: UntypedFormBuilder,
+    private api: ApiService
+  ) {}
 
   ngOnInit(): void {
     this.departmentform = this.fb.group({
-      department_id: [null],
-      department_name: [null],
-      ranking: [null],
-      status: [null],
-      created_date: [null],
-      created_by: [null],
-      updated_date: [null],
-      updated_by: [null],
-      department_code: [null],
+      department_id: [''],
+      department_name: [''],
+      ranking: [''],
+      status: [''],
+      created_date: [''],
+      created_by: [''],
+      updated_date: [''],
+      updated_by: [''],
+      department_code: [''],
     });
-      this.api.getCall('/dept').subscribe(list => {
-        this.listOfData = list;
-        console.log(this.listOfData);
-      });
+    this.api.getCall('/dept').subscribe((list) => {
+      this.listOfData = list;
+      console.log(this.listOfData);
+    });
   }
-  edit(data:any){
-    this.drawerTitle = "Edit";
+  edit(data: any) {
+    this.drawerTitle = 'Edit';
     this.visible = true;
     this.departmentform = this.fb.group({
       department_id: [data.department_id, [Validators.required]],
@@ -48,27 +52,30 @@ export class DepartmentListComponent implements OnInit {
     });
   }
   open(): void {
-    this.drawerTitle = "New";
+    this.drawerTitle = 'New';
     this.visible = true;
     this.departmentform = this.fb.group({
-      department_id: [null],
-      department_name: [null],
-      ranking: [null],
-      status: [null],
-      created_date: [null],
-      created_by: [null],
-      updated_date: [null],
-      updated_by: [null],
-      department_code: [null],
+      department_id: [''],
+      department_name: ['', [Validators.required]],
+      ranking: ['', [Validators.required]],
+      status: ['', [Validators.required]],
+      created_date: [''],
+      created_by: [''],
+      updated_date: [''],
+      updated_by: [''],
+      department_code: [''],
     });
   }
 
   close(): void {
     this.visible = false;
   }
-  submit(){
+  submit() {
     console.log(this.departmentform);
-    this.api.postCall('/dept',this.departmentform.value).subscribe();
-
+    this.api.postCall('/dept', this.departmentform.value).subscribe();
+    this.visible = false;
+    this.api.getCall('/dept').subscribe((list) => {
+      this.listOfData = list;
+    });
   }
 }

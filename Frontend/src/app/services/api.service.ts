@@ -26,7 +26,8 @@ export class ApiService {
 
   getCall(urlPath: string): Observable<any> {
     const url = this.apiURL + urlPath;
-    return this.http.post(url,this.httpOptions).pipe(
+    console.log(url);
+    return this.http.get(url,this.httpOptions).pipe(
       catchError(this.errorHandler)
     );
   }
