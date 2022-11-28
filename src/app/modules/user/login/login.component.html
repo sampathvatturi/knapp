@@ -1,0 +1,52 @@
+<nz-layout class="back">
+
+    <nz-content>
+        <div class="ml-auto c1 shadow-lg">
+
+            <div style="border: 1px solid #d9d9d9;border-radius: 6px; padding:12px;" class="shadow box">
+
+                <h1 class="text-center">LogIn</h1>
+                <form nz-form [formGroup]="validateForm" class="inputs" (ngSubmit)="onSubmit()">
+                    <nz-form-item>
+                        <nz-form-control nzErrorTip="Please input your username!">
+                        <nz-form-label>Username</nz-form-label>
+                          <nz-input-group nzPrefixIcon="user">
+                            <input type="text" nz-input formControlName="userName" placeholder="Username"/>
+                          </nz-input-group>
+                        </nz-form-control>
+                      </nz-form-item>
+
+                      <nz-form-item>
+                        <nz-form-control nzErrorTip="Please input your Password!">
+                        <nz-form-label>Password</nz-form-label>
+                          <nz-input-group nzPrefixIcon="lock">
+                            <input type="password" nz-input formControlName="password" placeholder="Password" />
+                          </nz-input-group>
+                        </nz-form-control>
+                      </nz-form-item>
+
+                      <div nz-row class="login-form-margin">
+
+                        <div nz-col [nzSpan]="12">
+                          <label nz-checkbox formControlName="remember">
+                            <span>Remember me</span>
+                          </label>
+                        </div>
+                        <div nz-col [nzSpan]="12">
+                          <a class="login-form-forgot text-primary" (click)="forgot()">Forgot password</a>
+                        </div>
+                        <button nz-button class="login-form-margin login-form-button" [nzType]="'primary'" nz-col [nzSpan] = "24" type="submit">Log in</button>
+                        Or &nbsp;
+                      <a (click)="signup()" class="text-primary">register now!</a>
+                      </div>
+
+                </form>
+            </div>
+        </div>
+
+
+    </nz-content>
+
+  </nz-layout>
+
+
