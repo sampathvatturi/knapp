@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { ApiService } from 'src/app/services/api.service';
 import { DepartmentService } from 'src/app/services/department.service';
 
 @Component({
@@ -12,23 +13,23 @@ export class DepartmentListComponent implements OnInit {
   visible = false;
   drawerTitle:string='';
   departmentform!:FormGroup
-  constructor(private departmentservice: DepartmentService, private fb:UntypedFormBuilder) { }
+  constructor(private departmentservice: DepartmentService, private fb:UntypedFormBuilder,private api:ApiService) { }
 
   ngOnInit(): void {
     this.departmentform = this.fb.group({
-      department_id: [null, [Validators.required]],
-      department_name: [null, [Validators.required]],
-      ranking: [null, [Validators.required]],
-      status: [null, [Validators.required]],
-      created_date: [null, [Validators.required]],
-      created_by: [null, [Validators.required]],
-      updated_date: [null, [Validators.required]],
-      updated_by: [null, [Validators.required]],
-      department_code: [null, [Validators.required]],
+      department_id: [null],
+      department_name: [null],
+      ranking: [null],
+      status: [null],
+      created_date: [null],
+      created_by: [null],
+      updated_date: [null],
+      updated_by: [null],
+      department_code: [null],
     });
-      this.departmentservice.getData()
-      .subscribe(list => {
+      this.api.getCall('/dept').subscribe(list => {
         this.listOfData = list;
+        console.log(this.listOfData);
       });
   }
   edit(data:any){
@@ -50,20 +51,24 @@ export class DepartmentListComponent implements OnInit {
     this.drawerTitle = "New";
     this.visible = true;
     this.departmentform = this.fb.group({
-      department_id: [null, [Validators.required]],
-      department_name: [null, [Validators.required]],
-      ranking: [null, [Validators.required]],
-      status: [null, [Validators.required]],
-      created_date: [null, [Validators.required]],
-      created_by: [null, [Validators.required]],
-      updated_date: [null, [Validators.required]],
-      updated_by: [null, [Validators.required]],
-      department_code: [null, [Validators.required]],
+      department_id: [null],
+      department_name: [null],
+      ranking: [null],
+      status: [null],
+      created_date: [null],
+      created_by: [null],
+      updated_date: [null],
+      updated_by: [null],
+      department_code: [null],
     });
   }
 
   close(): void {
     this.visible = false;
   }
+  submit(){
+    console.log(this.departmentform);
+    this.api.postCall('/dept',this.departmentform.value).subscribe();
 
+  }
 }
