@@ -12,8 +12,8 @@ const{
 
 router.get('/users',getusers);
 router.post('/users',postusers);
-router.patch('/updateuser/:id',updateusers);
-router.delete('/deleteuser/:id',deleteusers);
+router.patch('/user/:id',updateusers);
+router.delete('/user/:id',deleteusers);
 router.get('/users/:id',getuser);
 
 

@@ -9,9 +9,9 @@ const{
 } = require('../controllers/tickets');
 
 router.get('/tickets',gettickets);
-router.get('/inserticket',posttickets);
-router.get('/updateticket',updatetickets);
-router.get('/deletetickets',deletetickets);
+router.post('/tickets',posttickets);
+router.patch('/tickets',updatetickets);
+router.delete('/tickets',deletetickets);
 
 
 module.exports = router ;

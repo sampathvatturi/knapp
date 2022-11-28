@@ -9,8 +9,8 @@ const{
 } = require('../controllers/departments');
 
 router.get('/dept',getdepartments);
-router.get('/insertdept',postdepartments);
-router.get('/updatedept',updatedepartments);
-router.get('/deletedept',deletedepartments);
+router.post('/dept',postdepartments);
+router.patch('/dept/:id',updatedepartments);
+router.delete('/dept/:id',deletedepartments);
 
 module.exports = router ;
