@@ -3,7 +3,7 @@
   <button nz-button nzType="primary" (click)="open()" class="mb-1">
     Create
   </button>
-  <nz-table #basicTable [nzData]="listOfData">
+  <nz-table #basicTable [nzData]="listOfData" nzShowPagination nzShowSizeChanger [nzPageSizeOptions] =[5,10,15,20]>
     <thead>
       <tr>
         <th>Dept ID</th>

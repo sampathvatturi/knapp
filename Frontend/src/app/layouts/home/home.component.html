@@ -1,31 +1,40 @@
 <nz-layout>
-  
-  
-    <nz-header class="d-flex flex-row justify-content-between">
-      <div class="d-flex flex-row">
-          <img src="https://www.siggraph.org/wp-content/uploads/2022/04/org.flat_.logo_.400_0.jpg" class="img"/>
-          <p class="para">Approval Management System</p>
-      </div>
-      <div>
-        <button nz-button nzType="primary">LogOut</button>
-      </div>
-      
-  </nz-header>
-  
+
+
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" nzWidth="200px" nzTheme="light" >
+    <img src="https://www.siggraph.org/wp-content/uploads/2022/04/org.flat_.logo_.400_0.jpg" class="img"/>
+
+    <ul nz-menu nzMode="inline" class="sider-menu" >
+      <li nz-menu-item routerLink={{item.route}} *ngFor="let item of menuItems" [nzMatchRouter]="true" [nzSelected]="true">
+        <span class="material-symbols-outlined"> {{item.icon}} </span> &nbsp; {{item.title}}
+      </li>
+    </ul>
+
+  </nz-sider>
+
+
 
   <nz-layout>
 
-    <nz-sider nzWidth="200px" nzTheme="light" >
-      <ul nz-menu nzMode="inline" class="sider-menu" >
-        <li nz-menu-item routerLink={{item.route}} *ngFor="let item of menuItems" [nzMatchRouter]="true" [nzSelected]="true">
-          <span class="material-symbols-outlined"> {{item.icon}} </span> &nbsp; {{item.title}}
-        </li>
-      </ul>
-    </nz-sider>
-
+    <nz-header>
+      <span
+      class="trigger mr-2"
+      nz-icon
+      [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+      (click)="isCollapsed = !isCollapsed"
+    ></span>
+    <div class="d-inline">
+   <div class="d-inline"> <p class="d-inline">Approval Managment System</p></div>
+    <div class="d-inline float-right"><button nz-button nzType="primary">logout</button></div>
+  </div>
+  </nz-header>
     <nz-layout class="inner-layout">
        <router-outlet></router-outlet>
     </nz-layout>
 
   </nz-layout>
+
 </nz-layout>
+<nz-footer class="text-center">
+  sunshine @ 2022
+</nz-footer>
