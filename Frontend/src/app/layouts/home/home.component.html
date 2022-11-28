@@ -38,7 +38,40 @@
           <p class="d-inline">Approval Managment System</p>
         </div>
         <div class="d-inline float-right">
-          <button nz-button nzType="primary">logout</button>
+          <button nz-button nzType = "text" nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight" class="mr-5">
+            Hi,UserName <span nz-icon nzType="down" nzTheme="outline"></span>
+          </button>
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu class="list">
+              <li nz-menu-item class="d-flex flex-row justify-content-between item">
+                <div>
+                  <span nz-icon nzType="user" nzTheme="outline" style="font-size:20px;"></span> &nbsp;
+                  <span style="font-size:17px;">Profile</span>
+                
+                </div>
+                <div><span nz-icon nzType="right" nzTheme="outline" style="color:rgb(105, 125, 236);"></span></div>
+              </li>
+              <li nz-menu-item class="d-flex flex-row justify-content-between item">
+                <div>
+                  <span nz-icon nzType="setting" nzTheme="outline" style="font-size:20px;"></span> &nbsp;
+                  <span style="font-size:17px; ">Setting</span>
+                
+                </div>
+                <a><span nz-icon nzType="right" nzTheme="outline" style="color:rgb(105, 125, 236);"></span></a>
+              </li>
+              <li nz-menu-item style="font-size:12px;">
+                Last Login:
+              </li>
+              <li nz-menu-item>
+                <button nz-button nzType="default" nzSize="small" (click)="gotoLogin()">
+                  Log Out
+                </button>
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+          <a>
+            <span nz-icon nzType="poweroff" nzTheme="outline" class="b1" (click)="gotoLogin()"></span>
+          </a>
         </div>
       </div>
     </nz-header>

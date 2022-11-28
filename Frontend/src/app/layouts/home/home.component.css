@@ -51,3 +51,18 @@ nz-sider {
   left: 0;
   top: 0;
 }
+.b1{
+  font-size:25px;
+  padding:10px;
+  border-radius:5px;
+}
+.b1:hover{
+  background-color:pink;
+}
+.list{
+  width:200px;
+  min-height:100px;
+}
+.item{
+  height:50px;
+}
