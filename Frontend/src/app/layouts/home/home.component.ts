@@ -8,7 +8,7 @@ import mainMenu from '../../../assets/json/main-menu.json';
 })
 export class HomeComponent implements OnInit {
   title: string = '';
-  isCollapsed = true;
+  isCollapsed = false;
   menuItems: any;
   constructor() { }
 

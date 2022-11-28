@@ -10,7 +10,7 @@ const{
 
 router.get('/dept',getdepartments);
 router.post('/dept',postdepartments);
-router.patch('/dept/:id',updatedepartments);
+router.patch('/dept',updatedepartments);
 router.delete('/dept/:id',deletedepartments);
 
 module.exports = router ;

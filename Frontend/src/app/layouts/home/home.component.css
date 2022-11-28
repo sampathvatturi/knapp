@@ -27,6 +27,9 @@ nz-header {
   background: white;
   border-bottom: 1px solid gainsboro;
   padding:0px 10px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
   }
 .img{
   height:55px;
@@ -36,4 +39,15 @@ nz-header {
   color: black;
   font-family:"Fantasy";
   font-size:20px;
+}
+.layout {
+  min-height: 100vh;
+}
+
+nz-sider {
+
+  height: 100vh;
+  position: sticky;
+  left: 0;
+  top: 0;
 }

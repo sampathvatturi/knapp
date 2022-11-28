@@ -11,6 +11,7 @@ import { DepartmentService } from 'src/app/services/department.service';
 export class DepartmentListComponent implements OnInit {
   listOfData: any[] = [];
   visible = false;
+  submit = true;
   drawerTitle: string = '';
   departmentform!: FormGroup;
   constructor(
@@ -37,6 +38,7 @@ export class DepartmentListComponent implements OnInit {
     });
   }
   edit(data: any) {
+    this.submit=false;
     this.drawerTitle = 'Edit';
     this.visible = true;
     this.departmentform = this.fb.group({
@@ -52,6 +54,7 @@ export class DepartmentListComponent implements OnInit {
     });
   }
   open(): void {
+    this.submit=true;
     this.drawerTitle = 'New';
     this.visible = true;
     this.departmentform = this.fb.group({
@@ -70,9 +73,16 @@ export class DepartmentListComponent implements OnInit {
   close(): void {
     this.visible = false;
   }
-  submit() {
+  onSubmit() {
     console.log(this.departmentform);
     this.api.postCall('/dept', this.departmentform.value).subscribe();
+    this.visible = false;
+    this.api.getCall('/dept').subscribe((list) => {
+      this.listOfData = list;
+    });
+  }
+  update(){
+    this.api.patchCall('/dept',this.departmentform.value).subscribe();
     this.visible = false;
     this.api.getCall('/dept').subscribe((list) => {
       this.listOfData = list;

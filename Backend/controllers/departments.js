@@ -23,7 +23,7 @@ exports.postdepartments = async(req, res) =>{
 
 exports.updatedepartments = async(req, res) =>{
     data = req.body;
-    db.query('update departments set ? where ticket_id = ? ',[
+    db.query('update departments set ? where department_id = ? ',[
         { 
             department_id: data.department_id,
             department_name: data.department_name,
@@ -32,7 +32,7 @@ exports.updatedepartments = async(req, res) =>{
             created_by : data.created_by,
             updated_date : data.updated_date,
             updated_by : data.updated_by
-        },req.params.id],(err,result,fiels)=>{
+        },data.department_id],(err,result,fiels)=>{
         if(!err)
             res.status(200).json({msg: "user updated successfully"});
         else
