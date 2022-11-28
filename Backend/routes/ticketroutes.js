@@ -10,8 +10,8 @@ const{
 
 router.get('/tickets',gettickets);
 router.post('/tickets',posttickets);
-router.patch('/tickets',updatetickets);
-router.delete('/tickets',deletetickets);
+router.patch('/tickets/:id',updatetickets);
+router.delete('/tickets/:id',deletetickets);
 
 
 module.exports = router ;

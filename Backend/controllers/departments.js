@@ -22,9 +22,19 @@ exports.postdepartments = async(req, res) =>{
 }
 
 exports.updatedepartments = async(req, res) =>{
-    db.query('select * from departments',(err,result,fiels)=>{
+    data = req.body;
+    db.query('update departments set ? where ticket_id = ? ',[
+        { 
+            department_id: data.department_id,
+            department_name: data.department_name,
+            ranking: data.ranking,
+            status: data.status,
+            created_by : data.created_by,
+            updated_date : data.updated_date,
+            updated_by : data.updated_by
+        },req.params.id],(err,result,fiels)=>{
         if(!err)
-            res.send(result);
+            res.status(200).json({msg: "user updated successfully"});
         else
             res.send(err);
     })

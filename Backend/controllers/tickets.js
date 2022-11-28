@@ -22,9 +22,18 @@ exports.posttickets = async(req, res) =>{
 }
 
 exports.updatetickets= async(req, res) =>{
-    db.query('select * from tickets',(err,result,fiels)=>{
+    data = req.body;
+    db.query('update tickets set ? where ticket_id = ? ',[
+        { 
+            ticket_description: data.ticket_description,
+            status: data.status,
+            department_id: data.department_id,
+            created_by : data.created_by,
+            updated_date : data.updated_date,
+            updated_by : data.updated_by
+        },req.params.id],(err,result,fiels)=>{
         if(!err)
-            res.send(result);
+            res.status(200).json({msg: "user updated successfully"});
         else
             res.send(err);
     })

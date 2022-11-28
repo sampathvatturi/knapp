@@ -26,7 +26,20 @@ exports.postusers = async(req, res) =>{
 exports.updateusers = async(req, res) =>{
 
     data = req.body;
-    db.query('update users set ? where user_id = ? ',[{ first_name: data.first_name,last_name: data.last_name},req.params.id],(err,result,fiels)=>{
+    db.query('update users set ? where user_id = ? ',[
+        { 
+            first_name: data.first_name,
+            last_name: data.last_name,
+            user_name: data.user_name,
+            phone_number : data.phone_number,
+            address : data.address,
+            role_id : data.role_id,
+            status : data.status,
+            created_by : data.created_by,
+            updated_date : data.updated_date,
+            updated_by : data.updated_by,
+            department_id : data.department_id
+        },req.params.id],(err,result,fiels)=>{
         if(!err)
             res.status(200).json({msg: "user updated successfully"});
         else
