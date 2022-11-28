@@ -1,0 +1,44 @@
+{
+    "mainMenu": [
+      {
+        "title": "Approvals",
+        "route": "modules/approvals",
+        "icon": "assignment_turned_in"
+      },
+      {
+        "title": "Department",
+        "route": "modules/department",
+        "icon": "fact_check"
+      },
+      {
+        "title": "Expenditure",
+        "route": "modules/expenditure",
+        "icon": "request_quote"
+      },
+      {
+        "title": "Funds",
+        "route": "modules/funds",
+        "icon": "attach_money"
+      },
+      {
+        "title": "Inventory Items",
+        "route": "modules/inventory-items",
+        "icon": "category"
+      },
+      {
+        "title": "Invoices",
+        "route": "modules/invoices",
+        "icon": "receipt_long"
+      },
+      {
+        "title": "Payment Proceedings",
+        "route": "modules/payment-proceedings",
+        "icon": "payments"
+      },
+      {
+        "title": "Tender Details",
+        "route": "modules/tender-details",
+        "icon": "info"
+      }
+    ]
+  }
