@@ -44,3 +44,12 @@
     margin-left:auto;
     margin-right: auto;
   }
+  nz-form-label::after{
+    display: inline-block;
+    margin-left: -7px;
+    color: #ff4d4f;
+    font-size: 14px;
+    font-family: SimSun,sans-serif;
+    line-height: 1;
+    content: '*';
+}

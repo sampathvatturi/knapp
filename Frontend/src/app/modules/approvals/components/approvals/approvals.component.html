@@ -1,1 +1,53 @@
-<p>approvals works!</p>
+<nz-header>Approvals</nz-header>
+<nz-content>
+
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" nz-row nzGutter="16">
+        <nz-form-item nz-col nzSpan="6">
+            <nz-form-label >Date Range</nz-form-label>
+            <nz-form-control>
+              <nz-range-picker formControlName="rangePicker" ></nz-range-picker>
+            </nz-form-control>
+          </nz-form-item>
+
+        <nz-form-item nz-col nzSpan="6" class="ml-3">
+            <nz-form-label >Type</nz-form-label> 
+            <nz-form-control>
+              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select Type" formControlName="type">
+                <nz-option nzValue="Department1" nzLabel="Department1"></nz-option>
+                <nz-option nzValue="Department2" nzLabel="Department2"></nz-option>
+              </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item nz-col nzSpan="6" class="ml-3">
+            <nz-form-label >Status</nz-form-label> 
+            <nz-form-control>
+              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select Type" formControlName="status">
+                <nz-option nzValue="Active" nzLabel="Active"></nz-option>
+                <nz-option nzValue="InActive" nzLabel="InActive"></nz-option>
+              </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <button nz-button nzType="primary" nz-col nzSpan="4" class="ml-3">Submit</button>
+
+
+        
+    </form>
+
+    <nz-table #basicTable [nzData]="listOfData" nzShowPagination nzShowSizeChanger [nzPageSizeOptions] =[5,10,15,20]>
+        <thead>
+          <tr>
+            <th>Ticket ID</th>
+            <th>Ticket Description</th>
+            <th>Status</th>
+            <th>Department ID</th>
+            <th>Created Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+      </nz-table>
+
+</nz-content>

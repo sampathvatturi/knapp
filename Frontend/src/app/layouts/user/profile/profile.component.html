@@ -1,0 +1,101 @@
+<nz-header>About Me</nz-header>
+<nz-content class="order">
+    <h1 class="text-primary text-center">Bio Details</h1>
+
+    <div style="border: 1px solid #d9d9d9;border-radius: 6px; padding:12px;" class="shadow box">
+           
+        
+        <form nz-form [formGroup]="validateForm" nz-row>
+            <nz-form-item nz-col nzSpan="12">
+              <nz-form-label class="lab">First Name</nz-form-label>
+                <nz-form-control nzErrorTip="Please input your First Name!" class="signup">
+                    
+                    <nz-input-group nzPrefixIcon="user">
+                        <input type="text" nz-input formControlName="firstName" placeholder="First Name"/>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-col nzSpan="12">
+                 <nz-form-label>Last Name</nz-form-label>
+                <nz-form-control nzErrorTip="Please input your Last Name" class="signup"> 
+                    <nz-input-group nzPrefixIcon="user">
+                        <input type="text" nz-input formControlName="lastName" placeholder="Last Name"/>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-col nzSpan="12">
+              <nz-form-label>Email</nz-form-label>
+              <nz-form-control nzErrorTip="Please input your Email!" class="signup"> 
+                  <nz-input-group nzPrefixIcon="mail">
+                      <input type="text" nz-input formControlName="email" placeholder="Email"/>
+                  </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+            
+              <nz-form-item nz-col nzSpan="12">
+                <nz-form-label>Password</nz-form-label> 
+                <nz-form-control nzErrorTip="Please input your Password!" class="signup">
+                    <nz-input-group nzPrefixIcon="lock">
+                      <input type="password" nz-input formControlName="password" placeholder="Password" />
+                    </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item nz-col nzSpan="12">
+                <nz-form-label>Mobile Number</nz-form-label> 
+                <nz-form-control nzErrorTip="Please input your Mobile Number" class="signup">
+                    <nz-input-group nzPrefixIcon="phone">
+                        <input type="text" nz-input formControlName="mobile" placeholder="Email"/>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+
+              <nz-form-item nz-col nzSpan="12">
+                <nz-form-label>Department</nz-form-label> 
+                <nz-form-control class="signup">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a Department" formControlName="department">
+                    <nz-option nzValue="Option 1" nzLabel="Role 1"></nz-option>
+                    <nz-option nzValue="Option 2" nzLabel="Role 2"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-col nzSpan="24">
+              <nz-form-label style="margin-bottom:none;">Address</nz-form-label> 
+              <nz-form-control nzErrorTip="Please input your username!" formControlName="" class="address">
+                  <nz-input-group nzPrefixIcon="home">
+                      <input type="text" nz-input formControlName="address" placeholder="Address"/>
+                  </nz-input-group>
+              </nz-form-control>
+          </nz-form-item>
+          
+          <nz-form-item nz-col nzSpan="12">
+            <nz-form-label>City</nz-form-label> 
+            <nz-form-control class="signup">
+              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a Department">
+                <nz-option nzValue="Option 1" nzLabel="City 1"></nz-option>
+                <nz-option nzValue="Option 2" nzLabel="City 2"></nz-option>
+              </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item nz-col nzSpan="12">
+          <nz-form-label>District</nz-form-label> 
+          <nz-form-control class="signup">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a Department">
+              <nz-option nzValue="Option 1" nzLabel="District 1"></nz-option>
+              <nz-option nzValue="Option 2" nzLabel="District 2"></nz-option>
+            </nz-select>
+          </nz-form-control>
+      </nz-form-item>
+
+              <div  class="login-form-margin text-center" nz-col nzSpan="24">
+                <button nz-button class="login-form-margin" [nzType]="'primary'" >Update</button>
+              </div>
+              
+        </form>
+      </div>
+
+</nz-content>

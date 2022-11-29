@@ -13,6 +13,7 @@ import { INVENTORY_ITEMS_COMPONENTS } from './inventory-items';
 import { INVOICES_COMPONENTS } from './invoices';
 import { PAYMENT_PROCEEDINGS_COMPONENTS } from './payment-proceedings';
 import { TENDER_DETAILS_COMPONENTS } from './tender-details';
+import { PROFILE_COMPONENTS } from '../layouts/user/profile';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { TENDER_DETAILS_COMPONENTS } from './tender-details';
     ...INVENTORY_ITEMS_COMPONENTS,
     ...INVOICES_COMPONENTS,
     ...PAYMENT_PROCEEDINGS_COMPONENTS,
-    ...TENDER_DETAILS_COMPONENTS
+    ...TENDER_DETAILS_COMPONENTS,
+    ...PROFILE_COMPONENTS
   ],
   imports: [ModulesRoutingModule, NgAntdModule, ReactiveFormsModule,CommonModule],
 })

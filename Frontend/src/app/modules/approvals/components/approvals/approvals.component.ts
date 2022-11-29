@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-approvals',
@@ -6,10 +7,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./approvals.component.css']
 })
 export class ApprovalsComponent implements OnInit {
+  validateForm!: UntypedFormGroup;
+  listOfData: any[] = [];
 
-  constructor() { }
+  constructor(private fb: UntypedFormBuilder) { }
 
   ngOnInit(): void {
+    this.validateForm = this.fb.group({
+      rangePicker: [null],
+      type: [null, [Validators.required]],
+      status: [null, [Validators.required]],
+    })
   }
+
+  submitForm(): void {
+    console.log(this.validateForm.value);
+  }
+  
 
 }

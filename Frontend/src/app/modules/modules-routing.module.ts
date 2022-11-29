@@ -9,6 +9,9 @@ import { INVENTORY_ITEMS_ROUTES } from './inventory-items';
 import { INVOICES_ROUTES } from './invoices';
 import { PAYMENT_PROCEEDINGS_ROUTES } from './payment-proceedings';
 import { TENDER_DETAILS_ROUTES } from './tender-details';
+import { PROFILE_ROUTES } from '../layouts/user/profile';
+
+
 
 
 const routes: Routes = [
@@ -23,7 +26,8 @@ const routes: Routes = [
   ...INVENTORY_ITEMS_ROUTES,
   ...INVOICES_ROUTES,
   ...PAYMENT_PROCEEDINGS_ROUTES,
-  ...TENDER_DETAILS_ROUTES
+  ...TENDER_DETAILS_ROUTES,
+  ...PROFILE_ROUTES
 ];
 
 @NgModule({

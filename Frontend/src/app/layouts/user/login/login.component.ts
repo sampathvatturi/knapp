@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
     this.route.navigateByUrl('/signup');
   }
   forgot() {
-    this.route.navigateByUrl('/forgot-password');
+    this.route.navigateByUrl('/forgotpwd');
   }
   // onSubmit() {
   //   if (this.validateForm.valid) {
