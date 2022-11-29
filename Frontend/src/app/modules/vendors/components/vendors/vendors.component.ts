@@ -4,11 +4,11 @@ import { ApiService } from 'src/app/services/api.service';
 import { DepartmentService } from 'src/app/services/department.service';
 
 @Component({
-  selector: 'app-payment-proceedings',
-  templateUrl: './payment-proceedings.component.html',
-  styleUrls: ['./payment-proceedings.component.css']
+  selector: 'app-vendors',
+  templateUrl: './vendors.component.html',
+  styleUrls: ['./vendors.component.css']
 })
-export class PaymentProceedingsComponent implements OnInit {
+export class VendorsComponent implements OnInit {
 
   listOfData: any[] = [];
   visible = false;
@@ -89,4 +89,5 @@ export class PaymentProceedingsComponent implements OnInit {
       this.listOfData = list;
     });
   }
+
 }

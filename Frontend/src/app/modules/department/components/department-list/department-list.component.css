@@ -1,11 +1,24 @@
 nz-content {
   background: #fff;
   padding: 24px;
-  min-height: 100vh;
-
+  height: 70vh;
 }
 nz-header {
   background: none;
   font-size: large;
   font-weight: 500;
 }
+
+nz-form-label {
+  text-align: left;
+}
+nz-table {
+overflow-y: auto;
+height: 55vh;
+}
+
+nz-table thead tr{
+position: sticky;
+top: 100;
+}
+

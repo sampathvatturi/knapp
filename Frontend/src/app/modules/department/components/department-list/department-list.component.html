@@ -3,7 +3,13 @@
   <button nz-button nzType="primary" (click)="open()" class="mb-1">
     Create
   </button>
-  <nz-table #basicTable [nzData]="listOfData" nzShowPagination nzShowSizeChanger [nzPageSizeOptions] =[5,10,15,20]>
+  <nz-table
+    #basicTable
+    [nzData]="listOfData"
+    nzShowPagination
+    nzShowSizeChanger
+    [nzPageSizeOptions]="[5, 10, 15, 20]"
+  >
     <thead>
       <tr>
         <th>Dept ID</th>
@@ -14,7 +20,7 @@
         <th>Created By</th>
         <th>Update Date</th>
         <th>Update By</th>
-        <th>Department Code</th>
+        <th>Dept Code</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -48,9 +54,7 @@
   <form nz-form *nzDrawerContent [formGroup]="departmentform">
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5" class="text-left"
-          >Dept ID</nz-form-label
-        >
+        <nz-form-label nz-col nzSpan="5">Dept ID</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
@@ -62,9 +66,7 @@
     </div>
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5" class="text-left"
-          >Department Name</nz-form-label
-        >
+        <nz-form-label nz-col nzSpan="5">Department Name</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
@@ -79,9 +81,7 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5" class="text-left"
-          >Ranking</nz-form-label
-        >
+        <nz-form-label nz-col nzSpan="5">Ranking</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
@@ -96,9 +96,7 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5" class="text-left"
-          >Status</nz-form-label
-        >
+        <nz-form-label nz-col nzSpan="5">Status</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
@@ -111,76 +109,19 @@
       </nz-form-item>
     </div>
 
-    <div nz-row [nzGutter]="8">
-      <div nz-col nzSpan="12">
-        <nz-form-item>
-          <nz-form-label>Created Date</nz-form-label>
-          <nz-form-control>
-            <nz-date-picker
-              formControlName="created_date"
-              nzShowTime
-            ></nz-date-picker>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-      <div nz-col nzSpan="12">
-        <nz-form-item>
-          <nz-form-label>Created By</nz-form-label>
-          <nz-form-control>
-            <input
-              nz-input
-              formControlName="created_by"
-              type="number"
-              nz-input
-              placeholder="Created by..."
-            />
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-    </div>
-    <div nz-row [nzGutter]="8">
-      <div nz-col nzSpan="12">
-        <nz-form-item>
-          <nz-form-label>Update Date</nz-form-label>
-          <nz-form-control>
-            <nz-date-picker
-              formControlName="updated_date"
-              nzShowTime
-            ></nz-date-picker>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-
-      <div nz-col nzSpan="12">
-        <nz-form-item>
-          <nz-form-label>Update By</nz-form-label>
-          <nz-form-control>
-            <input
-              nz-input
-              formControlName="updated_by"
-              type="number"
-              nz-input
-              placeholder="Updated by..."
-            />
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-    </div>
-    <div nz-row [nzGutter]="8">
-      <div nz-col nzSpan="24">
-        <nz-form-item>
-          <nz-form-label>Department Code</nz-form-label>
-          <nz-form-control>
-            <input
-              nz-input
-              formControlName="department_code"
-              type="text"
-              nz-input
-              placeholder="please enter Department code"
-            />
-          </nz-form-control>
-        </nz-form-item>
-      </div>
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="5">Department Code</nz-form-label>
+        <nz-form-control nz-col nzSpan="10">
+          <input
+            nz-input
+            formControlName="department_code"
+            type="text"
+            nz-input
+            placeholder="please enter Department code"
+          />
+        </nz-form-control>
+      </nz-form-item>
     </div>
   </form>
 
@@ -189,8 +130,12 @@
       <button nz-button style="margin-right: 8px" (click)="close()">
         Cancel
       </button>
-      <button nz-button *ngIf="submit" nzType="primary" (click)="onSubmit()">Submit</button>
-      <button nz-button *ngIf="!submit" nzType="primary" (click)="update()">Update</button>
+      <button nz-button *ngIf="submit" nzType="primary" (click)="onSubmit()">
+        Submit
+      </button>
+      <button nz-button *ngIf="!submit" nzType="primary" (click)="update()">
+        Update
+      </button>
     </div>
   </ng-template>
 </nz-drawer>

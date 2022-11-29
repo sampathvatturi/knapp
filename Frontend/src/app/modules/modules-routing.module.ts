@@ -12,6 +12,8 @@ import { TENDER_DETAILS_ROUTES } from './tender-details';
 import { PROFILE_ROUTES } from '../layouts/user/profile';
 
 
+import { USER_ACCOUNTS_ROUTES } from './user-accounts';
+import { VENDORS_ROUTES } from './vendors';
 
 
 const routes: Routes = [
@@ -27,7 +29,9 @@ const routes: Routes = [
   ...INVOICES_ROUTES,
   ...PAYMENT_PROCEEDINGS_ROUTES,
   ...TENDER_DETAILS_ROUTES,
-  ...PROFILE_ROUTES
+  ...PROFILE_ROUTES,
+  ...USER_ACCOUNTS_ROUTES,
+  ...VENDORS_ROUTES
 ];
 
 @NgModule({

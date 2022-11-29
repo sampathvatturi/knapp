@@ -38,7 +38,7 @@ export class DepartmentListComponent implements OnInit {
     });
   }
   edit(data: any) {
-    this.submit=false;
+    this.submit = false;
     this.drawerTitle = 'Edit';
     this.visible = true;
     this.departmentform = this.fb.group({
@@ -54,7 +54,7 @@ export class DepartmentListComponent implements OnInit {
     });
   }
   open(): void {
-    this.submit=true;
+    this.submit = true;
     this.drawerTitle = 'New';
     this.visible = true;
     this.departmentform = this.fb.group({
@@ -81,8 +81,8 @@ export class DepartmentListComponent implements OnInit {
       this.listOfData = list;
     });
   }
-  update(){
-    this.api.patchCall('/dept',this.departmentform.value).subscribe();
+  update() {
+    this.api.patchCall('/dept', this.departmentform.value).subscribe();
     this.visible = false;
     this.api.getCall('/dept').subscribe((list) => {
       this.listOfData = list;

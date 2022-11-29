@@ -39,6 +39,16 @@
         "title": "Tender Details",
         "route": "modules/tender-details",
         "icon": "details:antd"
+      },
+      {
+        "title": "User Accounts",
+        "route": "modules/user-accounts",
+        "icon": "details:antd"
+      },
+      {
+        "title": "Vendors",
+        "route": "modules/vendors",
+        "icon": "details:antd"
       }
     ]
   }

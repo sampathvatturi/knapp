@@ -14,6 +14,8 @@ import { INVOICES_COMPONENTS } from './invoices';
 import { PAYMENT_PROCEEDINGS_COMPONENTS } from './payment-proceedings';
 import { TENDER_DETAILS_COMPONENTS } from './tender-details';
 import { PROFILE_COMPONENTS } from '../layouts/user/profile';
+import { USER_ACCOUNTS_COMPONENTS } from './user-accounts';
+import { VENDORS_COMPONENTS } from './vendors';
 
 @NgModule({
   declarations: [
@@ -26,8 +28,11 @@ import { PROFILE_COMPONENTS } from '../layouts/user/profile';
     ...INVOICES_COMPONENTS,
     ...PAYMENT_PROCEEDINGS_COMPONENTS,
     ...TENDER_DETAILS_COMPONENTS,
-    ...PROFILE_COMPONENTS
+    ...PROFILE_COMPONENTS,
+    ...USER_ACCOUNTS_COMPONENTS,
+    ...VENDORS_COMPONENTS,
   ],
   imports: [ModulesRoutingModule, NgAntdModule, ReactiveFormsModule,CommonModule],
 })
+
 export class ModulesModule {}

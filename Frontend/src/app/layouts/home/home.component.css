@@ -10,7 +10,7 @@
 }
 
 .inner-layout {
-  padding: 0 24px 24px;
+  padding: 0px 24px;
 
 }
 
@@ -31,10 +31,17 @@ nz-header {
   top: 0;
   z-index: 2;
   }
-.img{
-  height:55px;
-  width:65px;
-}
+  .logo {
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 16px;
+    position: relative;
+  }
+  .logo h1{
+    position: absolute;
+    left: auto;
+    right: auto;
+  }
 .para{
   color: black;
   font-family:"Fantasy";
@@ -83,8 +90,7 @@ nz-sider {
 .trigger:hover {
   color: #1890ff;
 }
-.logo {
-  height: 32px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
+
+[nz-icon]{
+  font-size: larger;
 }
