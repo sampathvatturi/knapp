@@ -1,4 +1,4 @@
-const db = require('../config/config');
+const db = require('../config/connection');
 
 exports.create = async(req, res) =>{
     db.query("CREATE TABLE `users` (`user_id` int(11) NOT NULL AUTO_INCREMENT,`first_name` varchar(100) NOT NULL,`last_name` varchar(100) NOT NULL, `user_name` varchar(50) NOT NULL,`password_md5` varchar(50) NOT NULL,`phone_number` int(20) NOT NULL, `address` text NOT NULL,`email` varchar(200) NOT NULL,`role_id` int(11) NOT NULL,`status` enum('active','inactive') NOT NULL,`create_date` datetime NOT NULL, `created_by` int(11) NOT NULL,`updated_date` datetime NOT NULL,`updated_by` int(11) NOT NULL,`department_id` int(11) NOT NULL,PRIMARY KEY (`user_id`),) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;)",(err,result,fields)=>{

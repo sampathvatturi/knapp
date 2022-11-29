@@ -1,4 +1,4 @@
-const db = require('../config/config');
+const connection = require('./config/connection');
 
 //departments
 exports.getdepartments = async(req, res) =>{
