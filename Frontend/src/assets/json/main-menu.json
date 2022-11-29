@@ -3,42 +3,42 @@
       {
         "title": "Approvals",
         "route": "modules/approvals",
-        "icon": "assignment_turned_in"
+        "icon": "approve:antd"
       },
       {
         "title": "Department",
         "route": "modules/department",
-        "icon": "fact_check"
+        "icon": "department:antd"
       },
       {
         "title": "Expenditure",
         "route": "modules/expenditure",
-        "icon": "request_quote"
+        "icon": "expenditure:antd"
       },
       {
         "title": "Funds",
         "route": "modules/funds",
-        "icon": "attach_money"
+        "icon": "funds:antd"
       },
       {
         "title": "Inventory Items",
         "route": "modules/inventory-items",
-        "icon": "category"
+        "icon": "items:antd"
       },
       {
         "title": "Invoices",
         "route": "modules/invoices",
-        "icon": "receipt_long"
+        "icon": "invoice:antd"
       },
       {
         "title": "Payment Proceedings",
         "route": "modules/payment-proceedings",
-        "icon": "payments"
+        "icon": "payments:antd"
       },
       {
         "title": "Tender Details",
         "route": "modules/tender-details",
-        "icon": "info"
+        "icon": "details:antd"
       }
     ]
   }

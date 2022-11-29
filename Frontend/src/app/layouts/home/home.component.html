@@ -6,10 +6,12 @@
     nzWidth="200px"
     nzTheme="light"
   >
-    <img
-      src="https://www.siggraph.org/wp-content/uploads/2022/04/org.flat_.logo_.400_0.jpg"
-      class="img"
-    />
+    <div class="logo">
+      <img
+        src="https://www.siggraph.org/wp-content/uploads/2022/04/org.flat_.logo_.400_0.jpg"
+        class="img"
+      />
+    </div>
 
     <ul nz-menu nzMode="inline" class="sider-menu">
       <li
@@ -19,8 +21,11 @@
         [nzMatchRouter]="true"
         [nzSelected]="true"
       >
-        <span class="material-symbols-outlined"> {{ item.icon }} </span> &nbsp;
-        {{ item.title }}
+        <!-- <span class="material-symbols-outlined"> {{ item.icon }} </span> -->
+        <!-- <span nz-icon [nzType]="item.icon"></span> -->
+
+        <span nz-icon [nzType]="item.icon"></span>
+        <span>{{ item.title }}</span>
       </li>
     </ul>
   </nz-sider>
@@ -38,44 +43,91 @@
           <p class="d-inline">Approval Managment System</p>
         </div>
         <div class="d-inline float-right">
-          <button nz-button nzType = "text" nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight" class="mr-5">
+          <button
+            nz-button
+            nzType="text"
+            nz-dropdown
+            [nzDropdownMenu]="menu"
+            nzPlacement="bottomRight"
+            class="mr-5"
+          >
             Hi,UserName <span nz-icon nzType="down" nzTheme="outline"></span>
           </button>
           <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu class="list">
-              <li nz-menu-item class="d-flex flex-row justify-content-between item">
+              <li
+                nz-menu-item
+                class="d-flex flex-row justify-content-between item"
+              >
                 <div>
-                  <span nz-icon nzType="user" nzTheme="outline" style="font-size:20px;"></span> &nbsp;
-                  <span style="font-size:17px;">Profile</span>
-                
+                  <span
+                    nz-icon
+                    nzType="user"
+                    nzTheme="outline"
+                    style="font-size: 20px"
+                  ></span>
+                  &nbsp;
+                  <span style="font-size: 17px">Profile</span>
                 </div>
-                <div><span nz-icon nzType="right" nzTheme="outline" style="color:rgb(105, 125, 236);"></span></div>
-              </li>
-              <li nz-menu-item class="d-flex flex-row justify-content-between item">
                 <div>
-                  <span nz-icon nzType="setting" nzTheme="outline" style="font-size:20px;"></span> &nbsp;
-                  <span style="font-size:17px; ">Setting</span>
-                
+                  <span
+                    nz-icon
+                    nzType="right"
+                    nzTheme="outline"
+                    style="color: rgb(105, 125, 236)"
+                  ></span>
                 </div>
-                <a><span nz-icon nzType="right" nzTheme="outline" style="color:rgb(105, 125, 236);"></span></a>
               </li>
-              <li nz-menu-item style="font-size:12px;">
-                Last Login:
+              <li
+                nz-menu-item
+                class="d-flex flex-row justify-content-between item"
+              >
+                <div>
+                  <span
+                    nz-icon
+                    nzType="setting"
+                    nzTheme="outline"
+                    style="font-size: 20px"
+                  ></span>
+                  &nbsp;
+                  <span style="font-size: 17px">Setting</span>
+                </div>
+                <a
+                  ><span
+                    nz-icon
+                    nzType="right"
+                    nzTheme="outline"
+                    style="color: rgb(105, 125, 236)"
+                  ></span
+                ></a>
               </li>
+              <li nz-menu-item style="font-size: 12px">Last Login:</li>
               <li nz-menu-item>
-                <button nz-button nzType="default" nzSize="small" (click)="gotoLogin()">
+                <button
+                  nz-button
+                  nzType="default"
+                  nzSize="small"
+                  (click)="gotoLogin()"
+                >
                   Log Out
                 </button>
               </li>
             </ul>
           </nz-dropdown-menu>
           <a>
-            <span nz-icon nzType="poweroff" nzTheme="outline" class="b1" (click)="gotoLogin()"></span>
+            <span
+              nz-icon
+              nzType="poweroff"
+              nzTheme="outline"
+              class="b1"
+              (click)="gotoLogin()"
+            ></span>
           </a>
         </div>
       </div>
     </nz-header>
     <nz-layout class="inner-layout">
+      <!-- <nz-header class="inner-header"> Approvals</nz-header> -->
       <router-outlet></router-outlet>
       <nz-footer class="text-center"> sunshine @ 2022 </nz-footer>
     </nz-layout>
