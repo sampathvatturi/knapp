@@ -3,6 +3,7 @@ import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NotificationService } from 'src/app/services/auth/notification.service';
+import { Md5hashService } from 'src/app/services/md5hash.service';
 import { UserService } from 'src/app/services/user.service';
 import { GlobalConstants } from 'src/app/shared/global_constants';
 
@@ -20,7 +21,8 @@ export class LoginComponent implements OnInit {
     private route: Router,
     private userService: UserService,
     private notificationService: NotificationService,
-    private ngxUiLoaderService: NgxUiLoaderService
+    private ngxUiLoaderService: NgxUiLoaderService,
+    private md5: Md5hashService
   ) { }
 
   ngOnInit(): void {
@@ -30,8 +32,9 @@ export class LoginComponent implements OnInit {
       remember: [true]
     });
   }
+
   signup() {
-    this.route.navigateByUrl('/register');
+    this.route.navigateByUrl('/signup');
   }
   forgot() {
     this.route.navigateByUrl('/forgot-password');
@@ -48,7 +51,7 @@ export class LoginComponent implements OnInit {
     const obj = {
       client_id: 1,
       email: formData.email,
-      password: formData.password
+      password: this.md5.logMd5(formData.password)
     };
     this.userService.login(obj).subscribe((response: any) => {
       console.log("response in Login: ", response);
@@ -56,6 +59,7 @@ export class LoginComponent implements OnInit {
       this.responseMessage = "You are logged-in";
       this.notificationService.createNotification('success', this.responseMessage);
       localStorage.setItem('token', response.token);
+      localStorage.setItem('role', response.role);
       this.route.navigate(['/app']);
     }, (error) => {
       console.log("Error in Login: ", error);

@@ -32,7 +32,7 @@ export class DepartmentListComponent implements OnInit {
       updated_by: [''],
       department_code: [''],
     });
-    this.api.getCall('/dept').subscribe((list) => {
+    this.api.getCall('/dept/getDepts').subscribe((list) => {
       this.listOfData = list;
       console.log(this.listOfData);
     });

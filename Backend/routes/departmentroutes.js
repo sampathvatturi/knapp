@@ -2,15 +2,17 @@ const express = require('express');
 const router = express.Router();
 
 const{ 
-    getdepartments,
-    postdepartments,
-    updatedepartments,
-    deletedepartments
+    getDepartment,
+    createdepartment,
+    updateDepartment,
+    deleteDepartment,
+    getDepartments
 } = require('../controllers/departments');
 
-router.get('/dept',getdepartments);
-router.post('/dept',postdepartments);
-router.patch('/dept',updatedepartments);
-router.delete('/dept/:id',deletedepartments);
+router.get('/getDepts',getDepartments);
+router.post('/createDept',createdepartment);
+router.patch('/updateDept/:id',updateDepartment);
+router.delete('/deleteDept/:id',deleteDepartment);
+router.get('/getDept/:id',getDepartment);
 
 module.exports = router ;

@@ -32,15 +32,15 @@
                 <span>Remember me</span>
               </label>
             </div>
-            
+
             <button nz-button class="login-form-margin login-form-button" [nzType]="'primary'" nz-col [nzSpan]="24"
               type="submit">Log in</button>
 
-            
-              <a (click)="signup()" class="text-primary" nz-col [nzSpan]="12">register now!</a>
+
+              <a routerLink="/signup" class="text-primary" nz-col [nzSpan]="12">register now!</a>
               <a class="login-form-forgot text-primary" (click)="forgot()" nz-col [nzSpan]="8" nzOffset="4">Forgot password</a>
-            
-            
+
+
           </div>
 
         </form>

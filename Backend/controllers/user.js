@@ -8,9 +8,9 @@ const roleCheck = require('../services/checkrole');
 exports.loginUser = async (req, res) => {
     let data = req.body;
     console.log(data);
-    user_name = data.user_name;
+    user_name = data.email;
     password = data.password;
-    const query = "select count(*) as count, user_id, password_md5, email from users where user_name = '" + user_name + "' and password_md5 = '" + password + "'";
+    const query = "select count(*) as count, user_id, password_md5, email from users where (user_name = '" + user_name + "' and password_md5 = '" + password + "') or (email = '" + user_name + "' and password_md5 = '" + password + "')";
     console.log(query);
     db.query(query, (err, result) => {
         if (!err) {
@@ -19,7 +19,7 @@ exports.loginUser = async (req, res) => {
                 if (result[0].status == 'inactive') {
                     res.status(401).json({ message: 'User is in-active, Please contact admin' });
                 } else if (result[0].password_md5 == password) {
-                    const response = { user_name: result[0].user_name, email: result[0].email };
+                    const response = { user_name: result[0].user_name, email: result[0].email, role : 'admin' };
                     const accessToken = jwt.sign(response, process.env.ACCESS_TOKEN, { expiresIn: '3h' });
                     res.status(200).json({ token: accessToken });
                 } else {

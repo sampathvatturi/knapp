@@ -16,7 +16,7 @@ export class UserService {
   ) { }
 
   signup(postDataObj: any): Observable<any> {
-    return this.apiService.postCall('/user/signup', postDataObj).pipe(
+    return this.apiService.postCall('/user/createUser', postDataObj).pipe(
       map((response: any) => {
         return response;
       })

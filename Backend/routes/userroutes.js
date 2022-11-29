@@ -13,7 +13,7 @@ const{
      checkToken
 } = require('../controllers/user');
 
-router.get('/login', loginUser);
+router.post('/login', loginUser);
 router.get('/getUsers', auth.authenticateToken, roleCheck.checkRole, getUsers);
 router.post('/createUser', createUser);
 router.patch('/updateUser/:id', updateUser);

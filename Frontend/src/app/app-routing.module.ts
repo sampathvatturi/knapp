@@ -23,7 +23,7 @@ const routes: Routes = [
       {
         path: 'modules',
         loadChildren: () => import('./modules/modules.module').then(m => m.ModulesModule),
-        // canActivate: [RouteGuardService],
+        canActivate: [RouteGuardService],
         data: {
           expectedRole: ['admin','user']
         }
