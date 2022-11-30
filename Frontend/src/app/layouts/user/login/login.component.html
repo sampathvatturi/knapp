@@ -1,53 +1,39 @@
 <nz-layout class="back">
-
   <nz-content>
     <div class="ml-auto c1 shadow-lg">
-
       <div style="border: 2px solid #d9d9d9;border-radius: 6px; padding:12px;" class="shadow box">
-
         <h1 class="text-center">Login</h1>
         <form nz-form [formGroup]="validateForm" class="inputs" (ngSubmit)="onSubmit()">
           <nz-form-item>
-            <nz-form-control nzErrorTip="Please enter valid email">
+            <nz-form-control nzErrorTip="Please enter valid Email/Username">
               <nz-form-label>Email/Username</nz-form-label>
               <nz-input-group nzPrefixIcon="user">
                 <input type="text" nz-input formControlName="email" placeholder="Email/Username" />
               </nz-input-group>
             </nz-form-control>
           </nz-form-item>
-
           <nz-form-item>
-            <nz-form-control nzErrorTip="Please enter valid password">
+            <nz-form-control nzErrorTip="Please enter valid Password">
               <nz-form-label>Password</nz-form-label>
               <nz-input-group nzPrefixIcon="lock">
-                <input type="password" nz-input formControlName="password" placeholder="Password"  />
+                <input type="password" nz-input formControlName="password" placeholder="Password" />
               </nz-input-group>
             </nz-form-control>
           </nz-form-item>
-
           <div nz-row class="login-form-margin">
-
             <div nz-col [nzSpan]="12">
               <label nz-checkbox formControlName="remember">
                 <span>Remember me</span>
               </label>
             </div>
-
             <button nz-button class="login-form-margin login-form-button" [nzType]="'primary'" nz-col [nzSpan]="24"
-              type="submit">Log in</button>
-
-
-              <a routerLink="/signup" class="text-primary" nz-col [nzSpan]="12">register now!</a>
-              <a class="login-form-forgot text-primary" (click)="forgot()" nz-col [nzSpan]="8" nzOffset="4">Forgot password</a>
-
-
+              type="submit">Login</button>
+            <!-- <a routerLink="/signup" class="text-primary" nz-col [nzSpan]="12">Register Now!</a> -->
+            <a class="login-form-forgot text-primary" (click)="forgot()" nz-col [nzSpan]="10" nzOffset="8">Forgot
+              Password?</a>
           </div>
-
         </form>
       </div>
     </div>
-
-
   </nz-content>
-
 </nz-layout>

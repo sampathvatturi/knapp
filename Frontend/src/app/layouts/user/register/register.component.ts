@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit {
 
   updateConfirmValidator(): void {
     /** wait for refresh value */
-    Promise.resolve().then(() => this.validateForm.value.cnfrm_password_md5.updateValueAndValidity());
+    Promise.resolve().then(() => this.validateForm.value.cnfrm_password_md5?.updateValueAndValidity());
   }
 
   confirmationValidator = (control: FormControl): { [s: string]: boolean } => {

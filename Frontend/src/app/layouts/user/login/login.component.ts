@@ -36,20 +36,15 @@ export class LoginComponent implements OnInit {
   signup() {
     this.route.navigateByUrl('/signup');
   }
+
   forgot() {
     this.route.navigateByUrl('/forgotpwd');
   }
-  // onSubmit() {
-  //   if (this.validateForm.valid) {
-  //     this.route.navigateByUrl('/app');
-  //   }
-  // }
 
   onSubmit(): void {
     this.ngxUiLoaderService.start();
     const formData = this.validateForm.value;
     const obj = {
-      client_id: 1,
       email: formData.email,
       password: this.md5.logMd5(formData.password)
     };
