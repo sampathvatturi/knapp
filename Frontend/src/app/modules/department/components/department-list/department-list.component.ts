@@ -78,16 +78,16 @@ export class DepartmentListComponent implements OnInit {
   }
   onSubmit() {
     console.log(this.departmentForm);
-    this.api.postCall('/dept', this.departmentForm.value).subscribe();
+    this.api.postCall('/dept/createDept', this.departmentForm.value).subscribe();
     this.visible = false;
-    this.api.getCall('/dept').subscribe((list) => {
+    this.api.getCall('/dept/getDepts').subscribe((list) => {
       this.listOfData = list;
     });
   }
   update() {
-    this.api.patchCall('/dept', this.departmentForm.value).subscribe();
+    this.api.patchCall('/dept/updateDept', this.departmentForm.value).subscribe();
     this.visible = false;
-    this.api.getCall('/dept').subscribe((list) => {
+    this.api.getCall('/dept/getDepts').subscribe((list) => {
       this.listOfData = list;
     });
   }
