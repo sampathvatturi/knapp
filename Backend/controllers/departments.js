@@ -23,7 +23,7 @@ exports.createdepartment = async(req, res) =>{
             res.status(200).json({msg: "department added successfully"});
         }
         else
-            res.send(err);
+            res.status(401).send(err);
     })
 }
 
