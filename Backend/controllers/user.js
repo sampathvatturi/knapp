@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const auth = require('../services/authentication');
 const roleCheck = require('../services/checkrole');
+const dateTime = require('../middleware/currdate')
 
 //User Login Authentication//
 exports.loginUser = async (req, res) => {
@@ -10,7 +11,7 @@ exports.loginUser = async (req, res) => {
     console.log(data);
     user_name = data.email;
     password = data.password;
-    const query = "select count(*) as count, user_id, password_md5, email from users where (user_name = '" + user_name + "' and password_md5 = '" + password + "') or (email = '" + user_name + "' and password_md5 = '" + password + "')";
+    const query = "select *,count(*) as count from users where (user_name = '" + user_name + "' and password_md5 = '" + password + "') or (email = '" + user_name + "' and password_md5 = '" + password + "') GROUP BY user_id, password_md5";
     console.log(query);
     db.query(query, (err, result) => {
         if (!err) {
@@ -21,7 +22,8 @@ exports.loginUser = async (req, res) => {
                 } else if (result[0].password_md5 == password) {
                     const response = { user_name: result[0].user_name, email: result[0].email, role : 'admin' };
                     const accessToken = jwt.sign(response, process.env.ACCESS_TOKEN, { expiresIn: '3h' });
-                    res.status(200).json({ token: accessToken });
+                    res.status(200).json({ token: accessToken, user_data: result[0] });
+                    db.query("update users set login_time= '"+dateTime+"' where user_id = '"+result[0].user_id+"'")
                 } else {
                     res.status(400).json({ message: 'Somthing went wrong, Please try again later.' });
                 }
