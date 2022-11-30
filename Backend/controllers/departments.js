@@ -12,12 +12,18 @@ exports.getDepartments = async(req, res) =>{
 
 exports.createdepartment = async(req, res) =>{
     params = req.body;
-    db.query("INSERT INTO `departments` SET ? ",params,(err,result,fields)=>{
+    db.query("INSERT INTO `departments` SET department_name=?,ranking = ?,status=?,created_by=?,updated_by=? ",[
+            data.department_name,
+            data.ranking,
+            data.status,
+            data.created_by,
+            data.updated_by,
+            params],(err,result,fields)=>{
         if(!err){
             res.status(200).json({msg: "department added successfully"});
         }
         else
-            res.send(err);
+            res.status(401).send(err);
     })
 }
 
@@ -29,7 +35,6 @@ exports.updateDepartment = async(req, res) =>{
             department_name: data.department_name,
             ranking: data.ranking,
             status: data.status,
-            created_by : data.created_by,
             updated_date : data.updated_date,
             updated_by : data.updated_by
         },data.department_id],(err,result,fiels)=>{
