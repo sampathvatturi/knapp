@@ -3,9 +3,9 @@ const cors = require('cors');
 const connection = require('./config/connection');
 
 
-const userRoutes = require('./routes/userRoutes');
-const ticketRoutes = require('./routes/ticketRoutes');
-const departmentRoutes = require('./routes/departmentRoutes');
+const userRoutes = require('./routes/userroutes');
+const ticketRoutes = require('./routes/ticketroutes');
+const departmentRoutes = require('./routes/departmentroutes');
 
 const app = express();
 
@@ -22,3 +22,5 @@ app.use('/tickets', ticketRoutes);
 app.use('/dept', departmentRoutes);
 
 module.exports = app;
+
+const time = require('./middleware/currdate')
