@@ -1,54 +1,54 @@
 {
-    "mainMenu": [
-      {
-        "title": "Approvals",
-        "route": "modules/approvals",
-        "icon": "approve:antd"
-      },
-      {
-        "title": "Department",
-        "route": "modules/department",
-        "icon": "department:antd"
-      },
-      {
-        "title": "Expenditure",
-        "route": "modules/expenditure",
-        "icon": "expenditure:antd"
-      },
-      {
-        "title": "Funds",
-        "route": "modules/funds",
-        "icon": "funds:antd"
-      },
-      {
-        "title": "Inventory Items",
-        "route": "modules/inventory-items",
-        "icon": "items:antd"
-      },
-      {
-        "title": "Invoices",
-        "route": "modules/invoices",
-        "icon": "invoice:antd"
-      },
-      {
-        "title": "Payment Proceedings",
-        "route": "modules/payment-proceedings",
-        "icon": "payments:antd"
-      },
-      {
-        "title": "Tender Details",
-        "route": "modules/tender-details",
-        "icon": "details:antd"
-      },
-      {
-        "title": "User Accounts",
-        "route": "modules/user-accounts",
-        "icon": "details:antd"
-      },
-      {
-        "title": "Vendors",
-        "route": "modules/vendors",
-        "icon": "details:antd"
-      }
-    ]
-  }
+  "mainMenu": [
+    {
+      "title": "Approvals",
+      "route": "modules/approvals",
+      "icon": "approve:antd"
+    },
+    {
+      "title": "Department",
+      "route": "modules/department",
+      "icon": "department:antd"
+    },
+    {
+      "title": "Expenditure",
+      "route": "modules/expenditure",
+      "icon": "expenditure:antd"
+    },
+    {
+      "title": "Funds",
+      "route": "modules/funds",
+      "icon": "funds:antd"
+    },
+    {
+      "title": "Inventory Items",
+      "route": "modules/inventory-items",
+      "icon": "items:antd"
+    },
+    {
+      "title": "Invoices",
+      "route": "modules/invoices",
+      "icon": "invoice:antd"
+    },
+    {
+      "title": "Payment Proceedings",
+      "route": "modules/payment-proceedings",
+      "icon": "payments:antd"
+    },
+    {
+      "title": "Tender Details",
+      "route": "modules/tender-details",
+      "icon": "details:antd"
+    },
+    {
+      "title": "User Accounts",
+      "route": "modules/user-accounts",
+      "icon": "details:antd"
+    },
+    {
+      "title": "Vendors",
+      "route": "modules/vendors",
+      "icon": "vendors:antd"
+    }
+  ]
+}

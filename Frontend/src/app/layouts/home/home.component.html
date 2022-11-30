@@ -48,7 +48,7 @@
             nzPlacement="bottomRight"
             class="mr-5"
           >
-            Hi,UserName <span nz-icon nzType="down" nzTheme="outline"></span>
+            Hi {{first_name}}{{last_name}} <span nz-icon nzType="down" nzTheme="outline"></span>
           </button>
           <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu class="list">
@@ -104,7 +104,7 @@
                   nz-button
                   nzType="default"
                   nzSize="small"
-                  (click)="gotoLogin()"
+                  (click)="logout()"
                 >
                   Log Out
                 </button>
@@ -117,7 +117,7 @@
               nzType="poweroff"
               nzTheme="outline"
               class="b1"
-              (click)="gotoLogin()"
+              (click)="logout()"
             ></span>
           </a>
         </div>

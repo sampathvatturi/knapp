@@ -12,29 +12,29 @@
   >
     <thead>
       <tr>
-        <th>Dept ID</th>
-        <th>Dept Name</th>
-        <th>Ranking</th>
-        <th>Status</th>
+        <th>Item ID</th>
+        <th>Item Name</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Tax</th>
         <th>Created Date</th>
         <th>Created By</th>
         <th>Update Date</th>
         <th>Update By</th>
-        <th>Dept Code</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of basicTable.data">
-        <td>{{ data.department_id }}</td>
-        <td>{{ data.department_name }}</td>
-        <td>{{ data.ranking }}</td>
-        <td>{{ data.status }}</td>
+        <td>{{ data.item_id }}</td>
+        <td>{{ data.item_name }}</td>
+        <td>{{ data.quantity }}</td>
+        <td>{{ data.price }}</td>
+        <td>{{ data.tax }}</td>
         <td>{{ data.created_date }}</td>
         <td>{{ data.created_by }}</td>
         <td>{{ data.updated_date }}</td>
         <td>{{ data.updated_by }}</td>
-        <td>{{ data.department_code }}</td>
         <td>
           <button nz-button nzType="primary" (click)="edit(data)">Edit</button>
         </td>
@@ -51,29 +51,30 @@
   [nzFooter]="footerTpl"
   (nzOnClose)="close()"
 >
-  <form nz-form *nzDrawerContent [formGroup]="departmentform">
+  <form nz-form *nzDrawerContent [formGroup]="inventoryForm">
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Dept ID</nz-form-label>
+        <nz-form-label nz-col nzSpan="5">Item ID</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
-            formControlName="department_id"
-            placeholder="please enter Department ID"
+            formControlName="item_id"
+            type="number"
+            placeholder="please enter Item ID"
           />
         </nz-form-control>
       </nz-form-item>
     </div>
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Department Name</nz-form-label>
+        <nz-form-label nz-col nzSpan="5">Item Name</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
-            formControlName="department_name"
+            formControlName="item_name"
             type="text"
             nz-input
-            placeholder="please enter Department Name"
+            placeholder="please enter Item Name"
           />
         </nz-form-control>
       </nz-form-item>
@@ -81,14 +82,14 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Ranking</nz-form-label>
+        <nz-form-label nz-col nzSpan="5">Quantity</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
-            formControlName="ranking"
+            formControlName="quantity"
             type="number"
             nz-input
-            placeholder="please enter Rank"
+            placeholder="please enter Quantity"
           />
         </nz-form-control>
       </nz-form-item>
@@ -96,14 +97,14 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Status</nz-form-label>
+        <nz-form-label nz-col nzSpan="5">Price</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
-            formControlName="status"
-            type="text"
+            formControlName="price"
+            type="number"
             nz-input
-            placeholder="please enter Status"
+            placeholder="please enter Price"
           />
         </nz-form-control>
       </nz-form-item>
@@ -111,14 +112,14 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Department Code</nz-form-label>
+        <nz-form-label nz-col nzSpan="5">Tax</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
-            formControlName="department_code"
-            type="text"
+            formControlName="tax"
+            type="number"
             nz-input
-            placeholder="please enter Department code"
+            placeholder="please enter Tax"
           />
         </nz-form-control>
       </nz-form-item>

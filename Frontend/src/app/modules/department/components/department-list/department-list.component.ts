@@ -13,7 +13,7 @@ export class DepartmentListComponent implements OnInit {
   visible = false;
   submit = true;
   drawerTitle: string = '';
-  departmentform!: FormGroup;
+  departmentForm!: FormGroup;
   constructor(
     private departmentservice: DepartmentService,
     private fb: UntypedFormBuilder,
@@ -21,8 +21,8 @@ export class DepartmentListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.departmentform = this.fb.group({
-      department_id: [''],
+    this.departmentForm = this.fb.group({
+      department_id: [{ value: '', disabled: true }],
       department_name: [''],
       ranking: [''],
       status: [''],
@@ -41,8 +41,11 @@ export class DepartmentListComponent implements OnInit {
     this.submit = false;
     this.drawerTitle = 'Edit';
     this.visible = true;
-    this.departmentform = this.fb.group({
-      department_id: [data.department_id, [Validators.required]],
+    this.departmentForm = this.fb.group({
+      department_id: [
+        { value: data.department_id, disabled: true },
+        [Validators.required],
+      ],
       department_name: [data.department_name, [Validators.required]],
       ranking: [data.ranking, [Validators.required]],
       status: [data.status, [Validators.required]],
@@ -57,8 +60,8 @@ export class DepartmentListComponent implements OnInit {
     this.submit = true;
     this.drawerTitle = 'New';
     this.visible = true;
-    this.departmentform = this.fb.group({
-      department_id: [''],
+    this.departmentForm = this.fb.group({
+      department_id: [{ value: '', disabled: true }],
       department_name: ['', [Validators.required]],
       ranking: ['', [Validators.required]],
       status: ['', [Validators.required]],
@@ -74,15 +77,15 @@ export class DepartmentListComponent implements OnInit {
     this.visible = false;
   }
   onSubmit() {
-    console.log(this.departmentform);
-    this.api.postCall('/dept', this.departmentform.value).subscribe();
+    console.log(this.departmentForm);
+    this.api.postCall('/dept', this.departmentForm.value).subscribe();
     this.visible = false;
     this.api.getCall('/dept').subscribe((list) => {
       this.listOfData = list;
     });
   }
   update() {
-    this.api.patchCall('/dept', this.departmentform.value).subscribe();
+    this.api.patchCall('/dept', this.departmentForm.value).subscribe();
     this.visible = false;
     this.api.getCall('/dept').subscribe((list) => {
       this.listOfData = list;

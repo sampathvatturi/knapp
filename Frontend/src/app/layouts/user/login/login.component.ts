@@ -60,6 +60,7 @@ export class LoginComponent implements OnInit {
       this.notificationService.createNotification('success', this.responseMessage);
       localStorage.setItem('token', response.token);
       localStorage.setItem('role', response.role);
+      sessionStorage.setItem('user_data',JSON.stringify(response.user_data));
       this.route.navigate(['/app']);
     }, (error) => {
       console.log("Error in Login: ", error);

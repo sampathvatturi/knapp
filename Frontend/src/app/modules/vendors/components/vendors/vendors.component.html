@@ -12,29 +12,23 @@
   >
     <thead>
       <tr>
-        <th>Dept ID</th>
-        <th>Dept Name</th>
-        <th>Ranking</th>
-        <th>Status</th>
+        <th>Vendor ID</th>
+        <th>Vendor Name</th>
         <th>Created Date</th>
         <th>Created By</th>
         <th>Update Date</th>
         <th>Update By</th>
-        <th>Dept Code</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of basicTable.data">
-        <td>{{ data.department_id }}</td>
-        <td>{{ data.department_name }}</td>
-        <td>{{ data.ranking }}</td>
-        <td>{{ data.status }}</td>
+        <td>{{ data.vendor_id }}</td>
+        <td>{{ data.vendor_name }}</td>
         <td>{{ data.created_date }}</td>
         <td>{{ data.created_by }}</td>
         <td>{{ data.updated_date }}</td>
         <td>{{ data.updated_by }}</td>
-        <td>{{ data.department_code }}</td>
         <td>
           <button nz-button nzType="primary" (click)="edit(data)">Edit</button>
         </td>
@@ -51,14 +45,15 @@
   [nzFooter]="footerTpl"
   (nzOnClose)="close()"
 >
-  <form nz-form *nzDrawerContent [formGroup]="departmentform">
+  <form nz-form *nzDrawerContent [formGroup]="vendorForm">
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Dept ID</nz-form-label>
+        <nz-form-label nz-col nzSpan="5">Vendor ID</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
-            formControlName="department_id"
+            type="number"
+            formControlName="vendor_id"
             placeholder="please enter Department ID"
           />
         </nz-form-control>
@@ -66,59 +61,14 @@
     </div>
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Department Name</nz-form-label>
+        <nz-form-label nz-col nzSpan="5">Vendor Name</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
-            formControlName="department_name"
+            formControlName="vendor_name"
             type="text"
             nz-input
             placeholder="please enter Department Name"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Ranking</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="ranking"
-            type="number"
-            nz-input
-            placeholder="please enter Rank"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Status</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="status"
-            type="text"
-            nz-input
-            placeholder="please enter Status"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Department Code</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="department_code"
-            type="text"
-            nz-input
-            placeholder="please enter Department code"
           />
         </nz-form-control>
       </nz-form-item>
