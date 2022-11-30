@@ -3,9 +3,9 @@ const db = require('../config/connection');
 //departments
 exports.getDepartments = async(req, res) =>{
     db.query('select * from departments',(err,result,fiels)=>{
-        
         if(!err){
-            if(result.lenght > 0)
+            console.log('dsd')
+            if(result.length > 0)
                 res.status(200).send(result);
             else
             res.status(404).json({message: "Departments not found"});
