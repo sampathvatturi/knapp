@@ -11,11 +11,11 @@ exports.loginUser = async (req, res) => {
     console.log(data);
     user_name = data.email;
     password = data.password;
-    const query = "select *,count(*) as count from users where (user_name = '" + user_name + "' and password_md5 = '" + password + "') or (email = '" + user_name + "' and password_md5 = '" + password + "') GROUP BY user_id, password_md5";
+    const query = "select * from users where (user_name = '" + user_name + "' and password_md5 = '" + password + "') or (email = '" + user_name + "' and password_md5 = '" + password + "')";
     console.log(query);
     db.query(query, (err, result) => {
         if (!err) {
-            if (result[0].count === 1) {
+            if (result.length === 1) {
                 console.log("Result:", result);
                 if (result[0].status == 'inactive') {
                     res.status(401).json({ message: 'User is in-active, Please contact admin' });
@@ -56,10 +56,10 @@ exports.createUser = async (req, res) => {
     params = req.body;
     db.query("INSERT INTO `users` SET ? ", params, (err, result, fields) => {
         if (!err) {
-            res.status(200).json({ msg: "user added successfully" });
+            res.status(200).json({ message: "User added successfully" });
         }
         else
-            res.send(err);
+            res.status(401).send(err);
     })
 }
 
@@ -75,15 +75,14 @@ exports.updateUser = async (req, res) => {
             address: data.address,
             role_id: data.role_id,
             status: data.status,
-            created_by: data.created_by,
             updated_date: data.updated_date,
             updated_by: data.updated_by,
             department_id: data.department_id
         }, req.params.id], (err, result, fiels) => {
             if (!err)
-                res.status(200).json({ msg: "user updated successfully" });
+                res.status(200).json({ message: "user updated successfully" });
             else
-                res.send(err);
+                res.status(401).send(err);
         })
 }
 
@@ -91,9 +90,9 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
     db.query('delete from users where user_id = ?', [req.params.id], (err, result, fiels) => {
         if (!err)
-            res.status(200).json({ msg: "user deleted successfully" });
+            res.status(200).json({ message: "User deleted successfully" });
         else
-            res.send(err);
+            res.status(401).send(err);
     })
 }
 
@@ -103,7 +102,7 @@ exports.getUser = async (req, res) => {
         if (!err)
             res.status(200).json({ data: result });
         else
-            res.send(err);
+            res.status(401).send(err);
     })
 }
 
