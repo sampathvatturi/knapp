@@ -6,7 +6,7 @@ exports.getTickets = async (req, res) => {
     if (!err) {
       if (result.lenght > 0) res.status(200).send(result);
       else res.status(200).json({ message: "No Tickets found" });
-    } else res.status(404).send(err);
+    } else res.status(404).send(err).json({ status: "failed" });
   });
 };
 
@@ -25,8 +25,10 @@ exports.createTicket = async (req, res) => {
     ],
     (err, result, fields) => {
       if (!err) {
-        res.status(200).json({ msg: "Ticket added successfully" });
-      } else res.send(err);
+        res
+          .status(200)
+          .json({ status: "success", message: "Ticket added successfully" });
+      } else res.status(404).send(err).json({ status: "failed" });
     }
   );
 };
@@ -46,8 +48,11 @@ exports.updateTicket = async (req, res) => {
       req.params.id,
     ],
     (err, result, fiels) => {
-      if (!err) res.status(200).json({ msg: "Ticket updated successfully" });
-      else res.send(err);
+      if (!err)
+        res
+          .status(200)
+          .json({ status: "success", message: "Ticket updated successfully" });
+      else res.status(404).send(err).json({ status: "failed" });
     }
   );
 };
@@ -57,8 +62,11 @@ exports.deleteTicket = async (req, res) => {
     "delete from tickets where ticket_id = ?",
     [req.params.id],
     (err, result, fiels) => {
-      if (!err) res.status(200).json({ msg: "Ticket deleted successfully" });
-      else res.status(404).send(err);
+      if (!err)
+        res
+          .status(200)
+          .json({ status: "success", message: "Ticket deleted successfully" });
+      else res.status(404).send(err).json({ status: "failed" });
     }
   );
 };
@@ -68,10 +76,10 @@ exports.getTicket = async (req, res) => {
     "select * from ticketswhere ticket_id = ?",
     [req.params.id],
     (err, result, fiels) => {
-        if (!err) {
-            if (result.lenght === 1) res.status(200).send(result);
-            else res.status(200).json({ message: "No Ticket found" });
-          } else res.status(404).send(err);
+      if (!err) {
+        if (result.lenght === 1) res.status(200).send(result);
+        else res.status(200).json({ message: "No Ticket found" });
+      } else res.status(404).send(err).json({ status: "failed" });
     }
   );
 };

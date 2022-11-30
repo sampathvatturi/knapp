@@ -56,7 +56,7 @@ exports.loginUser = async (req, res) => {
         res.status(401).json({ message: "Incorrect Username or Password." });
       }
     } else {
-      res.send(err);
+      res.status(404).send(err).json({ status: "failed" });
     }
   });
 };
@@ -69,10 +69,10 @@ exports.getUsers = async (req, res) => {
       if (result.length <= 0) {
         res.status(401).json({ message: "No users found" });
       } else {
-        res.status(200).json(result);
+        res.status(200).json(result).json({ status: "failed" });
       }
     } else {
-      res.send(err);
+      res.status(404).send(err).json({ status: "failed" });
     }
   });
 };
@@ -81,8 +81,10 @@ exports.createUser = async (req, res) => {
   params = req.body;
   db.query("INSERT INTO `users` SET ? ", params, (err, result, fields) => {
     if (!err) {
-      res.status(200).json({ message: "User added successfully" });
-    } else res.status(401).send(err);
+      res
+        .status(200)
+        .json({ status: "success", message: "User added successfully" });
+    } else res.status(404).send(err).json({ status: "failed" });
   });
 };
 
@@ -106,8 +108,11 @@ exports.updateUser = async (req, res) => {
       req.params.id,
     ],
     (err, result, fiels) => {
-      if (!err) res.status(200).json({ message: "user updated successfully" });
-      else res.status(401).send(err);
+      if (!err)
+        res
+          .status(200)
+          .json({ status: "success", message: "user updated successfully" });
+      else res.status(401).send(err).json({ status: "failed" });
     }
   );
 };
@@ -117,8 +122,11 @@ exports.deleteUser = async (req, res) => {
     "delete from users where user_id = ?",
     [req.params.id],
     (err, result, fiels) => {
-      if (!err) res.status(200).json({ message: "User deleted successfully" });
-      else res.status(401).send(err);
+      if (!err)
+        res
+          .status(200)
+          .json({ status: "success", message: "User deleted successfully" });
+      else res.status(401).send(err).json({ status: "failed" });
     }
   );
 };
@@ -129,8 +137,10 @@ exports.getUser = async (req, res) => {
     [req.params.id],
     (err, result, fields) => {
       if (!err) {
-        if (result.length === 1) res.status(200).json(result);
-      } else res.status(401).send(err);
+        if (result.length === 1)
+          res.status(200).json({ message: "User not found" });
+        else res.status(401).json(result);
+      } else res.status(401).send(err).json({ status: "failed" });
     }
   );
 };
