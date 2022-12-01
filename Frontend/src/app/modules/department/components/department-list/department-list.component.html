@@ -1,26 +1,31 @@
-<nz-header> Departments</nz-header>
+<!-- <nz-header> Departments</nz-header> -->
+<nz-breadcrumb>
+  <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+  <nz-breadcrumb-item>
+    <a>Dashboard</a>
+  </nz-breadcrumb-item>
+  <nz-breadcrumb-item>Departments</nz-breadcrumb-item>
+</nz-breadcrumb>
 <nz-content>
-  <button nz-button nzType="primary" (click)="open()" class="mb-1">
-    Create
-  </button>
+  <div class="cbutton">
+    <button nz-button nzType="default" (click)="open()">Create</button>
+  </div>
+
   <nz-table
     #basicTable
     [nzData]="listOfData"
     nzShowPagination
     nzShowSizeChanger
     [nzPageSizeOptions]="[5, 10, 15, 20]"
+    [nzScroll]="{ x: 'none', y: '300px' }"
   >
     <thead>
       <tr>
-        <th>Dept ID</th>
+        <th [nzSortFn]="sort.compareId">Dept ID</th>
         <th>Dept Name</th>
-        <th>Ranking</th>
-        <th>Status</th>
+        <th [nzSortFn]="sort.compareRank" nzWidth="100px">Ranking</th>
+        <th nzWidth="100px">Status</th>
         <th>Created Date</th>
-        <th>Created By</th>
-        <th>Update Date</th>
-        <th>Update By</th>
-        <th>Dept Code</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -30,13 +35,13 @@
         <td>{{ data.department_name }}</td>
         <td>{{ data.ranking }}</td>
         <td>{{ data.status }}</td>
-        <td>{{ data.created_date }}</td>
-        <td>{{ data.created_by }}</td>
-        <td>{{ data.updated_date }}</td>
-        <td>{{ data.updated_by }}</td>
-        <td>{{ data.department_code }}</td>
+        <td>{{ data.created_date | date: "dd-MM-YYYY hh:mm aaa" }}</td>
         <td>
-          <button nz-button nzType="primary" (click)="edit(data)">Edit</button>
+          <!-- <button nz-button nzType="primary" (click)="edit(data)">Edit</button> &nbsp;
+          <button nz-button nzType="primary" (click)="edit(data)">View</button> -->
+          <div class="editbtn">
+            <a (click)="edit(data)">Edit</a> / <a (click)="edit(data)">view</a>
+          </div>
         </td>
       </tr>
     </tbody>
@@ -97,15 +102,16 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Status</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="status"
-            type="text"
-            nz-input
-            placeholder="please enter Status"
-          />
-        </nz-form-control>
+        <nz-select
+          formControlName="status"
+          nz-col
+          nzSpan="10"
+          nzPlaceHolder="Status"
+          nzShowSearch
+        >
+          <nz-option nzValue="active" nzLabel="active"></nz-option>
+          <nz-option nzValue="inactive" nzLabel="inactive"></nz-option>
+        </nz-select>
       </nz-form-item>
     </div>
 

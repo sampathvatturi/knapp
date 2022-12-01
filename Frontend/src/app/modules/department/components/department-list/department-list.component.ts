@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
-import { DepartmentService } from 'src/app/services/department.service';
-
+import { NotificationService } from 'src/app/services/auth/notification.service';
+interface DataItem {
+  department_id: number;
+ ranking:number
+}
 @Component({
   selector: 'app-department-list',
   templateUrl: './department-list.component.html',
@@ -14,10 +17,15 @@ export class DepartmentListComponent implements OnInit {
   submit = true;
   drawerTitle: string = '';
   departmentForm!: FormGroup;
+  user_data: any;
+  sort = {
+      compareId: (a: DataItem, b: DataItem) => a.department_id - b.department_id,
+      compareRank: (a: DataItem, b: DataItem) => a.ranking - b.ranking,
+    }
   constructor(
-    private departmentservice: DepartmentService,
     private fb: UntypedFormBuilder,
-    private api: ApiService
+    private api: ApiService,
+    private notification: NotificationService,
   ) {}
 
   ngOnInit(): void {
@@ -36,11 +44,15 @@ export class DepartmentListComponent implements OnInit {
       this.listOfData = list;
       console.log(this.listOfData);
     });
+    this.user_data = sessionStorage.getItem('user_data');
+    this.user_data = JSON.parse(this.user_data);
   }
+
   edit(data: any) {
     this.submit = false;
     this.drawerTitle = 'Edit';
     this.visible = true;
+    console.log(data.created_date);
     this.departmentForm = this.fb.group({
       department_id: [
         { value: data.department_id, disabled: true },
@@ -51,8 +63,8 @@ export class DepartmentListComponent implements OnInit {
       status: [data.status, [Validators.required]],
       created_date: [data.created_date, [Validators.required]],
       created_by: [data.created_by, [Validators.required]],
-      updated_date: [data.updated_date, [Validators.required]],
-      updated_by: [data.updated_by, [Validators.required]],
+      updated_date: [Date.now(), [Validators.required]],
+      updated_by: [this.user_data.user_id, [Validators.required]],
       department_code: [data.department_code, [Validators.required]],
     });
   }
@@ -61,14 +73,14 @@ export class DepartmentListComponent implements OnInit {
     this.drawerTitle = 'New';
     this.visible = true;
     this.departmentForm = this.fb.group({
-      department_id: [{ value: '', disabled: true }],
+      department_id: [{ value: this.user_data.user_id, disabled: true }],
       department_name: ['', [Validators.required]],
       ranking: ['', [Validators.required]],
-      status: ['', [Validators.required]],
+      status: ['active', [Validators.required]],
       created_date: [''],
-      created_by: [''],
+      created_by: [this.user_data.user_id],
       updated_date: [''],
-      updated_by: [''],
+      updated_by: [this.user_data.user_id],
       department_code: [''],
     });
   }
@@ -78,17 +90,30 @@ export class DepartmentListComponent implements OnInit {
   }
   onSubmit() {
     console.log(this.departmentForm);
-    this.api.postCall('/dept/createDept', this.departmentForm.value).subscribe();
-    this.visible = false;
-    this.api.getCall('/dept/getDepts').subscribe((list) => {
-      this.listOfData = list;
-    });
+    this.api
+      .postCall('/dept/createDept/', this.departmentForm.value)
+      .subscribe((res) => {
+        // console.log(res.message);
+        this.notification.createNotification('success', res.message);
+        if (res.status === "success") {
+          this.visible = false;
+          this.api.getCall('/dept/getDepts').subscribe((list) => {
+            this.listOfData = list;
+          });
+        }
+      });
   }
   update() {
-    this.api.patchCall('/dept/updateDept', this.departmentForm.value).subscribe();
+    this.api
+      .patchCall(
+        `/dept/updateDept/${this.user_data.user_id}`,
+        this.departmentForm.value
+      )
+      .subscribe();
     this.visible = false;
     this.api.getCall('/dept/getDepts').subscribe((list) => {
       this.listOfData = list;
     });
   }
+
 }
