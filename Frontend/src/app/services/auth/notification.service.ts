@@ -10,7 +10,13 @@ export class NotificationService {
   constructor(private notification: NzNotificationService) { }
 
   createNotification(action: string, message: string) {
-    message = "<h4>" + message + "</h4>";
-    this.notification.create(action, '', message);
+    // message = "<h5>" + message + "</h5>";
+    let msgColor = 'orange';
+    if(action === 'success')
+      msgColor = 'green'
+    else if(action === 'error')
+      msgColor = 'red'
+    
+    this.notification.create(action, '', message, {nzDuration: 4000, nzStyle: {color: msgColor}});
   }
 }

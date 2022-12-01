@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
   forgot() {
     this.route.navigateByUrl('/forgotpwd');
   }
-
+  
   onSubmit(): void {
     this.ngxUiLoaderService.start();
     const formData = this.validateForm.value;
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
       this.responseMessage = "You are logged-in";
       this.notificationService.createNotification('success', this.responseMessage);
       localStorage.setItem('token', response.token);
-      localStorage.setItem('role', response.role);
+      localStorage.setItem('role', 'admin');
       sessionStorage.setItem('user_data',JSON.stringify(response.user_data));
       this.route.navigate(['/app']);
     }, (error) => {
