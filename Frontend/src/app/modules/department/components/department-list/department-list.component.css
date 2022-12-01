@@ -1,6 +1,7 @@
 nz-content {
   background: #fff;
   padding: 24px;
+  padding-top: 12px;
   height: auto;
 }
 nz-header {
@@ -38,4 +39,9 @@ top: 100;
   display: flex;
   justify-content: flex-end;
   margin-bottom: 10px;
+}
+::ng-deep .ant-drawer-close{
+  position: fixed;
+  right: 0px;
+
 }

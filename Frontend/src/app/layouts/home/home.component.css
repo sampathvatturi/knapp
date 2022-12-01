@@ -62,6 +62,10 @@ nz-sider {
   left: 0;
   top: 0;
 }
+::ng-deep .ant-layout-sider-children {
+  position: fixed;
+  top: 0;
+}
 .b1{
   font-size:25px;
   padding:10px;
@@ -72,7 +76,7 @@ nz-sider {
 }
 .list{
   width:200px;
-  
+
 }
 .item{
   height:50px;
