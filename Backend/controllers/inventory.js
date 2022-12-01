@@ -1,24 +1,25 @@
 const db = require("../config/connection");
 
 //departments
-exports.getDepartments = async (req, res) => {
-  db.query("select * from departments", (err, result, fiels) => {
+exports.getInventory = async (req, res) => {
+  db.query("select * from inventory", (err, result, fiels) => {
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
-      else res.status(404).json({ message: "Departments not found" });
+      else res.status(404).json({ message: "Inventory data not found" });
     } else res.status(401).send(err).json({ status: "failed" });
   });
 };
 
-exports.createdepartment = async (req, res) => {
+exports.createInventory = async (req, res) => {
   data = req.body;
   db.query(
-    "INSERT INTO `departments` SET ? ",
+    "INSERT INTO `inventory` SET ? ",
     [
       {
-        department_name: data.department_name,
-        ranking: data.ranking,
-        status: data.status,
+        item_name: data.item_name,
+        quantity: data.quantity,
+        price: data.price,
+        tax: data.tax,
         created_by: data.created_by,
         updated_by: data.updated_by,
       },
@@ -29,27 +30,27 @@ exports.createdepartment = async (req, res) => {
           .status(200)
           .json({
             status: "success",
-            message: "Department added successfully",
+            message: data.item_name+" added successfully",
           });
       } else res.status(401).send(err).json({ status: "failed" });
     }
   );
 };
 
-exports.updateDepartment = async (req, res) => {
+exports.updateInventory = async (req, res) => {
   data = req.body;
   db.query(
-    "update departments set ? where department_id = ? ",
+    "update inventory set ? where item_id = ? ",
     [
       {
-        department_id: data.department_id,
-        department_name: data.department_name,
-        ranking: data.ranking,
-        status: data.status,
+        item_name: data.item_name,
+        quantity: data.quantity,
+        price: data.price,
+        tax: data.tax,
         updated_date: data.updated_date,
         updated_by: data.updated_by,
       },
-      data.department_id,
+      data.vendor_id,
     ],
     (err, result, fiels) => {
       if (!err)
@@ -57,16 +58,16 @@ exports.updateDepartment = async (req, res) => {
           .status(200)
           .json({
             status: "success",
-            message: "Department updated successfully",
+            message: data.item_name+" updated successfully",
           });
       else res.status(401).send(err).json({ status: "failed" });
     }
   );
 };
 
-exports.deleteDepartment = async (req, res) => {
+exports.deleteInventory = async (req, res) => {
   db.query(
-    "delete from departments where department_id = ?",
+    "delete from inventory where item_id = ?",
     [req.params.id],
     (err, result, fields) => {
       if (!err)
@@ -74,21 +75,21 @@ exports.deleteDepartment = async (req, res) => {
           .status(200)
           .json({
             status: "success",
-            message: "Department deleted successfully",
+            message: "Inventory item deleted successfully",
           });
       else res.status(401).send(err).json({ status: "failed" });
     }
   );
 };
 
-exports.getDepartment = async (req, res) => {
+exports.getInventoryitem = async (req, res) => {
   db.query(
-    "select * from departments where department_id = ?",
+    "select * from inventory where item_id = ?",
     [req.params.id],
     (err, result, fiels) => {
       if (!err) {
         if (result.length === 1) res.status(200).send(result);
-        else res.status(401).json({ message: "Department not found" });
+        else res.status(401).json({ message: "Invoice details not found" });
       } else res.status(401).send(err).json({ status: "failed" });
     }
   );
