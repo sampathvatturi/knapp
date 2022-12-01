@@ -2,7 +2,7 @@
 <nz-content class="order">
     <h1 class="text-primary text-center">Bio Details</h1>
 
-    <div style="border: 1px solid #d9d9d9;border-radius: 6px; padding:12px;" class="shadow box">
+    <div class=" box">
            
         
         <form nz-form [formGroup]="validateForm" nz-row>
@@ -11,7 +11,7 @@
                 <nz-form-control nzErrorTip="Please input your First Name!" class="signup">
                     
                     <nz-input-group nzPrefixIcon="user">
-                        <input type="text" nz-input formControlName="firstName" placeholder="First Name"/>
+                        <input type="text" nz-input formControlName="first_name" placeholder="First Name"/>
                     </nz-input-group>
                 </nz-form-control>
             </nz-form-item>
@@ -20,7 +20,7 @@
                  <nz-form-label>Last Name</nz-form-label>
                 <nz-form-control nzErrorTip="Please input your Last Name" class="signup"> 
                     <nz-input-group nzPrefixIcon="user">
-                        <input type="text" nz-input formControlName="lastName" placeholder="Last Name"/>
+                        <input type="text" nz-input formControlName="last_name" placeholder="Last Name"/>
                     </nz-input-group>
                 </nz-form-control>
             </nz-form-item>
@@ -47,7 +47,7 @@
                 <nz-form-label>Mobile Number</nz-form-label> 
                 <nz-form-control nzErrorTip="Please input your Mobile Number" class="signup">
                     <nz-input-group nzPrefixIcon="phone">
-                        <input type="text" nz-input formControlName="mobile" placeholder="Email"/>
+                        <input type="text" nz-input formControlName="phone_number" placeholder="Email"/>
                     </nz-input-group>
                 </nz-form-control>
             </nz-form-item>
@@ -55,9 +55,8 @@
               <nz-form-item nz-col nzSpan="12">
                 <nz-form-label>Department</nz-form-label> 
                 <nz-form-control class="signup">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a Department" formControlName="department">
-                    <nz-option nzValue="Option 1" nzLabel="Role 1"></nz-option>
-                    <nz-option nzValue="Option 2" nzLabel="Role 2"></nz-option>
+                  <nz-select  [(ngModel)]="dept" nzShowSearch nzAllowClear nzPlaceHolder="Select a Department" formControlName="department_id">
+                    <nz-option *ngFor="let d of departments" nzValue={{d.department_id}} nzLabel={{d.department_name}}></nz-option>
                   </nz-select>
                 </nz-form-control>
             </nz-form-item>

@@ -37,6 +37,10 @@ nz-header {
     margin: 16px;
     position: relative;
   }
+  .image{
+    height:40px;
+    width:40px;
+  }
   .logo h1{
     position: absolute;
     left: auto;
@@ -68,7 +72,7 @@ nz-sider {
 }
 .list{
   width:200px;
-  min-height:100px;
+  
 }
 .item{
   height:50px;
@@ -93,4 +97,20 @@ nz-sider {
 
 [nz-icon]{
   font-size: larger;
+}
+.avatar{
+  padding-left:15px;
+  display:flex;
+  flex-direction: row;
+}
+.stat{
+  background-color:lightgreen;
+  color: black;
+  padding:3px;
+  border-radius:10px;
+}
+
+.av1{
+  display:flex;
+  flex-direction: column;
 }

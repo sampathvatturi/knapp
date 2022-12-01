@@ -7,7 +7,7 @@
     nzTheme="light"
   >
     <div class="logo">
-      AMS
+      <img src="https://images.freeimages.com/images/previews/09e/moon-art-1641879.png" class="image"/>
     </div>
 
     <ul nz-menu nzMode="inline" class="sider-menu">
@@ -48,78 +48,37 @@
             nzPlacement="bottomRight"
             class="mr-5"
           >
-            Hi {{first_name}}{{last_name}} <span nz-icon nzType="down" nzTheme="outline"></span>
+            Hi {{full_name}} <span nz-icon nzType="down" nzTheme="outline"></span>
           </button>
           <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu class="list">
-              <li
-                nz-menu-item
-                class="d-flex flex-row justify-content-between item" routerLink="modules/profile"
-              >
-                <div>
-                  <span
-                    nz-icon
-                    nzType="user"
-                    nzTheme="outline"
-                    style="font-size: 20px"
-                  ></span>
-                  &nbsp;
-                  <span style="font-size: 17px">Profile</span>
-                </div>
-                <div>
-                  <span
-                    nz-icon
-                    nzType="right"
-                    nzTheme="outline"
-                    style="color: rgb(105, 125, 236)"
-                  ></span>
-                </div>
-              </li>
-              <li
-                nz-menu-item
-                class="d-flex flex-row justify-content-between item"
-              >
-                <div>
-                  <span
-                    nz-icon
-                    nzType="setting"
-                    nzTheme="outline"
-                    style="font-size: 20px"
-                  ></span>
-                  &nbsp;
-                  <span style="font-size: 17px">Setting</span>
-                </div>
-                <a
-                  ><span
-                    nz-icon
-                    nzType="right"
-                    nzTheme="outline"
-                    style="color: rgb(105, 125, 236)"
-                  ></span
-                ></a>
-              </li>
-              <li nz-menu-item style="font-size: 12px">Last Login:</li>
-              <li nz-menu-item>
-                <button
-                  nz-button
-                  nzType="default"
-                  nzSize="small"
-                  (click)="logout()"
-                >
-                  Log Out
-                </button>
-              </li>
+              <div>
+                <p class="text-center">Account</p>
+                <hr />
+              <div>
+
+                  <div class="avatar">
+                    <nz-avatar [nzText]="first_name + last_name"></nz-avatar>
+                    <p class="ml-4" style="font-size:20px;">{{user_data.user_name}}</p>
+                  </div>
+
+                  <div class="avatar">
+                    <p>Role</p>
+                    <p class="ml-4 stat">{{user_data.status}}</p>
+                  </div>
+            </div>
+            <hr />
+
+            <div class="av1 pl-2">
+              <a class="text-primary">Settings</a>
+              <a class="text-primary" routerLink="modules/profile">Change Password</a>
+            </div>
+            <hr/>
+            <a (click)="gotoLogin()" class="text-danger pl-2">LogOut</a>
+            </div>
             </ul>
           </nz-dropdown-menu>
-          <a>
-            <span
-              nz-icon
-              nzType="poweroff"
-              nzTheme="outline"
-              class="b1"
-              (click)="logout()"
-            ></span>
-          </a>
+            
         </div>
       </div>
     </nz-header>

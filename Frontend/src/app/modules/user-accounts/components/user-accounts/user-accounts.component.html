@@ -1,141 +1,183 @@
 <nz-header>User Accounts</nz-header>
 <nz-content>
-  <button nz-button nzType="primary" (click)="open()" class="mb-1">
-    Create
-  </button>
-  <nz-table
-    #basicTable
-    [nzData]="listOfData"
-    nzShowPagination
-    nzShowSizeChanger
-    [nzPageSizeOptions]="[5, 10, 15, 20]"
-  >
+  <div class="b1">
+    <button nz-button nzType="default" (click)="open()" class="mb-2">
+      Create
+    </button>
+  </div>
+  <nz-table #basicTable [nzData]="users" nzShowPagination nzShowSizeChanger [nzPageSizeOptions]="[5, 10, 15, 20]">
     <thead>
       <tr>
-        <th>Dept ID</th>
-        <th>Dept Name</th>
-        <th>Ranking</th>
-        <th>Status</th>
-        <th>Created Date</th>
-        <th>Created By</th>
-        <th>Update Date</th>
-        <th>Update By</th>
-        <th>Dept Code</th>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Phone Number</th>
+        <th>Email</th>
+        <th>Department</th>
         <th>Actions</th>
       </tr>
     </thead>
+
     <tbody>
       <tr *ngFor="let data of basicTable.data">
+        <td>{{ data.user_id }}</td>
+        <td>{{ data.user_name }}</td>
+        <td>{{ data.phone_number }}</td>
+        <td>{{ data.email }}</td>
         <td>{{ data.department_id }}</td>
-        <td>{{ data.department_name }}</td>
-        <td>{{ data.ranking }}</td>
-        <td>{{ data.status }}</td>
-        <td>{{ data.created_date }}</td>
-        <td>{{ data.created_by }}</td>
-        <td>{{ data.updated_date }}</td>
-        <td>{{ data.updated_by }}</td>
-        <td>{{ data.department_code }}</td>
         <td>
-          <button nz-button nzType="primary" (click)="edit(data)">Edit</button>
+          <div class="editbtn">
+            <a (click)="edit(data)">Edit</a> / <a (click)="edit(data)">view</a>
+          </div>
         </td>
       </tr>
     </tbody>
+
   </nz-table>
 </nz-content>
-<nz-drawer
-  [nzBodyStyle]="{ overflow: 'auto' }"
-  [nzMaskClosable]="false"
-  [nzWidth]="720"
-  [nzVisible]="visible"
-  [nzTitle]="drawerTitle"
-  [nzFooter]="footerTpl"
-  (nzOnClose)="close()"
->
-  <form nz-form *nzDrawerContent [formGroup]="departmentform">
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Dept ID</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="department_id"
-            placeholder="please enter Department ID"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Department Name</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="department_name"
-            type="text"
-            nz-input
-            placeholder="please enter Department Name"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
+<nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzMaskClosable]="false" [nzWidth]="720" [nzVisible]="visible"
+   [nzFooter]="footerTpl" (nzOnClose)="close()">
+  <form nz-form *nzDrawerContent [formGroup]="createUserForm">
 
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Ranking</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="ranking"
-            type="number"
-            nz-input
-            placeholder="please enter Rank"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
+    <ng-container>
+      <div>
+        <div>
 
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Status</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="status"
-            type="text"
-            nz-input
-            placeholder="please enter Status"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
+          <h1 class="text-center">{{drawerTitle}}</h1>
 
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Department Code</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="department_code"
-            type="text"
-            nz-input
-            placeholder="please enter Department code"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
+          <form nz-form [formGroup]="createUserForm" nz-row>
+
+            <nz-form-item nz-col nzSpan="12">
+              <nz-form-label class="lab">First Name</nz-form-label>
+              <nz-form-control nzErrorTip="Please input your First Name!" class="create">
+
+                <nz-input-group nzPrefixIcon="user">
+                  <input type="text" nz-input formControlName="first_name" placeholder="First Name" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-col nzSpan="12">
+              <nz-form-label>Last Name</nz-form-label>
+              <nz-form-control nzErrorTip="Please input your Last Name" class="create">
+                <nz-input-group nzPrefixIcon="user">
+                  <input type="text" nz-input formControlName="last_name" placeholder="Last Name" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-col nzSpan="12">
+              <nz-form-label>Email</nz-form-label>
+              <nz-form-control nzErrorTip="Please input your Email!" class="create">
+                <nz-input-group nzPrefixIcon="mail">
+                  <input type="text" nz-input formControlName="email" placeholder="Email" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-col nzSpan="12">
+              <nz-form-label>User Name</nz-form-label>
+              <nz-form-control nzErrorTip="Please input your username" class="create">
+                <nz-input-group nzPrefixIcon="mail">
+                  <input type="text" nz-input formControlName="user_name" placeholder="User name" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-col nzSpan="12">
+              <nz-form-label>Password</nz-form-label>
+              <nz-form-control nzErrorTip="Please input your Password!" class="create">
+                <nz-input-group nzPrefixIcon="lock">
+                  <input type="password" nz-input formControlName="password_md5" placeholder="Password" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+
+            <!-- <nz-form-item nz-col nzSpan="12">
+                    <nz-form-label>Confirm Password</nz-form-label>
+                    <nz-form-control [nzErrorTip]="errorTpl" class="create">
+                        <nz-input-group nzPrefixIcon="lock">
+                          <input type="password" nz-input formControlName="cnfrm_password_md5" placeholder="Re-enter Password" />
+                          <ng-template #errorTpl let-control>
+                            <ng-container *ngIf="control.hasError('required')">Please confirm your password!</ng-container>
+                            <ng-container *ngIf="control.hasError('confirm')">
+                              Two passwords that you enter is inconsistent!
+                            </ng-container>
+                          </ng-template>
+                        </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item> -->
+
+            <nz-form-item nz-col nzSpan="12">
+              <nz-form-label>Mobile Number</nz-form-label>
+              <nz-form-control nzErrorTip="Please input your Mobile Number" class="create">
+                <nz-input-group nzPrefixIcon="phone">
+                  <input type="text" nz-input formControlName="phone_number" placeholder="Mobile Number" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-col nzSpan="12">
+              <nz-form-label>Department</nz-form-label>
+              <nz-form-control class="create">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a Department"
+                  formControlName="department_id">
+                  <nz-option *ngFor="let d of departments" nzValue={{d.department_id}} nzLabel={{d.department_name}}>
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-col nzSpan="24">
+              <nz-form-label style="margin-bottom:none;">Address</nz-form-label>
+              <nz-form-control nzErrorTip="Please enter your address" class="address">
+                <nz-input-group nzPrefixIcon="home">
+                  <input type="text" nz-input formControlName="address" placeholder="Address" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-col nzSpan="12">
+              <nz-form-label>City</nz-form-label>
+              <nz-form-control class="create">
+                <nz-select formControlName="city" nzShowSearch nzAllowClear nzPlaceHolder="Select a Department">
+                  <nz-option nzValue="1" nzLabel="City 1"></nz-option>
+                  <nz-option nzValue="2" nzLabel="City 2"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-col nzSpan="12">
+              <nz-form-label>District</nz-form-label>
+              <nz-form-control class="create">
+                <nz-select formControlName="district" nzShowSearch nzAllowClear nzPlaceHolder="Select a Department">
+                  <nz-option nzValue="1" nzLabel="District 1"></nz-option>
+                  <nz-option nzValue="2" nzLabel="District 2"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+
+          </form>
+        </div>
+      </div>
+    </ng-container>
+
   </form>
 
   <ng-template #footerTpl>
     <div style="float: right">
+
       <button nz-button style="margin-right: 8px" (click)="close()">
         Cancel
       </button>
-      <button nz-button *ngIf="submit" nzType="primary" (click)="onSubmit()">
-        Submit
+
+      <button nz-button *ngIf="submit" nzType="primary" (click)="onCreate()">
+        Create
       </button>
-      <button nz-button *ngIf="!submit" nzType="primary" (click)="update()">
+
+      <button nz-button *ngIf="!submit" nzType="primary" (click)="updateUser()">
         Update
       </button>
+      
     </div>
   </ng-template>
 </nz-drawer>

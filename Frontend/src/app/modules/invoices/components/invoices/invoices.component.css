@@ -11,3 +11,6 @@ nz-header {
 nz-form-label {
   text-align: left;
 }
+nz-table{
+  overflow-x: scroll;
+}

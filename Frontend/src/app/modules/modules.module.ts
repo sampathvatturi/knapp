@@ -16,6 +16,7 @@ import { TENDER_DETAILS_COMPONENTS } from './tender-details';
 import { PROFILE_COMPONENTS } from '../layouts/user/profile';
 import { USER_ACCOUNTS_COMPONENTS } from './user-accounts';
 import { VENDORS_COMPONENTS } from './vendors';
+import { RegisterComponent } from '../layouts/user';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { VENDORS_COMPONENTS } from './vendors';
     ...TENDER_DETAILS_COMPONENTS,
     ...PROFILE_COMPONENTS,
     ...USER_ACCOUNTS_COMPONENTS,
-    ...VENDORS_COMPONENTS,
+    ...VENDORS_COMPONENTS
   ],
   imports: [ModulesRoutingModule, NgAntdModule, ReactiveFormsModule,CommonModule],
 })

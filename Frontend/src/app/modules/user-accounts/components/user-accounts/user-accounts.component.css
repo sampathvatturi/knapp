@@ -1,13 +1,53 @@
-nz-content {
-  background: #fff;
-  padding: 24px;
-  min-height: 100vh;
-}
 nz-header {
   background: none;
   font-size: large;
   font-weight: 500;
 }
-nz-form-label {
-  text-align: left;
+nz-content {
+  background: #fff;
+  padding: 24px;
+  min-height: 80vh;
+
+}
+nz-form-label{
+  margin-bottom:-10px;
+}
+button{
+  margin-top:29px;
+}
+nz-form-label::after{
+  display: inline-block;
+  margin-left: -7px;
+  color: #ff4d4f;
+  font-size: 14px;
+  font-family: SimSun,sans-serif;
+  line-height: 1;
+  content: '*';
+}
+.b1{
+  display: flex;
+  justify-content:flex-end;
+}
+nz-form-item{
+  margin-bottom:0px;
+}
+.create{
+  width:300px;
+}
+.address{
+  width:630px;
+}
+.editbtn{
+  /* border: 1px solid gray; */
+  width: fit-content;
+}
+
+.editbtn a:hover{
+  color: #1890ff;
+  text-decoration: underline;
+}
+.cbutton{
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
 }

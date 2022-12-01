@@ -37,7 +37,7 @@ nz-header {
       margin-bottom:-10px;
     }
     .address{
-        width:550px;
+        width:560px;
     }
     nz-form-label::after{
       display: inline-block;

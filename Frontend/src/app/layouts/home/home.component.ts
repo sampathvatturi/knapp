@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
   user_data:any;
   first_name: any;
   last_name: any;
+  full_name:any;
 
   constructor(private route:Router,private iconService: NzIconService) {
     this.iconService.addIconLiteral('approve:antd', approve);
@@ -43,6 +44,7 @@ export class HomeComponent implements OnInit {
     this.user_data = JSON.parse(this.user_data);
     this.first_name = this.user_data.first_name.slice(0,1).toUpperCase();
     this.last_name = this.user_data.last_name.slice(0,1).toUpperCase();
+    this.full_name = this.user_data.first_name + this.user_data.last_name
     // console.log(this.user_data.first_name, this.user_data.last_name);
   }
   gotoLogin(){
