@@ -10,8 +10,8 @@ nz-header {
   font-weight: 500;
 }
 nz-breadcrumb {
-padding-top: 10px;
-padding-bottom: 10px;
+  padding-top: 2px;
+  padding-bottom: 5px;
 }
 nz-form-label {
   text-align: left;
@@ -26,22 +26,21 @@ position: sticky;
 top: 100;
 } */
 
-.editbtn{
+.editbtn {
   /* border: 1px solid gray; */
   width: fit-content;
 }
 
-.editbtn a:hover{
+.editbtn a:hover {
   color: #1890ff;
   text-decoration: underline;
 }
-.cbutton{
+.cbutton {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 10px;
 }
-::ng-deep .ant-drawer-close{
+::ng-deep .ant-drawer-close {
   position: fixed;
   right: 0px;
-
 }

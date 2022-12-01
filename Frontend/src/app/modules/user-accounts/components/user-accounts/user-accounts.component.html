@@ -5,7 +5,13 @@
       Create
     </button>
   </div>
-  <nz-table #basicTable [nzData]="users" nzShowPagination nzShowSizeChanger [nzPageSizeOptions]="[5, 10, 15, 20]">
+  <nz-table
+    #basicTable
+    [nzData]="users"
+    nzShowPagination
+    nzShowSizeChanger
+    [nzPageSizeOptions]="[5, 10, 15, 20]"
+  >
     <thead>
       <tr>
         <th>Id</th>
@@ -31,63 +37,104 @@
         </td>
       </tr>
     </tbody>
-
   </nz-table>
 </nz-content>
-<nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzMaskClosable]="false" [nzWidth]="720" [nzVisible]="visible"
-   [nzFooter]="footerTpl" (nzOnClose)="close()">
+<nz-drawer
+  [nzBodyStyle]="{ overflow: 'auto' }"
+  [nzMaskClosable]="false"
+  [nzWidth]="720"
+  [nzVisible]="visible"
+  [nzFooter]="footerTpl"
+  (nzOnClose)="close()"
+>
   <form nz-form *nzDrawerContent [formGroup]="createUserForm">
-
     <ng-container>
       <div>
         <div>
-
-          <h1 class="text-center">{{drawerTitle}}</h1>
+          <h1 class="text-center">{{ drawerTitle }}</h1>
 
           <form nz-form [formGroup]="createUserForm" nz-row>
-
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label class="lab">First Name</nz-form-label>
-              <nz-form-control nzErrorTip="Please input your First Name!" class="create">
-
+              <nz-form-control
+                nzErrorTip="Please input your First Name!"
+                class="create"
+              >
                 <nz-input-group nzPrefixIcon="user">
-                  <input type="text" nz-input formControlName="first_name" placeholder="First Name" />
+                  <input
+                    type="text"
+                    nz-input
+                    formControlName="first_name"
+                    placeholder="First Name"
+                  />
                 </nz-input-group>
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label>Last Name</nz-form-label>
-              <nz-form-control nzErrorTip="Please input your Last Name" class="create">
+              <nz-form-control
+                nzErrorTip="Please input your Last Name"
+                class="create"
+              >
                 <nz-input-group nzPrefixIcon="user">
-                  <input type="text" nz-input formControlName="last_name" placeholder="Last Name" />
+                  <input
+                    type="text"
+                    nz-input
+                    formControlName="last_name"
+                    placeholder="Last Name"
+                  />
                 </nz-input-group>
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label>Email</nz-form-label>
-              <nz-form-control nzErrorTip="Please input your Email!" class="create">
+              <nz-form-control
+                nzErrorTip="Please input your Email!"
+                class="create"
+              >
                 <nz-input-group nzPrefixIcon="mail">
-                  <input type="text" nz-input formControlName="email" placeholder="Email" />
+                  <input
+                    type="text"
+                    nz-input
+                    formControlName="email"
+                    placeholder="Email"
+                  />
                 </nz-input-group>
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label>User Name</nz-form-label>
-              <nz-form-control nzErrorTip="Please input your username" class="create">
+              <nz-form-control
+                nzErrorTip="Please input your username"
+                class="create"
+              >
                 <nz-input-group nzPrefixIcon="mail">
-                  <input type="text" nz-input formControlName="user_name" placeholder="User name" />
+                  <input
+                    type="text"
+                    nz-input
+                    formControlName="user_name"
+                    placeholder="User name"
+                  />
                 </nz-input-group>
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label>Password</nz-form-label>
-              <nz-form-control nzErrorTip="Please input your Password!" class="create">
+              <nz-form-control
+                nzErrorTip="Please input your Password!"
+                class="create"
+              >
                 <nz-input-group nzPrefixIcon="lock">
-                  <input type="password" nz-input formControlName="password_md5" placeholder="Password" />
+                  <input
+                    type="password"
+                    nz-input
+                    formControlName="password_md5"
+                    placeholder="Password"
+                  />
                 </nz-input-group>
               </nz-form-control>
             </nz-form-item>
@@ -109,9 +156,17 @@
 
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label>Mobile Number</nz-form-label>
-              <nz-form-control nzErrorTip="Please input your Mobile Number" class="create">
+              <nz-form-control
+                nzErrorTip="Please input your Mobile Number"
+                class="create"
+              >
                 <nz-input-group nzPrefixIcon="phone">
-                  <input type="text" nz-input formControlName="phone_number" placeholder="Mobile Number" />
+                  <input
+                    type="text"
+                    nz-input
+                    formControlName="phone_number"
+                    placeholder="Mobile Number"
+                  />
                 </nz-input-group>
               </nz-form-control>
             </nz-form-item>
@@ -119,19 +174,37 @@
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label>Department</nz-form-label>
               <nz-form-control class="create">
-                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a Department"
-                  formControlName="department_id">
-                  <nz-option *ngFor="let d of departments" nzValue={{d.department_id}} nzLabel={{d.department_name}}>
+                <nz-select
+                  nzShowSearch
+                  nzAllowClear
+                  nzPlaceHolder="Select a Department"
+                  formControlName="department_id"
+                >
+                  <nz-option
+                    *ngFor="let d of departments"
+                    nzValue="{{ d.department_id }}"
+                    nzLabel="{{ d.department_name }}"
+                  >
                   </nz-option>
                 </nz-select>
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="24">
-              <nz-form-label style="margin-bottom:none;">Address</nz-form-label>
-              <nz-form-control nzErrorTip="Please enter your address" class="address">
+              <nz-form-label style="margin-bottom: none">Address</nz-form-label>
+              <nz-form-control
+                nzErrorTip="Please enter your address"
+                class="address"
+              >
                 <nz-input-group nzPrefixIcon="home">
-                  <input type="text" nz-input formControlName="address" placeholder="Address" />
+                  <!-- <input type="text" nz-input formControlName="address" placeholder="Address" /> -->
+                  <input
+                    nz-input
+                    ngx-google-places-autocomplete
+                    #placesRef="ngx-places"
+                    [options]="option"
+                    (onAddressChange)="handleAddressChange($event)"
+                  />
                 </nz-input-group>
               </nz-form-control>
             </nz-form-item>
@@ -139,7 +212,12 @@
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label>City</nz-form-label>
               <nz-form-control class="create">
-                <nz-select formControlName="city" nzShowSearch nzAllowClear nzPlaceHolder="Select a Department">
+                <nz-select
+                  formControlName="city"
+                  nzShowSearch
+                  nzAllowClear
+                  nzPlaceHolder="Select a Department"
+                >
                   <nz-option nzValue="1" nzLabel="City 1"></nz-option>
                   <nz-option nzValue="2" nzLabel="City 2"></nz-option>
                 </nz-select>
@@ -149,23 +227,25 @@
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label>District</nz-form-label>
               <nz-form-control class="create">
-                <nz-select formControlName="district" nzShowSearch nzAllowClear nzPlaceHolder="Select a Department">
+                <nz-select
+                  formControlName="district"
+                  nzShowSearch
+                  nzAllowClear
+                  nzPlaceHolder="Select a Department"
+                >
                   <nz-option nzValue="1" nzLabel="District 1"></nz-option>
                   <nz-option nzValue="2" nzLabel="District 2"></nz-option>
                 </nz-select>
               </nz-form-control>
             </nz-form-item>
-
           </form>
         </div>
       </div>
     </ng-container>
-
   </form>
 
   <ng-template #footerTpl>
     <div style="float: right">
-
       <button nz-button style="margin-right: 8px" (click)="close()">
         Cancel
       </button>
@@ -177,7 +257,6 @@
       <button nz-button *ngIf="!submit" nzType="primary" (click)="updateUser()">
         Update
       </button>
-      
     </div>
   </ng-template>
 </nz-drawer>

@@ -3,8 +3,9 @@ import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
 interface DataItem {
-  department_id: number;
- ranking:number
+  status: string;
+  created_date: string;
+  ranking: number;
 }
 @Component({
   selector: 'app-department-list',
@@ -18,14 +19,18 @@ export class DepartmentListComponent implements OnInit {
   drawerTitle: string = '';
   departmentForm!: FormGroup;
   user_data: any;
+
   sort = {
-      compareId: (a: DataItem, b: DataItem) => a.department_id - b.department_id,
-      compareRank: (a: DataItem, b: DataItem) => a.ranking - b.ranking,
-    }
+    compareStatus: (a: DataItem, b: DataItem) =>
+      a.status.localeCompare(b.status),
+    compareDate: (a: DataItem, b: DataItem) =>
+      a.created_date.localeCompare(b.created_date),
+    compareRank: (a: DataItem, b: DataItem) => a.ranking - b.ranking,
+  };
   constructor(
     private fb: UntypedFormBuilder,
     private api: ApiService,
-    private notification: NotificationService,
+    private notification: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -95,7 +100,7 @@ export class DepartmentListComponent implements OnInit {
       .subscribe((res) => {
         // console.log(res.message);
         this.notification.createNotification('success', res.message);
-        if (res.status === "success") {
+        if (res.status === 'success') {
           this.visible = false;
           this.api.getCall('/dept/getDepts').subscribe((list) => {
             this.listOfData = list;
@@ -115,5 +120,4 @@ export class DepartmentListComponent implements OnInit {
       this.listOfData = list;
     });
   }
-
 }

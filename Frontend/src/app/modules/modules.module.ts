@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { ModulesRoutingModule } from './modules-routing.module';
 import { DEPARTMENT_COMPONENTS } from './department';
 import { APPROVALS_COMPONENTS } from './approvals';
-import { DASHBOARD_COMPONENTS } from './dashboard'
+import { DASHBOARD_COMPONENTS } from './dashboard';
 
 import { NgAntdModule } from '../shared/ng-antd.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -17,6 +17,7 @@ import { PROFILE_COMPONENTS } from '../layouts/user/profile';
 import { USER_ACCOUNTS_COMPONENTS } from './user-accounts';
 import { VENDORS_COMPONENTS } from './vendors';
 import { RegisterComponent } from '../layouts/user';
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 
 @NgModule({
   declarations: [
@@ -31,9 +32,14 @@ import { RegisterComponent } from '../layouts/user';
     ...TENDER_DETAILS_COMPONENTS,
     ...PROFILE_COMPONENTS,
     ...USER_ACCOUNTS_COMPONENTS,
-    ...VENDORS_COMPONENTS
+    ...VENDORS_COMPONENTS,
   ],
-  imports: [ModulesRoutingModule, NgAntdModule, ReactiveFormsModule,CommonModule],
+  imports: [
+    ModulesRoutingModule,
+    NgAntdModule,
+    ReactiveFormsModule,
+    CommonModule,
+    GooglePlaceModule,
+  ],
 })
-
 export class ModulesModule {}

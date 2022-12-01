@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -7,6 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
+import { Options } from 'ngx-google-places-autocomplete/objects/options/options';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
 import { Md5hashService } from 'src/app/services/md5hash.service';
@@ -77,7 +79,7 @@ export class UserAccountsComponent implements OnInit {
   open(): void {
     this.submit = true;
     this.visible = true;
-    this.drawerTitle = 'Create User'
+    this.drawerTitle = 'Create User';
   }
 
   close(): void {
@@ -85,7 +87,6 @@ export class UserAccountsComponent implements OnInit {
   }
 
   onCreate() {
-    
     let checkData = {
       email: this.createUserForm.value.email,
       user_name: this.createUserForm.value.user_name,
@@ -107,7 +108,7 @@ export class UserAccountsComponent implements OnInit {
           this.notificationService.createNotification('success', data.message);
           // this.router.navigate(['/login']);
         });
-        this.visible = false;
+      this.visible = false;
     } else {
       Object.values(this.createUserForm.controls).forEach((control) => {
         if (control.invalid) {
@@ -116,17 +117,15 @@ export class UserAccountsComponent implements OnInit {
         }
       });
     }
-
-    
   }
 
   edit(data: any) {
     this.submit = false;
-    
+
     this.visible = true;
 
-    this.drawerTitle = 'Edit User'
-    
+    this.drawerTitle = 'Edit User';
+
     this.createUserForm = this.fb.group({
       first_name: [data.first_name, [Validators.required]],
       last_name: [data.last_name, [Validators.required]],
@@ -141,12 +140,11 @@ export class UserAccountsComponent implements OnInit {
       district: [data.district, [Validators.required]],
       created_by: [this.user_data.user_id],
       updated_by: [this.user_data.user_id],
-      user_id:[data.user_id]
+      user_id: [data.user_id],
     });
   }
 
-  updateUser(){
-
+  updateUser() {
     this.api
       .patchCall(
         `/user/updateUser${this.createUserForm.value.user_id}`,
@@ -157,7 +155,22 @@ export class UserAccountsComponent implements OnInit {
     this.api.getCall('/user/getUsers').subscribe((list) => {
       this.listOfData = list;
     });
-    
   }
-
+  @ViewChild('placesRef')
+  placesRef!: GooglePlaceDirective;
+  // Option = {
+  //   componentRestriction: {country: 'IN'}
+  // }
+  option: Options = new Options({
+    bounds: undefined,
+    fields: ['address_component'],
+    strictBounds: false,
+    types: ['geocode', 'route'],
+    componentRestrictions: { country: 'IN' },
+  });
+  public handleAddressChange(address: any) {
+    console.log(address);
+    this.createUserForm.value.address = address.formatted_address;
+    console.log(this.createUserForm.value.address);
+  }
 }

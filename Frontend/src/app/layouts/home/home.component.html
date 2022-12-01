@@ -7,10 +7,13 @@
     nzTheme="light"
   >
     <div class="logo">
-      <img src="https://images.freeimages.com/images/previews/09e/moon-art-1641879.png" class="image"/>
+      <img
+        src="https://images.freeimages.com/images/previews/09e/moon-art-1641879.png"
+        class="image"
+      />
     </div>
 
-    <ul nz-menu nzMode="inline" class="sider-menu">
+    <ul nz-menu nzMode="inline">
       <li
         nz-menu-item
         routerLink="{{ item.route }}"
@@ -48,37 +51,40 @@
             nzPlacement="bottomRight"
             class="mr-5"
           >
-            Hi {{full_name}} <span nz-icon nzType="down" nzTheme="outline"></span>
+            Hi {{ full_name }}
+            <span nz-icon nzType="down" nzTheme="outline"></span>
           </button>
           <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu class="list">
               <div>
                 <p class="text-center">Account</p>
                 <hr />
-              <div>
-
+                <div>
                   <div class="avatar">
                     <nz-avatar [nzText]="first_name + last_name"></nz-avatar>
-                    <p class="ml-4" style="font-size:20px;">{{user_data.user_name}}</p>
+                    <p class="ml-4" style="font-size: 20px">
+                      {{ user_data.user_name }}
+                    </p>
                   </div>
 
                   <div class="avatar">
                     <p>Role</p>
-                    <p class="ml-4 stat">{{user_data.status}}</p>
+                    <p class="ml-4 stat">{{ user_data.status }}</p>
                   </div>
-            </div>
-            <hr />
+                </div>
+                <hr />
 
-            <div class="av1 pl-2">
-              <a class="text-primary">Settings</a>
-              <a class="text-primary" routerLink="modules/profile">Change Password</a>
-            </div>
-            <hr/>
-            <a (click)="gotoLogin()" class="text-danger pl-2">LogOut</a>
-            </div>
+                <div class="av1 pl-2">
+                  <a class="text-primary">Settings</a>
+                  <a class="text-primary" routerLink="modules/profile"
+                    >Change Password</a
+                  >
+                </div>
+                <hr />
+                <a (click)="gotoLogin()" class="text-danger pl-2">LogOut</a>
+              </div>
             </ul>
           </nz-dropdown-menu>
-            
         </div>
       </div>
     </nz-header>

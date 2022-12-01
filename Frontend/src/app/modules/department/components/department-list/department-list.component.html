@@ -17,15 +17,15 @@
     nzShowPagination
     nzShowSizeChanger
     [nzPageSizeOptions]="[5, 10, 15, 20]"
-    [nzScroll]="{ x: 'none', y: '300px' }"
+    [nzScroll]="{ y: '300px' }"
   >
     <thead>
       <tr>
-        <th [nzSortFn]="sort.compareId">Dept ID</th>
-        <th>Dept Name</th>
+        <th nzWidth="100px">S.No.</th>
+        <th>Department Name</th>
         <th [nzSortFn]="sort.compareRank" nzWidth="100px">Ranking</th>
-        <th nzWidth="100px">Status</th>
-        <th>Created Date</th>
+        <th [nzSortFn]="sort.compareStatus" nzWidth="100px">Status</th>
+        <th [nzSortFn]="sort.compareDate">Created Date</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -35,10 +35,8 @@
         <td>{{ data.department_name }}</td>
         <td>{{ data.ranking }}</td>
         <td>{{ data.status }}</td>
-        <td>{{ data.created_date | date: "dd-MM-YYYY hh:mm aaa" }}</td>
+        <td>{{ data.created_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
         <td>
-          <!-- <button nz-button nzType="primary" (click)="edit(data)">Edit</button> &nbsp;
-          <button nz-button nzType="primary" (click)="edit(data)">View</button> -->
           <div class="editbtn">
             <a (click)="edit(data)">Edit</a> / <a (click)="edit(data)">view</a>
           </div>
@@ -59,7 +57,7 @@
   <form nz-form *nzDrawerContent [formGroup]="departmentForm">
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Dept ID</nz-form-label>
+        <nz-form-label nz-col nzSpan="5">Department ID</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
