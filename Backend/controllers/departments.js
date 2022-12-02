@@ -1,4 +1,5 @@
 const db = require("../config/connection");
+const currdateTime = require('../middleware/currdate');
 
 //departments
 exports.getDepartments = async (req, res) => {
@@ -46,10 +47,10 @@ exports.updateDepartment = async (req, res) => {
         department_name: data.department_name,
         ranking: data.ranking,
         status: data.status,
-        updated_date: data.updated_date,
+        updated_date: currdateTime,
         updated_by: data.updated_by,
       },
-      data.department_id,
+      req.params.id,
     ],
     (err, result, fiels) => {
       if (!err)

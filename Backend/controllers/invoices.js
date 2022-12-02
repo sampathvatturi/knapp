@@ -1,4 +1,5 @@
 const db = require("../config/connection");
+const currdateTime = require('../middleware/currdate');
 
 //departments
 exports.getInvoicelogs = async (req, res) => {
@@ -53,10 +54,10 @@ exports.updateInvoicelog = async (req, res) => {
         trnsx_type: data.trnsx_type,
         tax: data.tax,
         total: data.total,
-        updated_date: data.updated_date,
+        updated_date: currdateTime,
         updated_by: data.updated_by,
       },
-      data.vendor_id,
+      req.params.id,
     ],
     (err, result, fiels) => {
       if (!err)

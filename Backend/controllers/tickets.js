@@ -1,8 +1,9 @@
 const db = require("../config/connection");
+const currdateTime = require('../middleware/currdate');
 
 //tickets
 exports.getTickets = async (req, res) => {
-  db.query("select * from tickets", (err, result, fiels) => {
+  db.query("select * from tickets", (err, result, fields) => {
     if (!err) {
       if (result.lenght > 0) res.status(200).send(result);
       else res.status(200).json({ message: "No Tickets found" });
@@ -17,6 +18,9 @@ exports.createTicket = async (req, res) => {
     [
       {
         ticket_description: data.ticket_description,
+        vendor_id: data.vendor_id,
+        work_is: data.work_id,
+        location: data.location,
         status: data.status,
         department_id: data.department_id,
         created_by: data.created_by,
@@ -42,12 +46,12 @@ exports.updateTicket = async (req, res) => {
         ticket_description: data.ticket_description,
         status: data.status,
         department_id: data.department_id,
-        updated_date: data.updated_date,
+        updated_date: currdateTime,
         updated_by: data.updated_by,
       },
       req.params.id,
     ],
-    (err, result, fiels) => {
+    (err, result, fields) => {
       if (!err)
         res
           .status(200)
@@ -61,7 +65,7 @@ exports.deleteTicket = async (req, res) => {
   db.query(
     "delete from tickets where ticket_id = ?",
     [req.params.id],
-    (err, result, fiels) => {
+    (err, result, fields) => {
       if (!err)
         res
           .status(200)
@@ -75,7 +79,7 @@ exports.getTicket = async (req, res) => {
   db.query(
     "select * from ticketswhere ticket_id = ?",
     [req.params.id],
-    (err, result, fiels) => {
+    (err, result, fields) => {
       if (!err) {
         if (result.lenght === 1) res.status(200).send(result);
         else res.status(200).json({ message: "No Ticket found" });

@@ -1,4 +1,5 @@
 const db = require("../config/connection");
+const currdateTime = require('../middleware/currdate');
 
 //departments
 exports.getInventory = async (req, res) => {
@@ -47,10 +48,10 @@ exports.updateInventory = async (req, res) => {
         quantity: data.quantity,
         price: data.price,
         tax: data.tax,
-        updated_date: data.updated_date,
+        updated_date: currdateTime,
         updated_by: data.updated_by,
       },
-      data.vendor_id,
+      req.params.id,
     ],
     (err, result, fiels) => {
       if (!err)

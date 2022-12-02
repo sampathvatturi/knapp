@@ -2,25 +2,22 @@ const db = require("../config/connection");
 const currdateTime = require('../middleware/currdate');
 
 //departments
-exports.getVendors = async (req, res) => {
-  db.query("select * from vendors", (err, result, fiels) => {
+exports.getWorks = async (req, res) => {
+  db.query("select * from works", (err, result, fiels) => {
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
-      else res.status(404).json({ message: "Vendors not found" });
+      else res.status(404).json({ message: "Works not found" });
     } else res.status(401).send(err).json({ status: "failed" });
   });
 };
 
-exports.createVendor = async (req, res) => {
+exports.createWork = async (req, res) => {
   data = req.body;
   db.query(
-    "INSERT INTO `vendors` SET ? ",
+    "INSERT INTO `works` SET ? ",
     [
       {
-        vendor_name: data.vendor_name,
-        phone_number: data.phone_number,
-        address: data.address,
-        status: data.status,
+        work_name: data.work_name,
         created_by: data.created_by,
         updated_by: data.updated_by,
       },
@@ -31,7 +28,7 @@ exports.createVendor = async (req, res) => {
           .status(200)
           .json({
             status: "success",
-            message: "Vendor added successfully",
+            message: "Work added successfully",
           });
       } else res.status(401).send(err).json({ status: "failed" });
     }
@@ -41,13 +38,10 @@ exports.createVendor = async (req, res) => {
 exports.updateVendor = async (req, res) => {
   data = req.body;
   db.query(
-    "update vendors set ? where vendor_id = ? ",
+    "update works set ? where work_id = ? ",
     [
       {
-        vendor_name: data.vendor_name,
-        phone_number: data.phone_number,
-        address: data.address,
-        status: data.status,
+        work_name: data.work_name,
         updated_date: currdateTime,
         updated_by: data.updated_by,
       },
@@ -59,7 +53,7 @@ exports.updateVendor = async (req, res) => {
           .status(200)
           .json({
             status: "success",
-            message: "Vendor updated successfully",
+            message: "Work updated successfully",
           });
       else res.status(401).send(err).json({ status: "failed" });
     }
@@ -68,7 +62,7 @@ exports.updateVendor = async (req, res) => {
 
 exports.deleteVendor = async (req, res) => {
   db.query(
-    "delete from vendors where vendor_id = ?",
+    "delete from works where work_id = ?",
     [req.params.id],
     (err, result, fields) => {
       if (!err)
@@ -76,7 +70,7 @@ exports.deleteVendor = async (req, res) => {
           .status(200)
           .json({
             status: "success",
-            message: "Vendor deleted successfully",
+            message: "Work deleted successfully",
           });
       else res.status(401).send(err).json({ status: "failed" });
     }
@@ -85,12 +79,12 @@ exports.deleteVendor = async (req, res) => {
 
 exports.getVendor = async (req, res) => {
   db.query(
-    "select * from vendors where vendor_id = ?",
+    "select * from works where work_id = ?",
     [req.params.id],
     (err, result, fiels) => {
       if (!err) {
         if (result.length === 1) res.status(200).send(result);
-        else res.status(401).json({ message: "Vendor not found" });
+        else res.status(401).json({ message: "Work not found" });
       } else res.status(401).send(err).json({ status: "failed" });
     }
   );
