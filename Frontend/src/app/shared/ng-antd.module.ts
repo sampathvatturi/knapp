@@ -73,6 +73,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzResizableModule } from 'ng-zorro-antd/resizable';
 import { NzPipesModule } from 'ng-zorro-antd/pipes';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { GlobalTablesearchPipe } from './pipes/global-tablesearch.pipe';
 //import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 //import { NzGraphModule } from 'ng-zorro-antd/graph';
 
@@ -152,11 +153,15 @@ const antdModules =[
 ];
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule, 
+  declarations: [
+    GlobalTablesearchPipe
   ],
-  exports: [   
-    ...antdModules]
+  imports: [
+    CommonModule,
+  ],
+  exports: [
+    ...antdModules,
+    GlobalTablesearchPipe
+  ]
 })
 export class NgAntdModule { }

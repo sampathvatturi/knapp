@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
+
+
+
 interface DataItem {
   status: string;
   created_date: string;
@@ -19,6 +22,7 @@ export class DepartmentListComponent implements OnInit {
   drawerTitle: string = '';
   departmentForm!: FormGroup;
   user_data: any;
+  searchText = '';
 
   sort = {
     compareStatus: (a: DataItem, b: DataItem) =>

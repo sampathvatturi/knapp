@@ -18,6 +18,7 @@ import { USER_ACCOUNTS_COMPONENTS } from './user-accounts';
 import { VENDORS_COMPONENTS } from './vendors';
 import { RegisterComponent } from '../layouts/user';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
     ReactiveFormsModule,
     CommonModule,
     GooglePlaceModule,
+    FormsModule
   ],
 })
 export class ModulesModule {}
