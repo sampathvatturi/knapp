@@ -11,6 +11,7 @@ import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
 import { Options } from 'ngx-google-places-autocomplete/objects/options/options';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
+import { CommonService } from 'src/app/services/common.service';
 import { Md5hashService } from 'src/app/services/md5hash.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -20,7 +21,6 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./user-accounts.component.css'],
 })
 export class UserAccountsComponent implements OnInit {
-  listOfData: any[] = [];
   visible = false;
   submit = true;
   drawerTitle: string = '';
@@ -29,6 +29,9 @@ export class UserAccountsComponent implements OnInit {
   users: any = [];
 
   departments: any[] = [];
+  departmentsName: any[] = [];
+
+
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -36,7 +39,8 @@ export class UserAccountsComponent implements OnInit {
     private api: ApiService,
     private notificationService: NotificationService,
     private md5: Md5hashService,
-    private user: UserService
+    private user: UserService,
+    private getname: CommonService
   ) {}
   formArray = [
     {
@@ -51,12 +55,15 @@ export class UserAccountsComponent implements OnInit {
     this.user_data = sessionStorage.getItem('user_data');
     this.user_data = JSON.parse(this.user_data);
 
-    this.api.getCall('/dept/getDepts').subscribe((list) => {
-      this.departments = list;
+    this.api.getCall('/dept/getDepts').subscribe((res) => {
+      this.departments = res;
+      res.forEach((element:any) => {
+        this.departmentsName[element['department_id']] = element['department_name'];
+      });
     });
 
-    this.user.getAllUsers().subscribe((data: any) => {
-      this.users = data;
+    this.user.getAllUsers().subscribe((res) => {
+      this.users = res;
     });
 
     this.createUserForm = this.fb.group({
@@ -152,8 +159,9 @@ export class UserAccountsComponent implements OnInit {
       )
       .subscribe();
     this.visible = false;
-    this.api.getCall('/user/getUsers').subscribe((list) => {
-      this.listOfData = list;
+    this.api.getCall('/user/getUsers').subscribe((res) => {
+      this.users = [];
+      this.users = res;
     });
   }
   @ViewChild('placesRef')
@@ -172,5 +180,9 @@ export class UserAccountsComponent implements OnInit {
     console.log(address);
     this.createUserForm.value.address = address.formatted_address;
     console.log(this.createUserForm.value.address);
+  }
+
+  getDepartmentName(id:any){
+      return this.departmentsName[id];
   }
 }

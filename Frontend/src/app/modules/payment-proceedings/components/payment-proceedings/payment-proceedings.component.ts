@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
-import { DepartmentService } from 'src/app/services/department.service';
 
 @Component({
   selector: 'app-payment-proceedings',
@@ -16,7 +15,6 @@ export class PaymentProceedingsComponent implements OnInit {
   drawerTitle: string = '';
   departmentform!: FormGroup;
   constructor(
-    private departmentservice: DepartmentService,
     private fb: UntypedFormBuilder,
     private api: ApiService
   ) {}

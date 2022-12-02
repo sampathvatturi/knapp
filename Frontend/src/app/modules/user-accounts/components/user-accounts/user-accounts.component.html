@@ -29,7 +29,7 @@
         <td>{{ data.user_name }}</td>
         <td>{{ data.phone_number }}</td>
         <td>{{ data.email }}</td>
-        <td>{{ data.department_id }}</td>
+        <td>{{ getDepartmentName(data.department_id) }}</td>
         <td>
           <div class="editbtn">
             <a (click)="edit(data)">Edit</a> / <a (click)="edit(data)">view</a>

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
-import { DepartmentService } from 'src/app/services/department.service';
 
 @Component({
   selector: 'app-tender-details',
@@ -22,7 +21,6 @@ export class TenderDetailsComponent implements OnInit {
   searchText = '';
 
   constructor(
-    private departmentservice: DepartmentService,
     private fb: UntypedFormBuilder,
     private api: ApiService
   ) {}
@@ -67,7 +65,7 @@ export class TenderDetailsComponent implements OnInit {
       location: [data.location, [Validators.required]],
       status: [data.status, [Validators.required]],
       department_id: [data.department_id, [Validators.required]],
-      
+
       updated_by: [this.user_data.user_id],
     });
   }
@@ -82,9 +80,9 @@ export class TenderDetailsComponent implements OnInit {
       location: ['', [Validators.required]],
       status: ['open', [Validators.required]],
       department_id: ['', [Validators.required]],
-      
+
       created_by: [this.user_data.user_id],
-      
+
       updated_by: [this.user_data.user_id],
     });
   }
@@ -101,7 +99,7 @@ export class TenderDetailsComponent implements OnInit {
     this.api.getCall('//').subscribe((res) =>{
       this.tender_info = res;
     })
-    
+
   }
   update() {
     this.api.patchCall(`//${this.tenderDetailsForm.value.ticket_id}`, this.tenderDetailsForm.value).subscribe();
@@ -110,6 +108,6 @@ export class TenderDetailsComponent implements OnInit {
     this.api.getCall('//').subscribe((res) =>{
       this.tender_info = res;
     })
-    
+
   }
 }
