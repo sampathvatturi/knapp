@@ -37,10 +37,13 @@ top: 100;
 }
 .cbutton {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-bottom: 10px;
 }
 ::ng-deep .ant-drawer-close {
   position: fixed;
   right: 0px;
+}
+.searchInput{
+  width: 200px;
 }

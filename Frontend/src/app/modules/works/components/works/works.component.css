@@ -1,0 +1,15 @@
+nz-content {
+  background: #fff;
+  padding: 24px;
+  padding-top: 12px;
+  height: auto;
+}
+/* nz-header {
+  background: none;
+  font-size: large;
+  font-weight: 500;
+} */
+nz-breadcrumb {
+  padding-top: 2px;
+  padding-bottom: 5px;
+}

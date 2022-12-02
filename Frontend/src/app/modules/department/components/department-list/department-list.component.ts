@@ -70,11 +70,11 @@ export class DepartmentListComponent implements OnInit {
       department_name: [data.department_name, [Validators.required]],
       ranking: [data.ranking, [Validators.required]],
       status: [data.status, [Validators.required]],
-      created_date: [data.created_date, [Validators.required]],
+      // created_date: [data.created_date, [Validators.required]],
       created_by: [data.created_by, [Validators.required]],
-      updated_date: [Date.now(), [Validators.required]],
+      // updated_date: [Date.now(), [Validators.required]],
       updated_by: [this.user_data.user_id, [Validators.required]],
-      department_code: [data.department_code, [Validators.required]],
+      // department_code: [data.department_code, [Validators.required]],
     });
   }
   open(): void {
@@ -86,11 +86,11 @@ export class DepartmentListComponent implements OnInit {
       department_name: ['', [Validators.required]],
       ranking: ['', [Validators.required]],
       status: ['active', [Validators.required]],
-      created_date: [''],
+      // created_date: [''],
       created_by: [this.user_data.user_id],
-      updated_date: [''],
+      // updated_date: [''],
       updated_by: [this.user_data.user_id],
-      department_code: [''],
+      // department_code: [''],
     });
   }
 
@@ -118,10 +118,13 @@ export class DepartmentListComponent implements OnInit {
         `/dept/updateDept/${this.user_data.user_id}`,
         this.departmentForm.value
       )
-      .subscribe();
+      .subscribe((res)=>{
+        this.notification.createNotification(res.status,res.message)
+        this.api.getCall('/dept/getDepts').subscribe((list) => {
+          this.listOfData = list;
+        });
+      });
     this.visible = false;
-    this.api.getCall('/dept/getDepts').subscribe((list) => {
-      this.listOfData = list;
-    });
+
   }
 }

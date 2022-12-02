@@ -49,6 +49,11 @@
       "title": "Vendors",
       "route": "modules/vendors",
       "icon": "vendors:antd"
+    },
+    {
+      "title": "Works",
+      "route": "modules/works",
+      "icon": "works:antd"
     }
   ]
 }
