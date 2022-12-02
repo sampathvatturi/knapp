@@ -6,9 +6,16 @@
   <nz-breadcrumb-item>Inventory Items</nz-breadcrumb-item>
 </nz-breadcrumb>
 <nz-content>
-  <button nz-button nzType="primary" (click)="open()" class="mb-1">
-    Create
-  </button>
+  <div class="cbutton" >
+    <nz-input-group [nzSuffix]="suffixIconSearch" class="searchInput">
+      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText"/>
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <span nz-icon nzType="search"></span>
+    </ng-template>
+    <button nz-button nzType="default" (click)="open()">Create</button>
+  </div>
+
   <nz-table
   #basicTable
   [nzData]="inventory_info"
@@ -18,29 +25,24 @@
   >
     <thead>
       <tr>
-        <th>Item ID</th>
+        <th>S.No.</th>
         <th>Item Name</th>
         <th>Quantity</th>
         <th>Price</th>
         <th>Tax</th>
         <th>Created Date</th>
-        <th>Created By</th>
-        <th>Update Date</th>
-        <th>Update By</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of basicTable.data">
-        <td>{{ data.item_id }}</td>
+      <tr *ngFor="let data of basicTable.data | globalTablesearch: searchText, let i=index">
+        <td>{{ i+1 }}</td>
         <td>{{ data.item_name }}</td>
         <td>{{ data.quantity }}</td>
         <td>{{ data.price }}</td>
         <td>{{ data.tax }}</td>
-        <td>{{ data.created_date }}</td>
-        <td>{{ data.created_by }}</td>
-        <td>{{ data.updated_date }}</td>
-        <td>{{ data.updated_by }}</td>
+        <td>{{ data.created_date  | date : "dd-MM-YYYY hh:mm aaa"}}</td>
+        
         <td>
           <div class="editbtn">
             <a (click)="edit(data)">Edit</a> / <a (click)="edit(data)">view</a>
@@ -65,6 +67,7 @@
         <nz-form-label nz-col nzSpan="5">Item ID</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
+          [disabled]="true"
             nz-input
             formControlName="item_id"
             type="number"

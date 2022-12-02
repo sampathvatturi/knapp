@@ -10,7 +10,7 @@ import { DepartmentService } from 'src/app/services/department.service';
 })
 export class TenderDetailsComponent implements OnInit {
 
-  listOfData: any[] = [];
+  
   visible = false;
   submit = true;
   drawerTitle: string = '';
@@ -19,6 +19,7 @@ export class TenderDetailsComponent implements OnInit {
   departments:any = [];
   vendor_array:any = [];
   user_data:any = [];
+  searchText = '';
 
   constructor(
     private departmentservice: DepartmentService,
@@ -44,12 +45,12 @@ export class TenderDetailsComponent implements OnInit {
       this.departments = list;
     });
 
-    this.api.getCall('').subscribe((items) =>{
-      this.tender_info = items;
+    this.api.getCall('').subscribe((res) =>{
+      this.tender_info = res;
     })
 
-    this.api.getCall('/vendor/getVendors').subscribe((items) => {
-      this.vendor_array = items;
+    this.api.getCall('/vendor/getVendors').subscribe((res) => {
+      this.vendor_array = res;
     })
 
     this.user_data = sessionStorage.getItem(this.user_data);
@@ -97,8 +98,8 @@ export class TenderDetailsComponent implements OnInit {
     this.api.postCall('//', this.tenderDetailsForm.value).subscribe();
     this.visible = false;
 
-    this.api.getCall('//').subscribe((items) =>{
-      this.tender_info = items;
+    this.api.getCall('//').subscribe((res) =>{
+      this.tender_info = res;
     })
     
   }
@@ -106,8 +107,8 @@ export class TenderDetailsComponent implements OnInit {
     this.api.patchCall(`//${this.tenderDetailsForm.value.ticket_id}`, this.tenderDetailsForm.value).subscribe();
     this.visible = false;
 
-    this.api.getCall('//').subscribe((items) =>{
-      this.tender_info = items;
+    this.api.getCall('//').subscribe((res) =>{
+      this.tender_info = res;
     })
     
   }

@@ -5,10 +5,18 @@
   </nz-breadcrumb-item>
   <nz-breadcrumb-item>Tender Details</nz-breadcrumb-item>
 </nz-breadcrumb>
+
 <nz-content>
-  <button nz-button nzType="primary" (click)="open()" class="mb-1">
-    Create
-  </button>
+  <div class="cbutton" >
+    <nz-input-group [nzSuffix]="suffixIconSearch" class="searchInput">
+      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText"/>
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <span nz-icon nzType="search"></span>
+    </ng-template>
+    <button nz-button nzType="default" (click)="open()">Create</button>
+  </div>
+
   <nz-table
     #basicTable
     [nzData]="tender_info"
@@ -18,29 +26,24 @@
   >
     <thead>
       <tr>
-        <th>Sl No</th>
+        <th>S.No.</th>
         <th>Ticket Description</th>
         <th>Vendor</th>
         <th>Location</th>
         <th>Status</th>
         <th>Department</th>
         <th>Created Date</th>
-        <th>Created By</th>
-        <th>Updated Date</th>
-        <th>Updated By</th>
+        
         
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of basicTable.data">
-        <td>{{ data.department_id }}</td>
+      <tr *ngFor="let data of basicTable.data | globalTablesearch: searchText, let i=index">
+        <td>{{ i+1 }}</td>
         <td>{{ data.department_name }}</td>
         <td>{{ data.ranking }}</td>
         <td>{{ data.status }}</td>
         <td>{{ data.created_date }}</td>
-        <td>{{ data.created_by }}</td>
-        <td>{{ data.updated_date }}</td>
-        <td>{{ data.updated_by }}</td>
         <td>{{ data.department_code }}</td>
         <td>
           <div class="editbtn">

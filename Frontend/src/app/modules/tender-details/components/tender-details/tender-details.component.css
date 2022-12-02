@@ -15,3 +15,11 @@ nz-breadcrumb {
   padding-top: 2px;
   padding-bottom: 5px;
 }
+.cbutton {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.searchInput{
+  width: 200px;
+}
