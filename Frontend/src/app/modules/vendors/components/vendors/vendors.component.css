@@ -1,7 +1,8 @@
 nz-content {
   background: #fff;
   padding: 24px;
-  min-height: 100vh;
+  padding-top: 12px;
+  height: auto;
 }
 nz-header {
   background: none;
@@ -14,4 +15,25 @@ nz-form-label {
 nz-breadcrumb {
   padding-top: 2px;
   padding-bottom: 5px;
+}
+.editbtn {
+  /* border: 1px solid gray; */
+  width: fit-content;
+}
+
+.editbtn a:hover {
+  color: #1890ff;
+  text-decoration: underline;
+}
+.cbutton {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+::ng-deep .ant-drawer-close {
+  position: fixed;
+  right: 0px;
+}
+.searchInput{
+  width: 200px;
 }

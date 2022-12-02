@@ -7,9 +7,15 @@
 </nz-breadcrumb>
 
 <nz-content>
-  <button nz-button nzType="primary" (click)="open()" class="mb-1">
-    Create
-  </button>
+  <div class="cbutton" >
+    <nz-input-group [nzSuffix]="suffixIconSearch" class="searchInput">
+      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText"/>
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <span nz-icon nzType="search"></span>
+    </ng-template>
+    <button nz-button nzType="default" (click)="open()">Create</button>
+  </div>
   <nz-table
   #basicTable
   [nzData]="vendor_info"
@@ -19,27 +25,23 @@
   >
     <thead>
       <tr>
-        <th>Vendor ID</th>
-        <th>Vendor Name</th>
+        <th>S.No.</th>
+        <th>Vendor</th>
         <th>Phone Number</th>
         <th>Address</th>
+        <th>Status</th>
         <th>Created Date</th>
-        <th>Created By</th>
-        <th>Update Date</th>
-        <th>Update By</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of basicTable.data">
-        <td>{{ data.vendor_id }}</td>
+      <tr *ngFor="let data of basicTable.data | globalTablesearch: searchText, let i=index">
+        <td>{{ i+1 }}</td>
         <td>{{ data.vendor_name }}</td>
         <td>{{ data.phone_number }}</td>
         <td>{{ data.address }}</td>
-        <td>{{ data.created_date }}</td>
-        <td>{{ data.created_by }}</td>
-        <td>{{ data.updated_date }}</td>
-        <td>{{ data.updated_by }}</td>
+        <td>{{ data.status }}</td>
+        <td>{{ data.created_date | date : "dd-MM-YYYY hh:mm aaa"}}</td>
         <td>
           <div class="editbtn">
             <a (click)="edit(data)">Edit</a> / <a (click)="edit(data)">view</a>
@@ -59,7 +61,7 @@
   (nzOnClose)="close()"
 >
   <form nz-form *nzDrawerContent [formGroup]="vendorForm">
-    
+
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Vendor Name</nz-form-label>
@@ -111,7 +113,7 @@
         >
           <nz-option nzValue="active" nzLabel="Active"></nz-option>
           <nz-option nzValue="inactive" nzLabel="Inactive"></nz-option>
-          
+
         </nz-select>
       </nz-form-item>
     </div>

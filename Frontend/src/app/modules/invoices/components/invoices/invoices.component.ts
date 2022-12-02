@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
-
+import { NotificationService } from './../../../../services/auth/notification.service';
 
 @Component({
   selector: 'app-invoices',
   templateUrl: './invoices.component.html',
-  styleUrls: ['./invoices.component.css']
+  styleUrls: ['./invoices.component.css'],
 })
 export class InvoicesComponent implements OnInit {
   listOfData: any[] = [];
@@ -14,70 +14,66 @@ export class InvoicesComponent implements OnInit {
   submit = true;
   drawerTitle: string = '';
   invoiceForm!: FormGroup;
-  invoice_info:any = [];
-  vendor_array:any = [];
-  depts:any = [];
-  user_data:any = [];
+  invoice_info: any = [];
+  vendor_array: any = [];
+  depts: any = [];
+  user_data: any = [];
+  searchText = '';
 
   constructor(
     private fb: UntypedFormBuilder,
-    private api: ApiService
+    private api: ApiService,
+    private notification: NotificationService
   ) {}
 
   ngOnInit(): void {
     this.invoiceForm = this.fb.group({
-      invoice_details_id :[''],
-      vendor_id:[''],
-      invoice_item:[''],
-      quantity:[''],
-      amount:[''],
-      trnsx_type:[''],
-      tax:[''],
-      total:[''],
-      created_date:[''],
-      created_by:[''],
-      updated_date:[''],
-      updated_by:[''],
-      department_id:['']
+      invoice_details_id: [''],
+      vendor_id: [''],
+      invoice_item: [''],
+      quantity: [''],
+      amount: [''],
+      trnsx_type: [''],
+      tax: [''],
+      total: [''],
+      created_date: [''],
+      created_by: [''],
+      updated_date: [''],
+      updated_by: [''],
+      department_id: [''],
     });
 
-    this.api.getCall('/dept/getDepts').subscribe((list) => {
-      this.depts = list;
+    this.api.getCall('/dept/getDepts').subscribe((res) => {
+      this.depts = res;
     });
 
-    
+    this.api.getCall('/invoicedetails/getInvoicelogs').subscribe((res) => {
+      this.invoice_info = res;
+    });
 
-    this.api.getCall('/invoicedetails/getInvoicelogs').subscribe((items) => {
-      this.invoice_info = items
-      console.log(this.invoice_info);
-    })
-
-    this.api.getCall('/vendor/getVendors').subscribe((items) => {
-      this.vendor_array = items;
-    })
+    this.api.getCall('/vendor/getVendors').subscribe((res) => {
+      this.vendor_array = res;
+    });
 
     this.user_data = sessionStorage.getItem('user_data');
     this.user_data = JSON.parse(this.user_data);
-
   }
-  
 
   edit(data: any) {
     this.submit = false;
     this.drawerTitle = 'Edit';
     this.visible = true;
     this.invoiceForm = this.fb.group({
-      invoice_details_id: [{value:data.invoice_id}, [Validators.required]],
-      vendor_id: [{value:data.vendor_id}, [Validators.required]],
-      invoice_item: [{value:data.invoice_item}, [Validators.required]],
-      quantity: [{value:data.quantity}, [Validators.required]],
+      invoice_details_id: [data.invoice_details_id, [Validators.required]],
+      vendor_id: [data.vendor_id, [Validators.required]],
+      invoice_item: [data.invoice_item, [Validators.required]],
+      quantity: [data.quantity, [Validators.required]],
       amount: [data.amount, [Validators.required]],
-      trnsx_type: [{value:data.trnsx_type}, [Validators.required]],
+      trnsx_type: [data.trnsx_type, [Validators.required]],
       tax: [data.tax, [Validators.required]],
       total: [data.total, [Validators.required]],
       updated_by: [data.updated_by, [Validators.required]],
-      department_id: [data.updated_by, [Validators.required]],
-
+      department_id: [data.department_id, [Validators.required]],
     });
   }
   open(): void {
@@ -92,13 +88,10 @@ export class InvoicesComponent implements OnInit {
       amount: [''],
       trnsx_type: [''],
       tax: [''],
-      total: [''], 
-      
+      total: [''],
       created_by: [this.user_data.user_id],
-      
       updated_by: [this.user_data.user_id],
       department_id: [''],
-      
     });
   }
 
@@ -107,25 +100,45 @@ export class InvoicesComponent implements OnInit {
   }
   onSubmit() {
     console.log(this.invoiceForm);
-    this.api.postCall('/invoicedetails/createInvoicelog', this.invoiceForm.value).subscribe();
-    this.visible = false;
-    // this.api.getCall('/dept').subscribe((list) => {
-    //   this.listOfData = list;
-    // });
-    this.api.getCall('invoicedetails/getInvoicelogs').subscribe((items) => {
-      this.invoice_info = items
-      console.log(this.invoice_info);
-    })
-
+    this.api
+      .postCall('/invoicedetails/createInvoicelog', this.invoiceForm.value)
+      .subscribe((res) => {
+        this.notification.createNotification(res.status, res.message);
+        if (res.status === 'success') {
+          this.visible = false;
+          this.api
+            .getCall('/invoicedetails/getInvoicelogs')
+            .subscribe((items) => {
+              this.invoice_info = items;
+            });
+        }
+      });
   }
   update() {
-    this.api.patchCall(`invoicedetails/updateInvoicelog/${this.invoiceForm.value.invoice_details_id}` , this.invoiceForm.value).subscribe();
-    this.visible = false;
-
-    this.api.getCall('/invoicedetails/getInvoicelogs').subscribe((items) => {
-      this.invoice_info = items
-      console.log(this.invoice_info);
-    })
-    
+    this.api
+      .patchCall(
+        `/invoicedetails/updateInvoicelog/${this.invoiceForm.value.invoice_details_id}`,
+        this.invoiceForm.value
+      )
+      .subscribe((res) => {
+        this.notification.createNotification(res.status, res.message);
+        if (res.status === 'success') {
+          this.visible = false;
+          this.api
+            .getCall('/invoicedetails/getInvoicelogs')
+            .subscribe((items) => {
+              this.invoice_info = items;
+              console.log(this.invoice_info);
+            });
+        }
+      });
+  }
+  vendorName(id: any) {
+    this.vendor_array.map((elem: any) => {
+      if (elem.vendor_id === id) {
+        console.log(elem.vendor_name);
+        return elem.vendor_name;
+      }
+    });
   }
 }

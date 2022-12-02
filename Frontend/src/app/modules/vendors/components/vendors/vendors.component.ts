@@ -17,6 +17,7 @@ export class VendorsComponent implements OnInit {
   vendor_info:any = [];
   vendor_array:any = [];
   user_data:any = [];
+  searchText = '';
   constructor(private fb: UntypedFormBuilder, private api: ApiService,private notification:NotificationService) {}
 
   ngOnInit(): void {
@@ -44,7 +45,7 @@ export class VendorsComponent implements OnInit {
     this.user_data = sessionStorage.getItem('user_data')
     this.user_data = JSON.parse(this.user_data)
 
-    
+
 
 
   }
@@ -75,9 +76,9 @@ export class VendorsComponent implements OnInit {
       phone_number:[''],
       address:[''],
       status:[''],
-      
+
       created_by: [this.user_data.user_id],
-      
+
       updated_by: [this.user_data.user_id],
     });
   }
@@ -89,7 +90,7 @@ export class VendorsComponent implements OnInit {
     console.log(this.vendorForm);
     this.api.postCall('/vendor/createVendor', this.vendorForm.value).subscribe();
     this.visible = false;
-    
+
     this.api.getCall('/vendor/getVendors').subscribe((items) =>{
       this.vendor_info = items;
       console.log(this.vendor_info);

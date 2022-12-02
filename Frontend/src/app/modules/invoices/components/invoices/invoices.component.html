@@ -7,9 +7,15 @@
 </nz-breadcrumb>
 
 <nz-content>
-  <button nz-button nzType="primary" (click)="open()" class="mb-1">
-    Create
-  </button>
+  <div class="cbutton" >
+    <nz-input-group [nzSuffix]="suffixIconSearch" class="searchInput">
+      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText"/>
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <span nz-icon nzType="search"></span>
+    </ng-template>
+    <button nz-button nzType="default" (click)="open()">Create</button>
+  </div>
   <nz-table
   #basicTable
   [nzData]="invoice_info"
@@ -19,9 +25,9 @@
   >
     <thead>
       <tr>
-        <th>Sl No</th>
-        <th>Vendor Id</th>
-        <th>Invoice Items</th>
+        <th>S.No.</th>
+        <th>Description</th>
+        <th>Vendor</th>
         <th>Quantity</th>
         <th>Amount</th>
         <th>Transaction Type</th>
@@ -29,28 +35,21 @@
         <th>Total</th>
         <th>Department</th>
         <th>Created Date</th>
-        <th>Created By</th>
-        <th>Updated Date</th>
-        <th>Updated By</th>
-        
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of basicTable.data">
-        <td>{{ data.invoice_details_id }}</td>
-        <td>{{ data.vendor_id }}</td>
+      <tr *ngFor="let data of basicTable.data | globalTablesearch: searchText, let i=index">
+        <td>{{ i+1 }}</td>
         <td>{{ data.invoice_item }}</td>
+        <td>{{ vendorName(data.vendor_id) }}</td>
         <td>{{ data.quantity }}</td>
         <td>{{ data.amount}}</td>
         <td>{{ data.trnsx_type}}</td>
         <td>{{ data.tax}}</td>
         <td>{{ data.total}}</td>
         <td>{{ data.department_id}}</td>
-        <td>{{ data.created_date}}</td>
-        <td>{{ data.created_by}}</td>
-        <td>{{ data.updated_date}}</td>
-        <td>{{ data.updated_by}}</td>
-        
+        <td>{{ data.created_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
         <td>
           <div class="editbtn">
             <a (click)="edit(data)">Edit</a> / <a (click)="edit(data)">view</a>
@@ -81,15 +80,15 @@
           nzPlaceHolder="Vendor"
           nzShowSearch
         >
-        <nz-option *ngFor="let v of vendor_array" nzValue={{v.vendor_id}} nzLabel={{v.vendor_id}}></nz-option>
-          
+        <nz-option *ngFor="let v of vendor_array" nzValue={{v.vendor_id}} nzLabel={{v.vendor_name}}></nz-option>
+
         </nz-select>
       </nz-form-item>
     </div>
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Items</nz-form-label>
+        <nz-form-label nz-col nzSpan="5">Description</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
@@ -179,11 +178,11 @@
           nzShowSearch
         >
         <nz-option *ngFor="let d of depts" nzValue={{d.department_id}} nzLabel={{d.department_name}}></nz-option>
-          
+
         </nz-select>
       </nz-form-item>
     </div>
-    
+
   </form>
 
   <ng-template #footerTpl>
