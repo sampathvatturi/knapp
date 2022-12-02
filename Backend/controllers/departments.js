@@ -43,7 +43,6 @@ exports.updateDepartment = async (req, res) => {
     "update departments set ? where department_id = ? ",
     [
       {
-        department_id: data.department_id,
         department_name: data.department_name,
         ranking: data.ranking,
         status: data.status,
