@@ -14,6 +14,11 @@ export class InvoicesComponent implements OnInit {
   submit = true;
   drawerTitle: string = '';
   invoiceForm!: FormGroup;
+  invoice_info:any = [];
+  vendor_array:any = [];
+  depts:any = [];
+  user_data:any = [];
+
   constructor(
     private fb: UntypedFormBuilder,
     private api: ApiService
@@ -21,51 +26,58 @@ export class InvoicesComponent implements OnInit {
 
   ngOnInit(): void {
     this.invoiceForm = this.fb.group({
-      invoice_id: [{value:'',disabled:true}],
-      invoice_title: [''],
-      invoice_description: [''],
-      attachments: [''],
-      amount: [''],
-      tax_percentage: [''],
-      grand_total: [''],
-      created_date: [''],
-      created_by: [''],
-      updated_date: [''],
-      updated_by: [''],
-      invoice_details_id: [''],
+      invoice_details_id :[''],
+      vendor_id:[''],
+      invoice_item:[''],
+      quantity:[''],
+      amount:[''],
+      trnsx_type:[''],
+      tax:[''],
+      total:[''],
+      created_date:[''],
+      created_by:[''],
+      updated_date:[''],
+      updated_by:[''],
+      department_id:['']
+    });
 
-    });
     this.api.getCall('/dept/getDepts').subscribe((list) => {
-      this.listOfData = list;
-      console.log(this.listOfData);
+      this.depts = list;
     });
+
+    
+
+    this.api.getCall('/invoicedetails/getInvoicelogs').subscribe((items) => {
+      this.invoice_info = items
+      console.log(this.invoice_info);
+    })
+
+    this.api.getCall('/vendor/getVendors').subscribe((items) => {
+      this.vendor_array = items;
+    })
+
+    this.user_data = sessionStorage.getItem('user_data');
+    this.user_data = JSON.parse(this.user_data);
+
   }
-  formArray = [{label:'Invoice Id',control:"invoice_id",holder:"Invoice Id",type:'number'},
-               {label:'Invoice Title',control:"invoice_title",holder:"Invoice Title",type:'text'},
-               {label:'Invoice Desp',control:"invoice_description",holder:"Invoice Description",type:'text'},
-               {label:'Attachments',control:"attachments",holder:"Attachments",type:'text'},
-               {label:'Amount',control:"amount",holder:"Amount",type:'number'},
-               {label:'Tax Percentage',control:"tax_percentage",holder:"Tax Percentage",type:'number'},
-               {label:'Grand Total',control:"grand_total",holder:"Grand Total",type:'number'},
-               {label:'Invoice Details Id',control:"invoice_details_id",holder:"Invoice Details Id",type:'number'}]
+  
 
   edit(data: any) {
     this.submit = false;
     this.drawerTitle = 'Edit';
     this.visible = true;
     this.invoiceForm = this.fb.group({
-      invoice_id: [{value:data.invoice_id,disabled:true}, [Validators.required]],
-      invoice_title: [data.invoice_title, [Validators.required]],
-      invoice_description: [data.invoice_description, [Validators.required]],
-      attachments: [data.attachments, [Validators.required]],
+      invoice_details_id: [{value:data.invoice_id}, [Validators.required]],
+      vendor_id: [{value:data.vendor_id}, [Validators.required]],
+      invoice_item: [{value:data.invoice_item}, [Validators.required]],
+      quantity: [{value:data.quantity}, [Validators.required]],
       amount: [data.amount, [Validators.required]],
-      tax_percentage: [data.tax_percentage, [Validators.required]],
-      grand_total: [data.grand_total, [Validators.required]],
-      created_date: [data.created_date, [Validators.required]],
-      created_by: [data.created_by, [Validators.required]],
-      updated_date: [data.updated_date, [Validators.required]],
+      trnsx_type: [{value:data.trnsx_type}, [Validators.required]],
+      tax: [data.tax, [Validators.required]],
+      total: [data.total, [Validators.required]],
       updated_by: [data.updated_by, [Validators.required]],
-      invoice_details_id: [data.invoice_details_id, [Validators.required]],
+      department_id: [data.updated_by, [Validators.required]],
+
     });
   }
   open(): void {
@@ -73,18 +85,20 @@ export class InvoicesComponent implements OnInit {
     this.drawerTitle = 'New';
     this.visible = true;
     this.invoiceForm = this.fb.group({
-      invoice_id: [{value:'',disabled:true}],
-      invoice_title: ['', [Validators.required]],
-      invoice_description: ['', [Validators.required]],
-      attachments: ['', [Validators.required]],
-      amount: [''],
-      tax_percentage: [''],
-      grand_total: [''],
-      created_date: [''],
-      created_by: [''],
-      updated_date: [''],
-      updated_by: [''],
       invoice_details_id: [''],
+      vendor_id: [''],
+      invoice_item: [''],
+      quantity: [''],
+      amount: [''],
+      trnsx_type: [''],
+      tax: [''],
+      total: [''], 
+      
+      created_by: [this.user_data.user_id],
+      
+      updated_by: [this.user_data.user_id],
+      department_id: [''],
+      
     });
   }
 
@@ -93,17 +107,25 @@ export class InvoicesComponent implements OnInit {
   }
   onSubmit() {
     console.log(this.invoiceForm);
-    this.api.postCall('/dept', this.invoiceForm.value).subscribe();
+    this.api.postCall('/invoicedetails/createInvoicelog', this.invoiceForm.value).subscribe();
     this.visible = false;
-    this.api.getCall('/dept').subscribe((list) => {
-      this.listOfData = list;
-    });
+    // this.api.getCall('/dept').subscribe((list) => {
+    //   this.listOfData = list;
+    // });
+    this.api.getCall('invoicedetails/getInvoicelogs').subscribe((items) => {
+      this.invoice_info = items
+      console.log(this.invoice_info);
+    })
+
   }
   update() {
-    this.api.patchCall('/dept', this.invoiceForm.value).subscribe();
+    this.api.patchCall(`invoicedetails/updateInvoicelog/${this.invoiceForm.value.invoice_details_id}` , this.invoiceForm.value).subscribe();
     this.visible = false;
-    this.api.getCall('/dept').subscribe((list) => {
-      this.listOfData = list;
-    });
+
+    this.api.getCall('/invoicedetails/getInvoicelogs').subscribe((items) => {
+      this.invoice_info = items
+      console.log(this.invoice_info);
+    })
+    
   }
 }

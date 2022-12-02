@@ -11,3 +11,7 @@ nz-header {
 nz-form-label {
   text-align: left;
 }
+nz-breadcrumb {
+  padding-top: 2px;
+  padding-bottom: 5px;
+}

@@ -14,7 +14,12 @@ export class TenderDetailsComponent implements OnInit {
   visible = false;
   submit = true;
   drawerTitle: string = '';
-  departmentform!: FormGroup;
+  tenderDetailsForm!: FormGroup;
+  tender_info:any = [];
+  departments:any = [];
+  vendor_array:any = [];
+  user_data:any = [];
+
   constructor(
     private departmentservice: DepartmentService,
     private fb: UntypedFormBuilder,
@@ -22,71 +27,88 @@ export class TenderDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.departmentform = this.fb.group({
-      department_id: [''],
-      department_name: [''],
-      ranking: [''],
+    this.tenderDetailsForm = this.fb.group({
+      ticket_id: [''],
+      ticket_description: [''],
+      vendor_id: [''],
+      location: [''],
       status: [''],
+      department_id: [''],
       created_date: [''],
       created_by: [''],
       updated_date: [''],
-      updated_by: [''],
-      department_code: [''],
+      updated_by: ['']
     });
+
     this.api.getCall('/dept/getDepts').subscribe((list) => {
-      this.listOfData = list;
-      console.log(this.listOfData);
+      this.departments = list;
     });
+
+    this.api.getCall('').subscribe((items) =>{
+      this.tender_info = items;
+    })
+
+    this.api.getCall('/vendor/getVendors').subscribe((items) => {
+      this.vendor_array = items;
+    })
+
+    this.user_data = sessionStorage.getItem(this.user_data);
+    this.user_data = JSON.parse(this.user_data)
   }
   edit(data: any) {
     this.submit = false;
     this.drawerTitle = 'Edit';
     this.visible = true;
-    this.departmentform = this.fb.group({
-      department_id: [data.department_id, [Validators.required]],
-      department_name: [data.department_name, [Validators.required]],
-      ranking: [data.ranking, [Validators.required]],
+    this.tenderDetailsForm = this.fb.group({
+      ticket_id: [data.ticket_id, [Validators.required]],
+      ticket_description: [data.ticket_description, [Validators.required]],
+      vendor_id: [data.vendor_id, [Validators.required]],
+      location: [data.location, [Validators.required]],
       status: [data.status, [Validators.required]],
-      created_date: [data.created_date, [Validators.required]],
-      created_by: [data.created_by, [Validators.required]],
-      updated_date: [data.updated_date, [Validators.required]],
-      updated_by: [data.updated_by, [Validators.required]],
-      department_code: [data.department_code, [Validators.required]],
+      department_id: [data.department_id, [Validators.required]],
+      
+      updated_by: [this.user_data.user_id],
     });
   }
   open(): void {
     this.submit = true;
     this.drawerTitle = 'New';
     this.visible = true;
-    this.departmentform = this.fb.group({
-      department_id: [''],
-      department_name: ['', [Validators.required]],
-      ranking: ['', [Validators.required]],
-      status: ['', [Validators.required]],
-      created_date: [''],
-      created_by: [''],
-      updated_date: [''],
-      updated_by: [''],
-      department_code: [''],
+    this.tenderDetailsForm = this.fb.group({
+      ticket_id: [''],
+      ticket_description: ['', [Validators.required]],
+      vendor_id: ['', [Validators.required]],
+      location: ['', [Validators.required]],
+      status: ['open', [Validators.required]],
+      department_id: ['', [Validators.required]],
+      
+      created_by: [this.user_data.user_id],
+      
+      updated_by: [this.user_data.user_id],
     });
   }
 
   close(): void {
     this.visible = false;
   }
+
   onSubmit() {
-    console.log(this.departmentform);
-    this.api.postCall('/dept', this.departmentform.value).subscribe();
+    console.log(this.tenderDetailsForm);
+    this.api.postCall('//', this.tenderDetailsForm.value).subscribe();
     this.visible = false;
-    this.api.getCall('/dept').subscribe((list) => {
-      this.listOfData = list;
-    });
+
+    this.api.getCall('//').subscribe((items) =>{
+      this.tender_info = items;
+    })
+    
   }
   update() {
-    this.api.patchCall('/dept', this.departmentform.value).subscribe();
+    this.api.patchCall(`//${this.tenderDetailsForm.value.ticket_id}`, this.tenderDetailsForm.value).subscribe();
     this.visible = false;
-    this.api.getCall('/dept').subscribe((list) => {
-      this.listOfData = list;
-    });
+
+    this.api.getCall('//').subscribe((items) =>{
+      this.tender_info = items;
+    })
+    
   }
 }

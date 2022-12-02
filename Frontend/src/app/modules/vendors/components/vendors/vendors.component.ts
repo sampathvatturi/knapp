@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
+import { NotificationService } from 'src/app/services/auth/notification.service';
 
 @Component({
   selector: 'app-vendors',
@@ -13,36 +14,55 @@ export class VendorsComponent implements OnInit {
   submit = true;
   drawerTitle: string = '';
   vendorForm!: FormGroup;
-  constructor(private fb: UntypedFormBuilder, private api: ApiService) {}
+  vendor_info:any = [];
+  vendor_array:any = [];
+  user_data:any = [];
+  constructor(private fb: UntypedFormBuilder, private api: ApiService,private notification:NotificationService) {}
 
   ngOnInit(): void {
     this.vendorForm = this.fb.group({
-      vendor_id: [{ value: '', disabled: true }],
+      vendor_id: [{ value: ''}],
       vendor_name: [''],
+      phone_number:[''],
+      address:[''],
+      status:[''],
       created_date: [''],
       created_by: [''],
       updated_date: [''],
       updated_by: [''],
     });
-    this.api.getCall('/dept/getDepts').subscribe((list) => {
-      this.listOfData = list;
-      console.log(this.listOfData);
-    });
+    // this.api.getCall('/dept/getDepts').subscribe((list) => {
+    //   this.listOfData = list;
+    //   console.log(this.listOfData);
+    // });
+
+    this.api.getCall('/vendor/getVendors').subscribe((items) =>{
+      this.vendor_info = items;
+      console.log(this.vendor_info);
+    })
+
+    this.user_data = sessionStorage.getItem('user_data')
+    this.user_data = JSON.parse(this.user_data)
+
+    
+
+
   }
+
   edit(data: any) {
     this.submit = false;
     this.drawerTitle = 'Edit';
     this.visible = true;
     this.vendorForm = this.fb.group({
       vendor_id: [
-        { value: data.vendor_id, disabled: true },
+        data.vendor_id,
         [Validators.required],
       ],
       vendor_name: [data.vendor_name, [Validators.required]],
-      created_date: [data.created_date, [Validators.required]],
-      created_by: [data.created_by, [Validators.required]],
-      updated_date: [data.updated_date, [Validators.required]],
-      updated_by: [data.updated_by, [Validators.required]],
+      address: [data.address, [Validators.required]],
+      status: [data.status, [Validators.required]],
+      phone_number:[data.phone_number,[Validators.required]],
+      updated_by: [this.user_data.user_id],
     });
   }
   open(): void {
@@ -50,12 +70,15 @@ export class VendorsComponent implements OnInit {
     this.drawerTitle = 'New';
     this.visible = true;
     this.vendorForm = this.fb.group({
-      vendor_id: [{ value: '', disabled: true }],
+      vendor_id: [''],
       vendor_name: ['', [Validators.required]],
-      created_date: [''],
-      created_by: [''],
-      updated_date: [''],
-      updated_by: [''],
+      phone_number:[''],
+      address:[''],
+      status:[''],
+      
+      created_by: [this.user_data.user_id],
+      
+      updated_by: [this.user_data.user_id],
     });
   }
 
@@ -64,17 +87,25 @@ export class VendorsComponent implements OnInit {
   }
   onSubmit() {
     console.log(this.vendorForm);
-    this.api.postCall('/dept', this.vendorForm.value).subscribe();
+    this.api.postCall('/vendor/createVendor', this.vendorForm.value).subscribe();
     this.visible = false;
-    this.api.getCall('/dept').subscribe((list) => {
-      this.listOfData = list;
-    });
+    
+    this.api.getCall('/vendor/getVendors').subscribe((items) =>{
+      this.vendor_info = items;
+      console.log(this.vendor_info);
+    })
   }
   update() {
-    this.api.patchCall('/dept', this.vendorForm.value).subscribe();
-    this.visible = false;
-    this.api.getCall('/dept').subscribe((list) => {
-      this.listOfData = list;
+    console.log(this.vendorForm.value.vendor_id)
+    this.api.patchCall('/vendor/updateVendor/'+this.vendorForm.value.vendor_id,this.vendorForm.value).subscribe((res) =>{
+      this.notification.createNotification(res.status,res.message);
+
+      this.api.getCall('/vendor/getVendors').subscribe((items) =>{
+        this.vendor_info = items;
+        console.log(this.vendor_info);
+      })
+
     });
+    this.visible = false;
   }
 }

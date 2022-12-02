@@ -1,11 +1,17 @@
-<nz-header> Inventory Items</nz-header>
+<nz-breadcrumb>
+  <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+  <nz-breadcrumb-item>
+    <a routerLink="modules/dashboard">Dashboard</a>
+  </nz-breadcrumb-item>
+  <nz-breadcrumb-item>Inventory Items</nz-breadcrumb-item>
+</nz-breadcrumb>
 <nz-content>
   <button nz-button nzType="primary" (click)="open()" class="mb-1">
     Create
   </button>
   <nz-table
-    #basicTable
-    [nzData]="listOfData"
+  #basicTable
+  [nzData]="inventory_info"
     nzShowPagination
     nzShowSizeChanger
     [nzPageSizeOptions]="[5, 10, 15, 20]"
@@ -36,7 +42,9 @@
         <td>{{ data.updated_date }}</td>
         <td>{{ data.updated_by }}</td>
         <td>
-          <button nz-button nzType="primary" (click)="edit(data)">Edit</button>
+          <div class="editbtn">
+            <a (click)="edit(data)">Edit</a> / <a (click)="edit(data)">view</a>
+          </div>
         </td>
       </tr>
     </tbody>

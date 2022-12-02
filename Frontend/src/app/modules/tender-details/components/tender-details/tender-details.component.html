@@ -1,27 +1,34 @@
-<nz-header> Tender Details</nz-header>
+<nz-breadcrumb>
+  <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+  <nz-breadcrumb-item>
+    <a routerLink="modules/dashboard">Dashboard</a>
+  </nz-breadcrumb-item>
+  <nz-breadcrumb-item>Tender Details</nz-breadcrumb-item>
+</nz-breadcrumb>
 <nz-content>
   <button nz-button nzType="primary" (click)="open()" class="mb-1">
     Create
   </button>
   <nz-table
     #basicTable
-    [nzData]="listOfData"
+    [nzData]="tender_info"
     nzShowPagination
     nzShowSizeChanger
     [nzPageSizeOptions]="[5, 10, 15, 20]"
   >
     <thead>
       <tr>
-        <th>Dept ID</th>
-        <th>Dept Name</th>
-        <th>Ranking</th>
+        <th>Sl No</th>
+        <th>Ticket Description</th>
+        <th>Vendor</th>
+        <th>Location</th>
         <th>Status</th>
+        <th>Department</th>
         <th>Created Date</th>
         <th>Created By</th>
-        <th>Update Date</th>
-        <th>Update By</th>
-        <th>Dept Code</th>
-        <th>Actions</th>
+        <th>Updated Date</th>
+        <th>Updated By</th>
+        
       </tr>
     </thead>
     <tbody>
@@ -36,7 +43,9 @@
         <td>{{ data.updated_by }}</td>
         <td>{{ data.department_code }}</td>
         <td>
-          <button nz-button nzType="primary" (click)="edit(data)">Edit</button>
+          <div class="editbtn">
+            <a (click)="edit(data)">Edit</a> / <a (click)="edit(data)">view</a>
+          </div>
         </td>
       </tr>
     </tbody>
@@ -51,45 +60,38 @@
   [nzFooter]="footerTpl"
   (nzOnClose)="close()"
 >
-  <form nz-form *nzDrawerContent [formGroup]="departmentform">
+  <form nz-form *nzDrawerContent [formGroup]="tenderDetailsForm">
+
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Dept ID</nz-form-label>
+        <nz-form-label nz-col nzSpan="5">Ticket Description</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="department_id"
-            placeholder="please enter Department ID"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Department Name</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="department_name"
-            type="text"
-            nz-input
-            placeholder="please enter Department Name"
-          />
+          <textarea formControlName="ticket_description" nz-input rows="2" placeholder="Enter Ticket Description"></textarea>
         </nz-form-control>
       </nz-form-item>
     </div>
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Ranking</nz-form-label>
+        <nz-form-label nz-col nzSpan="5">Vendor</nz-form-label>
+        <nz-select
+          formControlName="vendor_id"
+          nz-col
+          nzSpan="10"
+          nzPlaceHolder="Vendor"
+          nzShowSearch
+        >
+        <nz-option *ngFor="let v of vendor_array" nzValue={{v.vendor_id}} nzLabel={{v.vendor_id}}></nz-option>
+          
+        </nz-select>
+      </nz-form-item>
+    </div>
+
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="5">Location</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="ranking"
-            type="number"
-            nz-input
-            placeholder="please enter Rank"
-          />
+          <textarea formControlName="location" nz-input rows="2" placeholder="Enter Your location"></textarea>
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -97,33 +99,41 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Status</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="status"
-            type="text"
-            nz-input
-            placeholder="please enter Status"
-          />
-        </nz-form-control>
+        <nz-select
+          formControlName="status"
+          nz-col
+          nzSpan="10"
+          nzPlaceHolder="Status"
+          nzShowSearch
+        >
+          <nz-option nzValue="open" nzLabel="Open"></nz-option>
+          <nz-option nzValue="close" nzLabel="Close"></nz-option>
+          <nz-option nzValue="accept" nzLabel="Accept"></nz-option>
+          <nz-option nzValue="reject" nzLabel="Reject"></nz-option>
+        </nz-select>
       </nz-form-item>
     </div>
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Department Code</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="department_code"
-            type="text"
-            nz-input
-            placeholder="please enter Department code"
-          />
-        </nz-form-control>
+        <nz-form-label nz-col nzSpan="5">Department</nz-form-label>
+        <nz-select
+          formControlName="department_id"
+          nz-col
+          nzSpan="10"
+          nzPlaceHolder="Department"
+          nzShowSearch
+        >
+        <nz-option *ngFor="let d of departments" nzValue={{d.department_id}} nzLabel={{d.department_name}}></nz-option>
+          
+        </nz-select>
       </nz-form-item>
     </div>
-  </form>
+
+
+
+    </form>
+
 
   <ng-template #footerTpl>
     <div style="float: right">

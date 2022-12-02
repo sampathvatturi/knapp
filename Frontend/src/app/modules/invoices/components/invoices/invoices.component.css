@@ -14,3 +14,7 @@ nz-form-label {
 nz-table{
   overflow-x: scroll;
 }
+nz-breadcrumb {
+  padding-top: 2px;
+  padding-bottom: 5px;
+}

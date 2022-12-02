@@ -1,11 +1,18 @@
-<nz-header>Vendors</nz-header>
+<nz-breadcrumb>
+  <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+  <nz-breadcrumb-item>
+    <a routerLink="modules/dashboard">Dashboard</a>
+  </nz-breadcrumb-item>
+  <nz-breadcrumb-item>Vendors</nz-breadcrumb-item>
+</nz-breadcrumb>
+
 <nz-content>
   <button nz-button nzType="primary" (click)="open()" class="mb-1">
     Create
   </button>
   <nz-table
-    #basicTable
-    [nzData]="listOfData"
+  #basicTable
+  [nzData]="vendor_info"
     nzShowPagination
     nzShowSizeChanger
     [nzPageSizeOptions]="[5, 10, 15, 20]"
@@ -14,6 +21,8 @@
       <tr>
         <th>Vendor ID</th>
         <th>Vendor Name</th>
+        <th>Phone Number</th>
+        <th>Address</th>
         <th>Created Date</th>
         <th>Created By</th>
         <th>Update Date</th>
@@ -25,12 +34,16 @@
       <tr *ngFor="let data of basicTable.data">
         <td>{{ data.vendor_id }}</td>
         <td>{{ data.vendor_name }}</td>
+        <td>{{ data.phone_number }}</td>
+        <td>{{ data.address }}</td>
         <td>{{ data.created_date }}</td>
         <td>{{ data.created_by }}</td>
         <td>{{ data.updated_date }}</td>
         <td>{{ data.updated_by }}</td>
         <td>
-          <button nz-button nzType="primary" (click)="edit(data)">Edit</button>
+          <div class="editbtn">
+            <a (click)="edit(data)">Edit</a> / <a (click)="edit(data)">view</a>
+          </div>
         </td>
       </tr>
     </tbody>
@@ -46,19 +59,7 @@
   (nzOnClose)="close()"
 >
   <form nz-form *nzDrawerContent [formGroup]="vendorForm">
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Vendor ID</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            type="number"
-            formControlName="vendor_id"
-            placeholder="please enter Department ID"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
+    
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Vendor Name</nz-form-label>
@@ -68,11 +69,54 @@
             formControlName="vendor_name"
             type="text"
             nz-input
-            placeholder="please enter Department Name"
+            placeholder="please enter Vendor Name"
           />
         </nz-form-control>
       </nz-form-item>
     </div>
+
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="5">Phone Number</nz-form-label>
+        <nz-form-control nz-col nzSpan="10">
+          <input
+            nz-input
+            formControlName="phone_number"
+            type="text"
+            nz-input
+            placeholder="please enter Phone Number"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="5">Address</nz-form-label>
+        <nz-form-control nz-col nzSpan="10">
+          <textarea formControlName="address" nz-input rows="2" placeholder="Enter Your address"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="5">Status</nz-form-label>
+        <nz-select
+          formControlName="status"
+          nz-col
+          nzSpan="10"
+          nzPlaceHolder="Status"
+          nzShowSearch
+        >
+          <nz-option nzValue="active" nzLabel="Active"></nz-option>
+          <nz-option nzValue="inactive" nzLabel="Inactive"></nz-option>
+          
+        </nz-select>
+      </nz-form-item>
+    </div>
+
+
   </form>
 
   <ng-template #footerTpl>
