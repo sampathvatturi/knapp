@@ -64,7 +64,7 @@ exports.loginUser = async (req, res) => {
 //Get Users//
 exports.getUsers = async (req, res) => {
   // const query = "select * from users";
-  const query = "select u.user_id, u.user_name,u.phone_number,u.email, u.status, d.department_id, d.department_name FROM knapp1.users u, departments d where u.department_id=d.department_id;"
+  const query = "select u.user_id, u.user_name,u.phone_number,u.email, u.status, d.department_id, d.department_name from users u, departments d where u.department_id=d.department_id;"
   db.query(query, (err, result) => {
     if (!err) {
       if (result.length <= 0) {
