@@ -29,7 +29,7 @@ export class UserAccountsComponent implements OnInit {
   users: any = [];
 
   departments: any[] = [];
-  departmentsName: any[] = [];
+  d_name:any = {}
 
 
 
@@ -57,9 +57,16 @@ export class UserAccountsComponent implements OnInit {
 
     this.api.getCall('/dept/getDepts').subscribe((res) => {
       this.departments = res;
-      res.forEach((element:any) => {
-        this.departmentsName[element['department_id']] = element['department_name'];
-      });
+      for (let x of this.departments){
+        this.d_name[x.department_id] = x.department_name
+      }
+      console.log(this.d_name);
+
+      // res.forEach((element:any) => {
+      //   this.departmentsName[element['department_id']] = element['department_name'];
+      
+      // });
+      this.notificationService.createNotification(res.status,res.message);
     });
 
     this.user.getAllUsers().subscribe((res) => {
@@ -182,7 +189,5 @@ export class UserAccountsComponent implements OnInit {
     console.log(this.createUserForm.value.address);
   }
 
-  getDepartmentName(id:any){
-      return this.departmentsName[id];
-  }
+  
 }
