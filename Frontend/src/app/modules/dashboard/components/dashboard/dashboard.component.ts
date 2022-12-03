@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
   works:any = [];
   works_count = 300;
 
-  
+
 
   Person= [
     {
@@ -93,10 +93,10 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.api.getCall('//').subscribe((res) => {
-      this.tenders = res;
-      this.tender_count = this.tenders.length;
-    })
+    // this.api.getCall('//').subscribe((res) => {
+    //   this.tenders = res;
+    //   this.tender_count = this.tenders.length;
+    // })
   }
 
 }
