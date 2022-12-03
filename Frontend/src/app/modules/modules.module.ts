@@ -17,6 +17,7 @@ import { USER_ACCOUNTS_COMPONENTS } from './user-accounts';
 import { VENDORS_COMPONENTS } from './vendors';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { WORKS_COMPONENTS } from './works';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { WORKS_COMPONENTS } from './works';
     ReactiveFormsModule,
     CommonModule,
     GooglePlaceModule,
-    FormsModule
+    FormsModule,
+    NgChartsModule
   ],
 })
 export class ModulesModule {}

@@ -42,13 +42,13 @@
       <tr *ngFor="let data of basicTable.data | globalTablesearch: searchText, let i=index">
         <td>{{ i+1 }}</td>
         <td>{{ data.invoice_item }}</td>
-        <td>{{ vendorName(data.vendor_id) }}</td>
+        <td>{{ v_name[data.vendor_id]}}</td>
         <td>{{ data.quantity }}</td>
         <td>{{ data.amount}}</td>
         <td>{{ data.trnsx_type}}</td>
         <td>{{ data.tax}}</td>
         <td>{{ data.total}}</td>
-        <td>{{ data.department_id}}</td>
+        <td>{{ data.department_name}}</td>
         <td>{{ data.created_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
         <td>
           <div class="editbtn">

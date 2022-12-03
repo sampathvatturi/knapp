@@ -9,16 +9,18 @@ import { NotificationService } from './../../../../services/auth/notification.se
   styleUrls: ['./invoices.component.css'],
 })
 export class InvoicesComponent implements OnInit {
-  listOfData: any[] = [];
+  
   visible = false;
   submit = true;
   drawerTitle: string = '';
   invoiceForm!: FormGroup;
   invoice_info: any = [];
   vendor_array: any = [];
+  v_name:any = {};
   depts: any = [];
   user_data: any = [];
   searchText = '';
+  d_name:any = {};
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -45,6 +47,10 @@ export class InvoicesComponent implements OnInit {
 
     this.api.getCall('/dept/getDepts').subscribe((res) => {
       this.depts = res;
+      for (let x of this.depts){
+        this.d_name[x.department_id] = x.department_name;
+      }
+      console.log(this.d_name)
     });
 
     this.api.getCall('/invoicedetails/getInvoicelogs').subscribe((res) => {
@@ -53,6 +59,9 @@ export class InvoicesComponent implements OnInit {
 
     this.api.getCall('/vendor/getVendors').subscribe((res) => {
       this.vendor_array = res;
+      for (let x of this.vendor_array){
+        this.v_name[x.vendor_id] = x.vendor_name
+      }
     });
 
     this.user_data = sessionStorage.getItem('user_data');
@@ -133,12 +142,12 @@ export class InvoicesComponent implements OnInit {
         }
       });
   }
-  vendorName(id: any) {
-    this.vendor_array.map((elem: any) => {
-      if (elem.vendor_id === id) {
-        console.log(elem.vendor_name);
-        return elem.vendor_name;
-      }
-    });
-  }
+  // vendorName(id: any) {
+  //   this.vendor_array.map((elem: any) => {
+  //     if (elem.vendor_id === id) {
+  //       console.log(elem.vendor_name);
+  //       return elem.vendor_name;
+  //     }
+  //   });
+  // }
 }
