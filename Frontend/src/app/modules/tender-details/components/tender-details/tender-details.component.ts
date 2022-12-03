@@ -9,7 +9,7 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class TenderDetailsComponent implements OnInit {
 
-  
+
   visible = false;
   submit = true;
   drawerTitle: string = '';
@@ -43,9 +43,9 @@ export class TenderDetailsComponent implements OnInit {
       this.departments = list;
     });
 
-    this.api.getCall('').subscribe((res) =>{
-      this.tender_info = res;
-    })
+    // this.api.getCall('').subscribe((res) =>{
+    //   this.tender_info = res;
+    // })
 
     this.api.getCall('/vendor/getVendors').subscribe((res) => {
       this.vendor_array = res;
