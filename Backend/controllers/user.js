@@ -42,10 +42,10 @@ exports.loginUser = async (req, res) => {
           res.status(200).json({ token: accessToken, user_data: result[0] });
           db.query(
             "update users set login_time= '" +
-              dateTime +
-              "' where user_id = '" +
-              result[0].user_id +
-              "'"
+            dateTime +
+            "' where user_id = '" +
+            result[0].user_id +
+            "'"
           );
         } else {
           res
@@ -56,23 +56,24 @@ exports.loginUser = async (req, res) => {
         res.status(401).json({ message: "Incorrect Username or Password." });
       }
     } else {
-      res.status(404).send(err).json({ status: "failed" });
+      res.status(404).json({ status: "failed" });
     }
   });
 };
 
 //Get Users//
 exports.getUsers = async (req, res) => {
-  const query = "select * from users";
+  // const query = "select * from users";
+  const query = "select u.user_id, u.user_name,u.phone_number,u.email, u.status, r.role_id,r.role_name,d.department_id, d.department_name FROM knapp.users u, departments d, role r where u.department_id=d.department_id and u.role_id=r.role_id;"
   db.query(query, (err, result) => {
     if (!err) {
       if (result.length <= 0) {
         res.status(401).json({ message: "No users found" });
       } else {
-        res.status(200).json(result).json({ status: "failed" });
+        res.status(200).json(result);
       }
     } else {
-      res.status(404).send(err).json({ status: "failed" });
+      res.status(404).json({ status: "failed" });
     }
   });
 };
@@ -84,7 +85,7 @@ exports.createUser = async (req, res) => {
       res
         .status(200)
         .json({ status: "success", message: "User added successfully" });
-    } else res.status(404).send(err).json({ status: "failed" });
+    } else res.status(404).send(json({ status: "failed" }));
   });
 };
 
@@ -112,7 +113,7 @@ exports.updateUser = async (req, res) => {
         res
           .status(200)
           .json({ status: "success", message: "user updated successfully" });
-      else res.status(401).send(err).json({ status: "failed" });
+      else res.status(401).send(json({ status: "failed" }));
     }
   );
 };
@@ -126,7 +127,7 @@ exports.deleteUser = async (req, res) => {
         res
           .status(200)
           .json({ status: "success", message: "User deleted successfully" });
-      else res.status(401).send(err).json({ status: "failed" });
+      else res.status(401).send(json({ status: "failed" }));
     }
   );
 };
@@ -140,7 +141,7 @@ exports.getUser = async (req, res) => {
         if (result.length === 1)
           res.status(200).json({ message: "User not found" });
         else res.status(401).json(result);
-      } else res.status(401).send(err).json({ status: "failed" });
+      } else res.status(401).send(json({ status: "failed" }));
     }
   );
 };
