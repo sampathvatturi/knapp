@@ -24,12 +24,12 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let data of basicTable.data">
-        <td>{{ data.user_id }}</td>
+      <tr *ngFor="let data of basicTable.data; let i = index">
+        <td>{{ i+1 }}</td>
         <td>{{ data.user_name }}</td>
         <td>{{ data.phone_number }}</td>
         <td>{{ data.email }}</td>
-        <td>{{ d_name[data.department_id] }}</td>
+        <td>{{ data.department_name }}</td>
         <td>
           <div class="editbtn">
             <a (click)="edit(data)">Edit</a> / <a (click)="edit(data)">view</a>

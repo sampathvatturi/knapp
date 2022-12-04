@@ -9,12 +9,15 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { catchError } from 'rxjs/operators';
+import { NotificationService } from './notification.service';
+import { GlobalConstants } from 'src/app/shared/global_constants';
 
 @Injectable()
 export class TokenInterceptorInterceptor implements HttpInterceptor {
 
   constructor(
     private router: Router,
+    private notificationService: NotificationService
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -25,18 +28,24 @@ export class TokenInterceptorInterceptor implements HttpInterceptor {
       });
     }
     return next.handle(request).pipe(
-      catchError((err) => {
-        if(err instanceof HttpErrorResponse){
-          console.log("Interceptor Error: ", err.url);
-          if(err.status === 401 || err.status === 402){
+      catchError((error) => {
+        if(error instanceof HttpErrorResponse){
+          console.log("Interceptor Error: ", error.url);
+          if(error.status === 401 || error.status === 402){
             if(this.router.url === '/'){}
             else{
               localStorage.clear();
-              this.router.navigate(['/']);
+              this.router.navigate(['/login']);
             }
           } 
         }
-        return throwError(err);
+        if(error.status === 0) {
+          error.error.message = "ERR_INTERNET_DISCONNECTED";
+        }
+        if(!request.url.includes('user/login')){
+          this.notificationService.createNotification('error', error.error.message ?? GlobalConstants.genericError);  
+        }
+        return throwError(error);
       })
     );
   }

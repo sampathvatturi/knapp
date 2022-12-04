@@ -39,12 +39,20 @@ nz-header {
 .layout {
   min-height: auto;
 }
-
 nz-sider {
   height: 100vh;
   position: sticky;
   left: 0;
   top: 0;
+  overflow-y: auto;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+nz-sider::-webkit-scrollbar {
+  display: none;
+}
+nz-sider {
+-ms-overflow-style: none;  /* IE and Edge */
+scrollbar-width: none;  /* Firefox */
 }
 
 .b1 {

@@ -53,12 +53,11 @@ export class LoginComponent implements OnInit {
       this.ngxUiLoaderService.stop();
       this.responseMessage = "You are logged-in";
       this.notificationService.createNotification('success', this.responseMessage);
-      localStorage.setItem('token', response.token);
+      localStorage.setItem('token', response?.token);
       localStorage.setItem('role', 'admin');
-      sessionStorage.setItem('user_data',JSON.stringify(response.user_data));
+      sessionStorage.setItem('user_data',JSON.stringify(response?.user_data));
       this.route.navigate(['/app']);
     }, (error) => {
-      console.log("Error in Login: ", error);
       this.ngxUiLoaderService.stop();
       if (error?.error?.message) {
         this.responseMessage = error?.error?.message;

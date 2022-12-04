@@ -14,6 +14,7 @@ import { NotificationService } from 'src/app/services/auth/notification.service'
 import { CommonService } from 'src/app/services/common.service';
 import { Md5hashService } from 'src/app/services/md5hash.service';
 import { UserService } from 'src/app/services/user.service';
+import { DepartmentService } from 'src/app/services/department.service';
 
 @Component({
   selector: 'app-user-accounts',
@@ -29,9 +30,7 @@ export class UserAccountsComponent implements OnInit {
   users: any = [];
 
   departments: any[] = [];
-  d_name:any = {}
-
-
+  d_name: any = {}
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -40,8 +39,9 @@ export class UserAccountsComponent implements OnInit {
     private notificationService: NotificationService,
     private md5: Md5hashService,
     private user: UserService,
-    private getname: CommonService
-  ) {}
+    private getname: CommonService,
+    private deptService: DepartmentService
+  ) { }
   formArray = [
     {
       label: 'Invoice Id',
@@ -55,18 +55,8 @@ export class UserAccountsComponent implements OnInit {
     this.user_data = sessionStorage.getItem('user_data');
     this.user_data = JSON.parse(this.user_data);
 
-    this.api.getCall('/dept/getDepts').subscribe((res) => {
+    this.deptService.getDepartments().subscribe((res) => {
       this.departments = res;
-      for (let x of this.departments){
-        this.d_name[x.department_id] = x.department_name
-      }
-      console.log(this.d_name);
-
-      // res.forEach((element:any) => {
-      //   this.departmentsName[element['department_id']] = element['department_name'];
-      
-      // });
-      this.notificationService.createNotification(res.status,res.message);
     });
 
     this.user.getAllUsers().subscribe((res) => {
@@ -79,7 +69,6 @@ export class UserAccountsComponent implements OnInit {
       email: [null, [Validators.required, Validators.email]],
       user_name: [null, [Validators.required]],
       password_md5: [null, [Validators.required]],
-      // cnfrm_password_md5: [null, [Validators.required,this.confirmationValidator]],
       phone_number: [null, [Validators.required]],
       department_id: [null, [Validators.required]],
       address: [null, [Validators.required]],
@@ -120,7 +109,6 @@ export class UserAccountsComponent implements OnInit {
         .postCall('/user/createUser', this.createUserForm.value)
         .subscribe((data) => {
           this.notificationService.createNotification('success', data.message);
-          // this.router.navigate(['/login']);
         });
       this.visible = false;
     } else {
@@ -189,5 +177,5 @@ export class UserAccountsComponent implements OnInit {
     console.log(this.createUserForm.value.address);
   }
 
-  
+
 }
