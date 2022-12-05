@@ -7,8 +7,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
-import { Options } from 'ngx-google-places-autocomplete/objects/options/options';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
 import { CommonService } from 'src/app/services/common.service';
@@ -159,23 +157,7 @@ export class UserAccountsComponent implements OnInit {
       this.users = res;
     });
   }
-  @ViewChild('placesRef')
-  placesRef!: GooglePlaceDirective;
-  // Option = {
-  //   componentRestriction: {country: 'IN'}
-  // }
-  option: Options = new Options({
-    bounds: undefined,
-    fields: ['address_component'],
-    strictBounds: false,
-    types: ['geocode', 'route'],
-    componentRestrictions: { country: 'IN' },
-  });
-  public handleAddressChange(address: any) {
-    console.log(address);
-    this.createUserForm.value.address = address.formatted_address;
-    console.log(this.createUserForm.value.address);
-  }
+
 
 
 }

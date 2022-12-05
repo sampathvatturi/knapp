@@ -10,4 +10,7 @@ export class GlobalConstants {
 
     //variable
     public static error: string = "error";
-} 
+
+    //department
+    public static globalDept:any ={};
+}

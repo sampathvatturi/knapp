@@ -197,14 +197,7 @@
                 class="address"
               >
                 <nz-input-group nzPrefixIcon="home">
-                  <!-- <input type="text" nz-input formControlName="address" placeholder="Address" /> -->
-                  <input
-                    nz-input
-                    ngx-google-places-autocomplete
-                    #placesRef="ngx-places"
-                    [options]="option"
-                    (onAddressChange)="handleAddressChange($event)"
-                  />
+                  <input type="text" nz-input formControlName="address" placeholder="Address" />
                 </nz-input-group>
               </nz-form-control>
             </nz-form-item>

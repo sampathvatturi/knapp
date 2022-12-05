@@ -22,8 +22,6 @@ import {
 } from 'ngx-ui-loader';
 import { HeaderComponent } from './layouts/common/header/header.component';
 import { TokenInterceptorInterceptor } from './services/auth/token-interceptor.interceptor';
-import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
-
 registerLocaleData(en);
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
@@ -56,7 +54,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     NgAntdModule,
     ReactiveFormsModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
-    GooglePlaceModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },

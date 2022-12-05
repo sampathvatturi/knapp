@@ -15,7 +15,6 @@ import { TENDER_DETAILS_COMPONENTS } from './tender-details';
 import { PROFILE_COMPONENTS } from '../layouts/user/profile';
 import { USER_ACCOUNTS_COMPONENTS } from './user-accounts';
 import { VENDORS_COMPONENTS } from './vendors';
-import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { WORKS_COMPONENTS } from './works';
 import { NgChartsModule } from 'ng2-charts';
 
@@ -40,7 +39,6 @@ import { NgChartsModule } from 'ng2-charts';
     NgAntdModule,
     ReactiveFormsModule,
     CommonModule,
-    GooglePlaceModule,
     FormsModule,
     NgChartsModule
   ],
