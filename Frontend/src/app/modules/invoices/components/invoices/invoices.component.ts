@@ -21,6 +21,10 @@ export class InvoicesComponent implements OnInit {
   user_data: any = [];
   searchText = '';
   d_name:any = {};
+  quant :any ;
+  amt: any
+  tot:any
+  tx:any;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -82,13 +86,16 @@ export class InvoicesComponent implements OnInit {
       tax: [data.tax, [Validators.required]],
       total: [data.total, [Validators.required]],
       updated_by: [data.updated_by, [Validators.required]],
-      department_id: [data.department_id, [Validators.required]],
+      department_id: [data.department_name, [Validators.required]],
     });
+    console.log(this.invoiceForm.value)
   }
+  
   open(): void {
     this.submit = true;
     this.drawerTitle = 'New';
     this.visible = true;
+    
     this.invoiceForm = this.fb.group({
       invoice_details_id: [''],
       vendor_id: [''],
@@ -97,10 +104,29 @@ export class InvoicesComponent implements OnInit {
       amount: [''],
       trnsx_type: [''],
       tax: [''],
-      total: [''],
+      total: [0],
       created_by: [this.user_data.user_id],
       updated_by: [this.user_data.user_id],
       department_id: [''],
+    });
+  }
+
+  change(){
+    this.tot = (this.invoiceForm.value.quantity * this.invoiceForm.value.amount) + 
+    (this.invoiceForm.value.tax*this.invoiceForm.value.quantity*this.invoiceForm.value.amount)/100;
+
+    this.invoiceForm = this.fb.group({
+      invoice_details_id: [this.invoiceForm.value.invoice_details_id],
+      vendor_id: [this.invoiceForm.value.vendor_id],
+      invoice_item: [this.invoiceForm.value.invoice_item],
+      quantity: [this.invoiceForm.value.quantity],
+      amount: [this.invoiceForm.value.amount],
+      trnsx_type: [this.invoiceForm.value.trnsx_type],
+      tax: [this.invoiceForm.value.tax],
+      total: [{value:this.tot,disabled:false},],
+      created_by: [this.user_data.user_id],
+      updated_by: [this.user_data.user_id],
+      department_id: [this.invoiceForm.value.department_id],
     });
   }
 

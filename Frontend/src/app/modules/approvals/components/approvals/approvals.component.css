@@ -7,7 +7,12 @@ nz-header {
     background: #fff;
     padding: 24px;
     min-height: 80vh;
+    padding-top: 12px;
   
+  }
+  nz-breadcrumb {
+    padding-top: 2px;
+    padding-bottom: 5px;
   }
   nz-form-label{
     margin-bottom:-10px;
@@ -23,4 +28,12 @@ nz-form-label::after{
     font-family: SimSun,sans-serif;
     line-height: 1;
     content: '*';
+}
+.cbutton {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.searchInput{
+  width: 200px;
 }

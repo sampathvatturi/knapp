@@ -1,4 +1,10 @@
-<nz-header>Approvals</nz-header>
+<nz-breadcrumb>
+  <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+  <nz-breadcrumb-item>
+    <a routerLink="modules/dashboard">Dashboard</a>
+  </nz-breadcrumb-item>
+  <nz-breadcrumb-item>Approvals</nz-breadcrumb-item>
+</nz-breadcrumb>
 <nz-content>
 
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" nz-row nzGutter="16">

@@ -105,7 +105,7 @@
           <input
             nz-input
             formControlName="quantity"
-            placeholder="Enter Quantity"
+            placeholder="Enter Quantity"  (keyup)="change()"
           />
         </nz-form-control>
       </nz-form-item>
@@ -119,6 +119,7 @@
             nz-input
             formControlName="amount"
             placeholder="Enter Amount"
+            (keyup)="change()"
           />
         </nz-form-control>
       </nz-form-item>
@@ -149,6 +150,7 @@
             nz-input
             formControlName="tax"
             placeholder="Enter Tax"
+            (keyup)="change()"
           />
         </nz-form-control>
       </nz-form-item>
@@ -162,6 +164,7 @@
             nz-input
             formControlName="total"
             placeholder="Enter Total"
+            (keyup)="change()"
           />
         </nz-form-control>
       </nz-form-item>

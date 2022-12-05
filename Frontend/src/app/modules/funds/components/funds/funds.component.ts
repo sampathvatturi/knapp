@@ -13,6 +13,8 @@ export class FundsComponent implements OnInit {
   submit = true;
   drawerTitle: string = '';
   departmentform!: FormGroup;
+  searchText = '';
+  
   constructor(
     private fb: UntypedFormBuilder,
     private api: ApiService

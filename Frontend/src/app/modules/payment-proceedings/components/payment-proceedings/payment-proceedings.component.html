@@ -1,8 +1,22 @@
-<nz-header> Payment Proceedings</nz-header>
+<nz-breadcrumb>
+  <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+  <nz-breadcrumb-item>
+    <a routerLink="modules/dashboard">Dashboard</a>
+  </nz-breadcrumb-item>
+  <nz-breadcrumb-item>Payment Proceedings</nz-breadcrumb-item>
+</nz-breadcrumb>
+
 <nz-content>
-  <button nz-button nzType="primary" (click)="open()" class="mb-1">
-    Create
-  </button>
+  <div class="cbutton" >
+    <nz-input-group [nzSuffix]="suffixIconSearch" class="searchInput">
+      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText"/>
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <span nz-icon nzType="search"></span>
+    </ng-template>
+    <button nz-button nzType="default" (click)="open()">Create</button>
+  </div>
+  
   <nz-table
     #basicTable
     [nzData]="listOfData"
