@@ -42,18 +42,20 @@
         <div class="d-inline">
           <p class="d-inline">Approval Managment System</p>
         </div>
-        <div class="d-inline float-right">
+        <div class="d-inline float-right">          
+          <nz-avatar nzIcon="user" nzSrc="../../../assets/images/avatar.png"></nz-avatar>
           <button
             nz-button
             nzType="text"
             nz-dropdown
-            [nzDropdownMenu]="menu"
             nzPlacement="bottomRight"
+            [nzDropdownMenu]="menu"
             class="mr-5"
           >
-            Hi {{ full_name }}
+            {{ full_name }}
             <span nz-icon nzType="down" nzTheme="outline"></span>
           </button>
+    
           <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu class="list">
               <div>

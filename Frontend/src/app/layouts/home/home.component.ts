@@ -46,8 +46,7 @@ export class HomeComponent implements OnInit {
     this.user_data = JSON.parse(this.user_data);
     this.first_name = this.user_data.first_name.slice(0,1).toUpperCase();
     this.last_name = this.user_data.last_name.slice(0,1).toUpperCase();
-    this.full_name = this.user_data.first_name + this.user_data.last_name
-    // console.log(this.user_data.first_name, this.user_data.last_name);
+    this.full_name = this.user_data.first_name + " " + this.user_data.last_name;
   }
   gotoLogin(){
     this.route.navigateByUrl('/login')
