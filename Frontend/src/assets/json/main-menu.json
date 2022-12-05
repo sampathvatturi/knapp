@@ -1,6 +1,11 @@
 {
   "mainMenu": [
     {
+      "title": "Dashboard",
+      "route": "modules/dashboard",
+      "icon": "dashboard:antd"
+    },
+    {
       "title": "Approvals",
       "route": "modules/approvals",
       "icon": "approve:antd"

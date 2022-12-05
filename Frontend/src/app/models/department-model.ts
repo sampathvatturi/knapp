@@ -1,8 +1,8 @@
 export interface Department {
-deptId: number;
-deptName: string;
+department_id: number;
+department_name: string;
 status: string;
-createdDate?: string;
-updatedDate?: string;
-rank?: number;
+created_date?: Date;
+updated_date?: Date;
+ranking?: number;
 }

@@ -38,6 +38,24 @@ export class DashboardComponent implements OnInit {
       name: 'Joe Black',
       date: '25-04-2022',
       status: 'Inactive'
+    },
+    {
+      desc: 'I ve an issue with lungs',
+      name: 'John Brown',
+      date: '25-04-2022',
+      status: 'Active'
+    },
+    {
+      desc: 'I ve an issue with legs',
+      name: 'Jim Green',
+      date: '25-04-2022',
+      status: 'Active'
+    },
+    {
+      desc: 'I ve an issue with hair',
+      name: 'Joe Black',
+      date: '25-04-2022',
+      status: 'Inactive'
     }
   ];
 
