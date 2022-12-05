@@ -7,5 +7,83 @@
 </nz-breadcrumb>
 
 <nz-content>
-
+  <div class="cbutton" >
+    <nz-input-group [nzSuffix]="suffixIconSearch" class="searchInput">
+      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText"/>
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <span nz-icon nzType="search"></span>
+    </ng-template>
+    <button nz-button nzType="default" (click)="open()">Create</button>
+  </div>
+  <nz-table
+  #basicTable
+  [nzData]="works"
+    nzShowPagination
+    nzShowSizeChanger
+    [nzPageSizeOptions]="[5, 10, 15, 20]"
+  >
+    <thead>
+      <tr>
+        <th>S.No.</th>
+        <th>Works Name</th>
+        <th>Created Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data | globalTablesearch: searchText, let i=index">
+        <td>{{ i+1 }}</td>
+        <td>{{ data.work_name }}</td>
+        <td>{{ data.created_date | date : "dd-MM-YYYY hh:mm aaa"}}</td>
+        <td>
+          <div class="editbtn">
+            <a (click)="edit(data)">Edit</a> / <a (click)="edit(data)">view</a>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
 </nz-content>
+<nz-drawer
+  [nzBodyStyle]="{ overflow: 'auto' }"
+  [nzMaskClosable]="false"
+  [nzWidth]="720"
+  [nzVisible]="visible"
+  [nzTitle]="drawerTitle"
+  [nzFooter]="footerTpl"
+  (nzOnClose)="close()"
+>
+<form nz-form *nzDrawerContent [formGroup]="workForm">
+
+  <div>
+    <nz-form-item>
+      <nz-form-label nz-col nzSpan="5">Work Name</nz-form-label>
+      <nz-form-control nz-col nzSpan="10">
+        <input
+          nz-input
+          formControlName="work_name"
+          type="text"
+          nz-input
+          placeholder="please enter Work Name"
+        />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+</form>
+
+<ng-template #footerTpl>
+  <div style="float: right">
+    <button nz-button style="margin-right: 8px" (click)="close()">
+      Cancel
+    </button>
+    <button nz-button *ngIf="submit" nzType="primary" (click)="onSubmit()">
+      Submit
+    </button>
+    <button nz-button *ngIf="!submit" nzType="primary" (click)="update()">
+      Update
+    </button>
+  </div>
+</ng-template>
+</nz-drawer>

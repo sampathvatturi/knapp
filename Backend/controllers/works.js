@@ -6,7 +6,7 @@ exports.getWorks = async (req, res) => {
   db.query("select * from works", (err, result, fiels) => {
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
-      else res.status(404).json({ message: "Works not found" });
+      else res.json({ message: "Works not found" });
     } else res.status(401).send(err).json({ status: "failed" });
   });
 };
@@ -35,7 +35,7 @@ exports.createWork = async (req, res) => {
   );
 };
 
-exports.updateVendor = async (req, res) => {
+exports.updateWork = async (req, res) => {
   data = req.body;
   db.query(
     "update works set ? where work_id = ? ",
@@ -60,7 +60,7 @@ exports.updateVendor = async (req, res) => {
   );
 };
 
-exports.deleteVendor = async (req, res) => {
+exports.deleteWork = async (req, res) => {
   db.query(
     "delete from works where work_id = ?",
     [req.params.id],
@@ -77,7 +77,7 @@ exports.deleteVendor = async (req, res) => {
   );
 };
 
-exports.getVendor = async (req, res) => {
+exports.getWork = async (req, res) => {
   db.query(
     "select * from works where work_id = ?",
     [req.params.id],

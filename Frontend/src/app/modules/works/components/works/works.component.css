@@ -4,12 +4,36 @@ nz-content {
   padding-top: 12px;
   height: auto;
 }
-/* nz-header {
+nz-header {
   background: none;
   font-size: large;
   font-weight: 500;
-} */
+}
+nz-form-label {
+  text-align: left;
+}
 nz-breadcrumb {
   padding-top: 2px;
   padding-bottom: 5px;
+}
+.editbtn {
+  /* border: 1px solid gray; */
+  width: fit-content;
+}
+
+.editbtn a:hover {
+  color: #1890ff;
+  text-decoration: underline;
+}
+.cbutton {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+::ng-deep .ant-drawer-close {
+  position: fixed;
+  right: 0px;
+}
+.searchInput{
+  width: 200px;
 }

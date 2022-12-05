@@ -32,22 +32,14 @@ export class VendorsComponent implements OnInit {
       updated_date: [''],
       updated_by: [''],
     });
-    // this.api.getCall('/dept/getDepts').subscribe((list) => {
-    //   this.listOfData = list;
-    //   console.log(this.listOfData);
-    // });
 
     this.api.getCall('/vendor/getVendors').subscribe((items) =>{
       this.vendor_info = items;
       console.log(this.vendor_info);
     })
 
-    this.user_data = sessionStorage.getItem('user_data')
-    this.user_data = JSON.parse(this.user_data)
-
-
-
-
+    this.user_data = sessionStorage.getItem('user_data');
+    this.user_data = JSON.parse(this.user_data);
   }
 
   edit(data: any) {
