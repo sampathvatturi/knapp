@@ -21,6 +21,7 @@ export class TenderDetailsComponent implements OnInit {
   searchText = '';
   works:any []= [];
 
+
   constructor(
     private fb: UntypedFormBuilder,
     private api: ApiService,
@@ -28,21 +29,14 @@ export class TenderDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.tenderDetailsForm = this.fb.group({
-      ticket_id: [''],
-      ticket_description: [''],
-      vendor_id: [''],
-      work_id: [''],
-      location: [''],
-      status: [''],
-      created_date: [''],
-      created_by: [''],
-      updated_date: [''],
-      updated_by: ['']
-    });
-
+    this.tendorsFormValidators();
     this.api.getCall('/tickets/getTickets').subscribe((res) => {
-      this.tenders = res;
+      if(res.length > 0){
+        this.tenders = res;
+      }else{
+        this.tenders = [];
+      }
+
     });
 
     this.api.getCall('/vendor/getVendors').subscribe((res) => {
@@ -50,7 +44,6 @@ export class TenderDetailsComponent implements OnInit {
     })
 
     this.api.getCall('/work/getWorks').subscribe((res) => {
-      console.log(res)
       this.works = res;
     })
 
@@ -59,34 +52,25 @@ export class TenderDetailsComponent implements OnInit {
     this.user_data = JSON.parse(this.user_data)
   }
   edit(data: any) {
-    var new_work = data.work_id.split(",");
     this.submit = false;
-    this.drawerTitle = 'Edit';
+    this.drawerTitle = 'Edit Tender details';
     this.visible = true;
-    this.tenderDetailsForm = this.fb.group({
-      ticket_id: [data.ticket_id, [Validators.required]],
-      ticket_description: [data.ticket_description, [Validators.required]],
-      vendor_id: [data.vendor_id, [Validators.required]],
-      work_id: [new_work, [Validators.required]],
-      location: [data.location, [Validators.required]],
-      status: [data.status, [Validators.required]],
-      updated_by: [this.user_data.user_id],
-    });
+    this.tendorsFormValidators();
+    this.tenderDetailsForm.get('ticket_id')?.setValue(data.ticket_id);
+    this.tenderDetailsForm.get('vendor_id')?.setValue(data.vendor_id.toString());
+    this.tenderDetailsForm.get('ticket_description')?.setValue(data.ticket_description);
+    this.tenderDetailsForm.get('work_id')?.setValue(data.work_id.split(",").map(Number));
+    this.tenderDetailsForm.get('location')?.setValue(data.location);
+    this.tenderDetailsForm.get('tender_cost')?.setValue(data.tender_cost);
+    this.tenderDetailsForm.get('status')?.setValue(data.status);
+    this.tenderDetailsForm.get('updated_by')?.setValue(this.user_data.user_id);
   }
   open(): void {
     this.submit = true;
     this.drawerTitle = 'Add New Tender';
     this.visible = true;
-    this.tenderDetailsForm = this.fb.group({
-      ticket_id: [''],
-      ticket_description: ['', [Validators.required]],
-      vendor_id: ['', [Validators.required]],
-      work_id: ['', [Validators.required]],
-      location: ['', [Validators.required]],
-      status: ['open', [Validators.required]],
-      created_by: [this.user_data.user_id],
-      updated_by: [this.user_data.user_id],
-    });
+    this.tendorsFormValidators();
+    this.tenderDetailsForm.get('status')?.setValue('open');
   }
 
   close(): void {
@@ -94,7 +78,7 @@ export class TenderDetailsComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.tenderDetailsForm.value.work_id)
+    this.tenderDetailsForm.value.work_id = this.tenderDetailsForm.value.work_id.toString();
     this.api.postCall('/tickets/createTicket', this.tenderDetailsForm.value).subscribe((res)=>{
       if(res.status === 'success'){
         this.notification.createNotification(res.status,res.message);
@@ -109,6 +93,7 @@ export class TenderDetailsComponent implements OnInit {
   }
 
   update() {
+    this.tenderDetailsForm.value.work_id = this.tenderDetailsForm.value.work_id.toString();
     this.api.patchCall(`/tickets/updateTicket/${this.tenderDetailsForm.value.ticket_id}`, this.tenderDetailsForm.value).subscribe((res)=>{
       if(res.status === 'success'){
         this.notification.createNotification(res.status,res.message);
@@ -120,5 +105,25 @@ export class TenderDetailsComponent implements OnInit {
         this.notification.createNotification(res.status,res.message);
       }
     })
+  }
+
+  isNotSelected(value: string): boolean {
+    return  this.tenderDetailsForm.value.work_id.indexOf(value) === -1;
+  }
+
+  tendorsFormValidators(){
+    this.tenderDetailsForm = this.fb.group({
+      ticket_id: [null, [Validators.required]],
+      ticket_description: [null, [Validators.required]],
+      vendor_id: [null, [Validators.required]],
+      work_id: [[], [Validators.required]],
+      location: [null, [Validators.required]],
+      tender_cost: [null, [Validators.required]],
+      status: [null, [Validators.required]],
+      created_date: [null, [Validators.required]],
+      created_by: [null, [Validators.required]],
+      updated_date: [null, [Validators.required]],
+      updated_by: [null, [Validators.required]],
+    });
   }
 }

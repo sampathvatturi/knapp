@@ -27,9 +27,7 @@ export class HomeComponent implements OnInit {
     this.last_name = this.user_data.last_name.slice(0, 1).toUpperCase();
     this.full_name = this.user_data.first_name + ' ' + this.user_data.last_name;
   }
-  gotoLogin() {
-    this.route.navigateByUrl('/login');
-  }
+
   logout() {
     localStorage.clear();
     sessionStorage.clear();

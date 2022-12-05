@@ -26,6 +26,7 @@ exports.createInvoicelog = async (req, res) => {
         total: data.total,
         created_by: data.created_by,
         updated_by: data.updated_by,
+        department_id: data.department_id
       },
     ],
     (err, result, fields) => {

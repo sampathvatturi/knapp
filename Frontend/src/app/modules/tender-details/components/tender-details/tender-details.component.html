@@ -29,7 +29,6 @@
         <th>S.No.</th>
         <th>Ticket Description</th>
         <th>Vendor</th>
-        <th>Work</th>
         <th>Location</th>
         <th>Tender Cost</th>
         <th>Status</th>
@@ -43,7 +42,6 @@
         <td>{{ i+1 }}</td>
         <td>{{ data.ticket_description }}</td>
         <td>{{ data.vendor_name }}</td>
-        <td>{{ data.works }}</td>
         <td>{{ data.location }}</td>
         <td>{{ data.tender_cost }}</td>
         <td>{{ data.status }}</td>
@@ -95,28 +93,38 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Work</nz-form-label>
+        <nz-form-label nz-col nzSpan="5">Works</nz-form-label>
         <nz-select
-          nz-col
-          nzSpan="18"
-          nzMode="multiple"
-          nzPlaceHolder="Select Works"
-          formControlName="work_id"
-          >
-          <nz-option
-            *ngFor="let w of works"
-            [nzLabel]="w.work_name"
-            [nzValue]="w.work_id"
+        nz-col
+        nzSpan="16"
+        [nzMaxTagCount]="3"
+        nzMode="multiple"
+        formControlName="work_id"
+        nzPlaceHolder="Select Works"
+      >
+          <nz-option *ngFor="let w of works"
+          [nzLabel]="w.work_name"
+          [nzValue]="w.work_id"
+          [nzHide]="!isNotSelected(w.work_id)"
           ></nz-option>
         </nz-select>
-  </nz-form-item>
-</div>
+      </nz-form-item>
+    </div>
 
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Location</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <textarea formControlName="location" nz-input rows="2" placeholder="Enter Your location"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="5">Tender Cost</nz-form-label>
+        <nz-form-control nz-col nzSpan="10">
+          <input type="number" formControlName="tender_cost" nz-input  placeholder="Enter Ticket Est. Cost" />
         </nz-form-control>
       </nz-form-item>
     </div>

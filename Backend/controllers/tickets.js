@@ -1,14 +1,17 @@
 const db = require("../config/connection");
-const currdateTime = require('../middleware/currdate');
+const currdateTime = require("../middleware/currdate");
 
 //tickets
 exports.getTickets = async (req, res) => {
-  db.query("select t.ticket_id,t.ticket_description,t.location,t.status,t.created_date,t.work_id,t.tender_cost,t.vendor_id,v.vendor_name from tickets t,vendors v where t.vendor_id = v.vendor_id", (err, result, fields) => {
-    if (!err) {
-      if (result.length > 0) res.status(200).send(result);
-      else res.status(200).json({ message: "No Tickets found" });
-    } else res.status(404).send(err).json({ status: "failed" });
-  });
+  db.query(
+    "select t.ticket_id,t.ticket_description,t.location,t.status,t.created_date,t.work_id,t.tender_cost,t.vendor_id,v.vendor_name from tickets t,vendors v where t.vendor_id = v.vendor_id",
+    (err, result, fields) => {
+      if (!err) {
+        if (result.length > 0) res.status(200).send(result);
+        else res.status(200).json({ message: "No Tickets found" });
+      } else res.status(404).send(err).json({ status: "failed" });
+    }
+  );
 };
 
 exports.createTicket = async (req, res) => {
@@ -22,6 +25,7 @@ exports.createTicket = async (req, res) => {
         vendor_id: data.vendor_id,
         work_id: work_id,
         location: data.location,
+        tender_cost: data.tender_cost,
         status: data.status,
         department_id: data.department_id,
         created_by: data.created_by,
@@ -45,6 +49,10 @@ exports.updateTicket = async (req, res) => {
     [
       {
         ticket_description: data.ticket_description,
+        vendor_id: data.vendor_id,
+        work_id: data.work_id,
+        location: data.location,
+        tender_cost: data.tender_cost,
         status: data.status,
         department_id: data.department_id,
         updated_date: currdateTime,
@@ -53,6 +61,7 @@ exports.updateTicket = async (req, res) => {
       req.params.id,
     ],
     (err, result, fields) => {
+      console.log(result);
       if (!err)
         res
           .status(200)
