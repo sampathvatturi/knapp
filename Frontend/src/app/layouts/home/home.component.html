@@ -21,10 +21,7 @@
         [nzMatchRouter]="true"
         [nzSelected]="true"
       >
-        <!-- <span class="material-symbols-outlined"> {{ item.icon }} </span> -->
-        <!-- <span nz-icon [nzType]="item.icon"></span> -->
-
-        <span nz-icon [nzType]="item.icon"></span>
+        <span nz-icon><i class="{{ item.icon }}"></i></span>
         <span>{{ item.title }}</span>
       </li>
     </ul>
@@ -43,7 +40,10 @@
           <p class="d-inline">Approval Managment System</p>
         </div>
         <div class="d-inline float-right">
-          <nz-avatar nzIcon="user" nzSrc="../../../assets/images/avatar.png"></nz-avatar>
+          <nz-avatar
+            nzIcon="user"
+            nzSrc="../../../assets/images/avatar.png"
+          ></nz-avatar>
           <button
             nz-button
             nzType="text"

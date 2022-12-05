@@ -3,62 +3,62 @@
     {
       "title": "Dashboard",
       "route": "modules/dashboard",
-      "icon": "dashboard:antd"
+      "icon": "fa-solid fa-house"
     },
     {
       "title": "Approvals",
       "route": "modules/approvals",
-      "icon": "approve:antd"
+      "icon": "fa-solid fa-thumbs-up"
     },
     {
       "title": "Department",
       "route": "modules/department",
-      "icon": "department:antd"
+      "icon": "fa-solid fa-building"
     },
     {
       "title": "Expenditure",
       "route": "modules/expenditure",
-      "icon": "expenditure:antd"
+      "icon": "fa-solid fa-hand-holding-dollar"
     },
     {
       "title": "Funds",
       "route": "modules/funds",
-      "icon": "funds:antd"
+      "icon": "fa-solid fa-dollar-sign"
     },
     {
       "title": "Inventory Items",
       "route": "modules/inventory-items",
-      "icon": "items:antd"
+      "icon": "fa-solid fa-warehouse"
     },
     {
       "title": "Invoices",
       "route": "modules/invoices",
-      "icon": "invoice:antd"
+      "icon": "fa-solid fa-file-invoice-dollar"
     },
     {
       "title": "Payment Proceedings",
       "route": "modules/payment-proceedings",
-      "icon": "payments:antd"
+      "icon": "fa-solid fa-money-check-dollar"
     },
     {
       "title": "Tender Details",
       "route": "modules/tender-details",
-      "icon": "details:antd"
+      "icon": "fa-solid fa-circle-info"
     },
     {
       "title": "User Accounts",
       "route": "modules/user-accounts",
-      "icon": "details:antd"
+      "icon": "fa-solid fa-users"
     },
     {
       "title": "Vendors",
       "route": "modules/vendors",
-      "icon": "vendors:antd"
+      "icon": "fa-solid fa-user-tie"
     },
     {
       "title": "Works",
       "route": "modules/works",
-      "icon": "works:antd"
+      "icon": "fa-solid fa-person-digging"
     }
   ]
 }
