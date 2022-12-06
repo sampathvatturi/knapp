@@ -33,6 +33,7 @@
         <th>Tender Cost</th>
         <th>Status</th>
         <th>Created Date</th>
+        <th>Action</th>
 
 
       </tr>
@@ -97,7 +98,6 @@
         <nz-select
         nz-col
         nzSpan="16"
-        [nzMaxTagCount]="3"
         nzMode="multiple"
         formControlName="work_id"
         nzPlaceHolder="Select Works"
@@ -105,7 +105,6 @@
           <nz-option *ngFor="let w of works"
           [nzLabel]="w.work_name"
           [nzValue]="w.work_id"
-          [nzHide]="!isNotSelected(w.work_id)"
           ></nz-option>
         </nz-select>
       </nz-form-item>
@@ -126,6 +125,61 @@
         <nz-form-control nz-col nzSpan="10">
           <input type="number" formControlName="tender_cost" nz-input  placeholder="Enter Ticket Est. Cost" />
         </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <!-- <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="5">Department</nz-form-label>
+        <nz-select
+        nz-col
+        nzSpan="16"
+        nzMode="multiple"
+        formControlName="department_id"
+        nzPlaceHolder="Select Department to assign"
+        (ngModelChange)="getUsers($event)"
+      >
+          <nz-option *ngFor="let d of departments"
+          [nzLabel]="d.department_name"
+          [nzValue]="d.department_id"
+          ></nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+
+    <div>
+      <nz-form-item *ngIf="showUsers">
+        <nz-form-label nz-col nzSpan="5">Users</nz-form-label>
+        <nz-select
+        nz-col
+        nzSpan="16"
+        [nzMaxTagCount]="3"
+        nzMode="multiple"
+        formControlName="user_id"
+        nzPlaceHolder="Select User to assign"
+      >
+      <nz-option-group *ngFor="let d of departmentsSelected" [nzLabel]="d">
+        <nz-option
+        [nzValue]="d.user_id"
+        [nzLabel]="d.first_name"
+        ></nz-option>
+      </nz-option-group>
+        </nz-select>
+      </nz-form-item>
+    </div> -->
+
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="5">Assign to</nz-form-label>
+        <nz-select
+        nz-col
+        nzSpan="16"
+        nzMode="multiple"
+        formControlName="assign_to"
+        nzPlaceHolder="Select User to assign"
+        [nzOptions]="departmentUsers"
+      >
+        </nz-select>
       </nz-form-item>
     </div>
 

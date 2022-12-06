@@ -51,7 +51,7 @@ exports.updateDepartment = async (req, res) => {
       },
       req.params.id,
     ],
-    (err, result, fiels) => {
+    (err, result, fields) => {
       if (!err)
         res
           .status(200)

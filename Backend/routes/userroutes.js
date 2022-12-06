@@ -10,7 +10,9 @@ const{
      updateUser,
      deleteUser,
      getUser,
-     checkToken
+     checkToken,
+     getUserByDepartmentId,
+     getUsersByDepartment
 } = require('../controllers/user');
 
 router.post('/login', loginUser);
@@ -20,5 +22,7 @@ router.patch('/updateUser/:id', updateUser);
 router.delete('/deleteUser/:id', deleteUser);
 router.get('/getUser/:id', getUser);
 router.get('/checkToken', checkToken);
+router.post('/getUserByDepartmentId', getUserByDepartmentId);
+router.get('/getUsersByDepartment', getUsersByDepartment);
 
 module.exports = router ;

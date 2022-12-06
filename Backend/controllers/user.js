@@ -8,7 +8,6 @@ const dateTime = require("../middleware/currdate");
 //User Login Authentication//
 exports.loginUser = async (req, res) => {
   let data = req.body;
-  console.log(data);
   user_name = data.email;
   password = data.password;
   const query =
@@ -21,11 +20,9 @@ exports.loginUser = async (req, res) => {
     "' and password_md5 = '" +
     password +
     "')";
-  console.log(query);
   db.query(query, (err, result) => {
     if (!err) {
       if (result.length === 1) {
-        console.log("Result:", result);
         if (result[0].status == "inactive") {
           res
             .status(401)
@@ -39,13 +36,25 @@ exports.loginUser = async (req, res) => {
           const accessToken = jwt.sign(response, process.env.ACCESS_TOKEN, {
             expiresIn: "3h",
           });
-          res.status(200).json({ token: accessToken, user_data: result[0] });
+
+          session_user_data = {
+            user_id: result[0].user_id,
+            first_name: result[0].first_name,
+            last_name: result[0].last_name,
+            email: result[0].email,
+            role: result[0].role,
+            status: result[0].status,
+            department_id: result[0].department_id,
+          };
+          res
+            .status(200)
+            .json({ token: accessToken, user_data: session_user_data });
           db.query(
             "update users set login_time= '" +
-            dateTime +
-            "' where user_id = '" +
-            result[0].user_id +
-            "'"
+              dateTime +
+              "' where user_id = '" +
+              result[0].user_id +
+              "'"
           );
         } else {
           res
@@ -64,7 +73,8 @@ exports.loginUser = async (req, res) => {
 //Get Users//
 exports.getUsers = async (req, res) => {
   // const query = "select * from users";
-  const query = "select u.user_id, u.user_name,u.phone_number,u.email, u.status, d.department_id, d.department_name from users u, departments d where u.department_id=d.department_id;"
+  const query =
+    "select u.user_id, u.user_name,u.phone_number,u.email, u.status, d.department_id, d.department_name from users u, departments d where u.department_id=d.department_id;";
   db.query(query, (err, result) => {
     if (!err) {
       if (result.length <= 0) {
@@ -148,4 +158,33 @@ exports.getUser = async (req, res) => {
 
 exports.checkToken = async (req, res) => {
   res.status(200).json({ message: "true" });
+};
+
+exports.getUserByDepartmentId = async (req, res) => {
+  id = req.body;
+  id = id.toString();
+  db.query(
+    "select u.first_name,u.last_name,u.user_id,d.department_id,d.department_name,d.ranking from users u,departments d where d.department_id= u.department_id and d.department_id = '" +
+      id +
+      "' and d.status='active' ",
+    (err, result, fields) => {
+      if (!err) {
+        if (result.length > 0) res.status(200).json(result);
+        else res.status(401).send(json({ message: "No Users found" }));
+      } else res.status(401).send(json({ status: "failed" }));
+    }
+  );
+};
+
+exports.getUsersByDepartment = async (req, res) => {
+  db.query(
+    "select u.first_name,u.last_name,u.user_id,d.department_id,d.department_name,d.ranking from users u,departments d where d.department_id= u.department_id and d.status='active' ",
+    (err, result, fields) => {
+      if (!err) {
+        console.log(result);
+        if (result.length > 0) res.status(200).json(result);
+        else res.status(401).send(json({ message: "No Users found" }));
+      } else res.status(401).send(json({ status: "failed" }));
+    }
+  );
 };

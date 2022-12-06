@@ -20,7 +20,11 @@ export class TenderDetailsComponent implements OnInit {
   user_data:any = [];
   searchText = '';
   works:any []= [];
-
+  departments:any []= [];
+  departmentsSelected:any []= [];
+  usersSelected:any []= [];
+  showUsers: any ;
+  departmentUsers:any []= [];
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -47,6 +51,21 @@ export class TenderDetailsComponent implements OnInit {
       this.works = res;
     })
 
+    this.api.getCall('/user/getUsersByDepartment').subscribe((res) => {
+      res.forEach((data:any) => {
+        let temp = {
+          label: data.first_name+' '+data.last_name,
+          value:data.user_id,
+          groupLabel:data.department_name+'  -  '+data.ranking
+        };
+
+        this.departmentUsers.push(temp);
+      });
+    })
+
+    this.api.getCall('/dept/getDepts').subscribe((res) => {
+        this.departments = res;
+    })
 
     this.user_data = sessionStorage.getItem('user_data');
     this.user_data = JSON.parse(this.user_data)
@@ -56,10 +75,22 @@ export class TenderDetailsComponent implements OnInit {
     this.drawerTitle = 'Edit Tender details';
     this.visible = true;
     this.tendorsFormValidators();
+
+    let selectedUsers:any[] = [];
+    if(data.json_status !='' && data.json_status != null){
+      JSON.parse(data.json_status).forEach((x:any) => {
+        selectedUsers.push(x.user_id);
+      });
+    }else
+      selectedUsers =[];
+
+
+
     this.tenderDetailsForm.get('ticket_id')?.setValue(data.ticket_id);
     this.tenderDetailsForm.get('vendor_id')?.setValue(data.vendor_id.toString());
     this.tenderDetailsForm.get('ticket_description')?.setValue(data.ticket_description);
     this.tenderDetailsForm.get('work_id')?.setValue(data.work_id.split(",").map(Number));
+    this.tenderDetailsForm.get('assign_to')?.setValue(selectedUsers);
     this.tenderDetailsForm.get('location')?.setValue(data.location);
     this.tenderDetailsForm.get('tender_cost')?.setValue(data.tender_cost);
     this.tenderDetailsForm.get('status')?.setValue(data.status);
@@ -107,18 +138,17 @@ export class TenderDetailsComponent implements OnInit {
     })
   }
 
-  isNotSelected(value: string): boolean {
-    return  this.tenderDetailsForm.value.work_id.indexOf(value) === -1;
-  }
-
   tendorsFormValidators(){
     this.tenderDetailsForm = this.fb.group({
-      ticket_id: [null, [Validators.required]],
+      ticket_id: [null],
       ticket_description: [null, [Validators.required]],
       vendor_id: [null, [Validators.required]],
       work_id: [[], [Validators.required]],
       location: [null, [Validators.required]],
       tender_cost: [null, [Validators.required]],
+      department_id: [null, [Validators.required]],
+      user_id: [null, [Validators.required]],
+      assign_to: [[], [Validators.required]],
       status: [null, [Validators.required]],
       created_date: [null, [Validators.required]],
       created_by: [null, [Validators.required]],
