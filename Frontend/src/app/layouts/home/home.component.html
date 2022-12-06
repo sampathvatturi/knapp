@@ -65,8 +65,9 @@
                   <div style="font-size: 14px">
                     {{ user_data.first_name }} {{ user_data.last_name }}
                   </div>
-                  <div>Department: {{user_data?.department_name}}</div>
-                  <div>Staus: <span style="color: green; font-weight: 600;">{{ user_data.status }}</span></div>
+                  <div>Department: <span style="font-weight: 600;">{{deptData?.department_name}}</span></div>
+                  <div>Rank: <span style="font-weight: 600;">{{deptData?.ranking}}</span></div>
+                  <div>Staus: <span style="color: green; font-weight: 600;">{{ user_data?.status }}</span></div>
                 </div>
                 <hr />
                 <div class="av1 pl-2">

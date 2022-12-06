@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import mainMenu from '../../../assets/json/main-menu.json';
+import {DepartmentService} from '../../services/department.service';
 
 @Component({
   selector: 'app-home',
@@ -15,8 +16,9 @@ export class HomeComponent implements OnInit {
   first_name: any;
   last_name: any;
   full_name: any;
+  deptData: any;
 
-  constructor(private route: Router) {}
+  constructor(private route: Router, private departmentService: DepartmentService) {}
 
   ngOnInit(): void {
     this.menuItems = mainMenu?.mainMenu;
@@ -26,6 +28,14 @@ export class HomeComponent implements OnInit {
     this.first_name = this.user_data.first_name.slice(0, 1).toUpperCase();
     this.last_name = this.user_data.last_name.slice(0, 1).toUpperCase();
     this.full_name = this.user_data.first_name + ' ' + this.user_data.last_name;
+    this.getDepartments();
+  }
+
+  getDepartments(): void {
+    this.departmentService.getDepartments().subscribe((res) => {
+      const departmentsData = res;
+      this.deptData = departmentsData.find((item: any)=> (item?.department_id === this.user_data?.department_id));
+    });
   }
 
   logout() {
