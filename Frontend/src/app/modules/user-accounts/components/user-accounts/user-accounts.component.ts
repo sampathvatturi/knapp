@@ -1,15 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
-import { CommonService } from 'src/app/services/common.service';
 import { Md5hashService } from 'src/app/services/md5hash.service';
 import { UserService } from 'src/app/services/user.service';
 import { DepartmentService } from 'src/app/services/department.service';
@@ -26,20 +18,18 @@ export class UserAccountsComponent implements OnInit {
   createUserForm!: FormGroup;
   user_data: any;
   users: any = [];
-
   departments: any[] = [];
-  d_name: any = {}
+  d_name: any = {};
+  searchText = '';
 
   constructor(
     private fb: UntypedFormBuilder,
-    private router: Router,
     private api: ApiService,
     private notificationService: NotificationService,
     private md5: Md5hashService,
     private user: UserService,
-    private getname: CommonService,
     private deptService: DepartmentService
-  ) { }
+  ) {}
   formArray = [
     {
       label: 'Invoice Id',
@@ -60,34 +50,17 @@ export class UserAccountsComponent implements OnInit {
     this.user.getAllUsers().subscribe((res) => {
       this.users = res;
     });
-
-    this.createUserForm = this.fb.group({
-      first_name: [null, [Validators.required]],
-      last_name: [null, [Validators.required]],
-      email: [null, [Validators.required, Validators.email]],
-      user_name: [null, [Validators.required]],
-      password_md5: [null, [Validators.required]],
-      phone_number: [null, [Validators.required]],
-      department_id: [null, [Validators.required]],
-      address: [null, [Validators.required]],
-      city: [null, [Validators.required]],
-      district: [null, [Validators.required]],
-      created_by: [this.user_data.user_id],
-      updated_by: [this.user_data.user_id],
-    });
+    this.userAccountsFormValidators();
   }
 
-  open(): void {
+  create(): void {
     this.submit = true;
     this.visible = true;
     this.drawerTitle = 'Create User';
+    this.userAccountsFormValidators();
   }
 
-  close(): void {
-    this.visible = false;
-  }
-
-  onCreate() {
+  onSubmit() {
     let checkData = {
       email: this.createUserForm.value.email,
       user_name: this.createUserForm.value.user_name,
@@ -121,33 +94,32 @@ export class UserAccountsComponent implements OnInit {
 
   edit(data: any) {
     this.submit = false;
-
     this.visible = true;
-
-    this.drawerTitle = 'Edit User';
-
-    this.createUserForm = this.fb.group({
-      first_name: [data.first_name, [Validators.required]],
-      last_name: [data.last_name, [Validators.required]],
-      email: [data.email, [Validators.required, Validators.email]],
-      user_name: [data.user_name, [Validators.required]],
-      password_md5: [null, [Validators.required]],
-      // cnfrm_password_md5: [null, [Validators.required,this.confirmationValidator]],
-      phone_number: [data.phone_number, [Validators.required]],
-      department_id: [data.department_id, [Validators.required]],
-      address: [data.address, [Validators.required]],
-      city: [data.city, [Validators.required]],
-      district: [data.district, [Validators.required]],
-      created_by: [this.user_data.user_id],
-      updated_by: [this.user_data.user_id],
-      user_id: [data.user_id],
-    });
+    this.drawerTitle = 'Edit User Details';
+    console.log(data);
+    this.userAccountsFormValidators();
+    this.createUserForm.get('first_name')?.setValue(data.first_name);
+    this.createUserForm.get('last_name')?.setValue(data.last_name);
+    this.createUserForm.get('email')?.setValue(data.email);
+    this.createUserForm.get('user_name')?.setValue(data.user_name);
+    this.createUserForm.get('password_md5')?.setValue(null);
+    this.createUserForm.get('cnfrm_password_md5')?.setValue(null);
+    this.createUserForm.get('phone_number')?.setValue(data.phone_number);
+    this.createUserForm
+      .get('department_id')
+      ?.setValue(data.department_id.toString());
+    this.createUserForm.get('address')?.setValue(data.address);
+    this.createUserForm.get('city')?.setValue(data.city);
+    this.createUserForm.get('district')?.setValue(data.district);
+    this.createUserForm.get('created_by')?.setValue(this.user_data.user_id);
+    this.createUserForm.get('updated_by')?.setValue(this.user_data.user_id);
+    this.createUserForm.get('user_id')?.setValue(data.user_id);
   }
 
-  updateUser() {
+  onUpdate() {
     this.api
       .patchCall(
-        `/user/updateUser${this.createUserForm.value.user_id}`,
+        `/user/updateUser/${this.createUserForm.value.user_id}`,
         this.createUserForm.value
       )
       .subscribe();
@@ -158,6 +130,25 @@ export class UserAccountsComponent implements OnInit {
     });
   }
 
+  close(): void {
+    this.visible = false;
+  }
 
-
+  userAccountsFormValidators() {
+    this.createUserForm = this.fb.group({
+      first_name: [null, [Validators.required]],
+      last_name: [null, [Validators.required]],
+      email: [null, [Validators.required, Validators.email]],
+      user_name: [null, [Validators.required]],
+      password_md5: [null, [Validators.required]],
+      cnfrm_password_md5: [null, [Validators.required]],
+      phone_number: [null, [Validators.required]],
+      department_id: [null, [Validators.required]],
+      address: [null, [Validators.required]],
+      city: [null, [Validators.required]],
+      district: [null, [Validators.required]],
+      created_by: [this.user_data.user_id],
+      updated_by: [this.user_data.user_id],
+    });
+  }
 }

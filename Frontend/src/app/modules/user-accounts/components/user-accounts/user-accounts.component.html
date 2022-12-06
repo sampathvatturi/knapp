@@ -1,7 +1,20 @@
-<nz-header>User Accounts</nz-header>
+<nz-breadcrumb>
+  <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+  <nz-breadcrumb-item>
+    <a routerLink="/app/modules">Dashboard</a>
+  </nz-breadcrumb-item>
+  <nz-breadcrumb-item>User Accounts</nz-breadcrumb-item>
+</nz-breadcrumb>
+
 <nz-content>
-  <div class="b1">
-    <button nz-button nzType="default" (click)="open()" class="mb-2">
+  <div class="cbutton">
+    <nz-input-group [nzSuffix]="suffixIconSearch" class="searchInput">
+      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText"/>
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <span nz-icon nzType="search"></span>
+    </ng-template>
+    <button nz-button nzType="default" (click)="create()">
       Create
     </button>
   </div>
@@ -24,7 +37,7 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let data of basicTable.data; let i = index">
+      <tr *ngFor="let data of basicTable.data | globalTablesearch: searchText; let i = index">
         <td>{{ i+1 }}</td>
         <td>{{ data.user_name }}</td>
         <td>{{ data.phone_number }}</td>
@@ -139,7 +152,7 @@
               </nz-form-control>
             </nz-form-item>
 
-            <!-- <nz-form-item nz-col nzSpan="12">
+            <nz-form-item nz-col nzSpan="12">
                     <nz-form-label>Confirm Password</nz-form-label>
                     <nz-form-control [nzErrorTip]="errorTpl" class="create">
                         <nz-input-group nzPrefixIcon="lock">
@@ -152,7 +165,7 @@
                           </ng-template>
                         </nz-input-group>
                     </nz-form-control>
-                  </nz-form-item> -->
+                  </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label>Mobile Number</nz-form-label>
@@ -243,11 +256,11 @@
         Cancel
       </button>
 
-      <button nz-button *ngIf="submit" nzType="primary" (click)="onCreate()">
+      <button nz-button *ngIf="submit" nzType="primary" (click)="onSubmit()">
         Create
       </button>
 
-      <button nz-button *ngIf="!submit" nzType="primary" (click)="updateUser()">
+      <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdate()">
         Update
       </button>
     </div>

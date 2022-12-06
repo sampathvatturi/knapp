@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
-
-
+import { DepartmentService } from 'src/app/services/department.service';
 
 interface DataItem {
   status: string;
@@ -16,7 +15,7 @@ interface DataItem {
   styleUrls: ['./department-list.component.css'],
 })
 export class DepartmentListComponent implements OnInit {
-  listOfData: any[] = [];
+  departments = [];
   visible = false;
   submit = true;
   drawerTitle: string = '';
@@ -34,97 +33,87 @@ export class DepartmentListComponent implements OnInit {
   constructor(
     private fb: UntypedFormBuilder,
     private api: ApiService,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private deptService: DepartmentService
   ) {}
 
   ngOnInit(): void {
-    this.departmentForm = this.fb.group({
-      department_id: [{ value: '', disabled: true }],
-      department_name: [''],
-      ranking: [''],
-      status: [''],
-      created_date: [''],
-      created_by: [''],
-      updated_date: [''],
-      updated_by: [''],
-      department_code: [''],
-    });
-    this.api.getCall('/dept/getDepts').subscribe((list) => {
-      this.listOfData = list;
-      console.log(this.listOfData);
-    });
+    this.departmentFormValidators();
+    this.deptService
+      .getDepartments()
+      .subscribe((res) => (this.departments = res));
     this.user_data = sessionStorage.getItem('user_data');
     this.user_data = JSON.parse(this.user_data);
   }
 
-  edit(data: any) {
-    this.submit = false;
-    this.drawerTitle = 'Edit';
-    this.visible = true;
-    console.log(data.created_date);
-    this.departmentForm = this.fb.group({
-      department_id: [
-        { value: data.department_id, disabled: true },
-        [Validators.required],
-      ],
-      department_name: [data.department_name, [Validators.required]],
-      ranking: [data.ranking, [Validators.required]],
-      status: [data.status, [Validators.required]],
-      // created_date: [data.created_date, [Validators.required]],
-      created_by: [data.created_by, [Validators.required]],
-      // updated_date: [Date.now(), [Validators.required]],
-      updated_by: [this.user_data.user_id, [Validators.required]],
-      // department_code: [data.department_code, [Validators.required]],
-    });
-  }
-  open(): void {
+  create(): void {
     this.submit = true;
-    this.drawerTitle = 'New';
+    this.drawerTitle = 'Add New Department';
     this.visible = true;
-    this.departmentForm = this.fb.group({
-      department_id: [{ value: this.user_data.user_id, disabled: true }],
-      department_name: ['', [Validators.required]],
-      ranking: ['', [Validators.required]],
-      status: ['active', [Validators.required]],
-      // created_date: [''],
-      created_by: [this.user_data.user_id],
-      // updated_date: [''],
-      updated_by: [this.user_data.user_id],
-      // department_code: [''],
-    });
+    this.departmentFormValidators();
+    this.departmentForm.get('status')?.setValue('active');
+    this.departmentForm.get('created_by')?.setValue(this.user_data.user_id);
+    this.departmentForm.get('updated_by')?.setValue(this.user_data.user_id);
   }
 
-  close(): void {
-    this.visible = false;
-  }
   onSubmit() {
     console.log(this.departmentForm);
     this.api
       .postCall('/dept/createDept/', this.departmentForm.value)
       .subscribe((res) => {
-        // console.log(res.message);
         this.notification.createNotification('success', res.message);
         if (res.status === 'success') {
           this.visible = false;
-          this.api.getCall('/dept/getDepts').subscribe((list) => {
-            this.listOfData = list;
-          });
+          this.deptService
+            .getDepartments()
+            .subscribe((res) => (this.departments = res));
         }
       });
   }
-  update() {
+
+  edit(data: any) {
+    this.submit = false;
+    this.drawerTitle = 'Edit Department Details';
+    this.visible = true;
+    this.departmentFormValidators();
+    this.departmentForm.get('department_id')?.setValue(data.department_id);
+    this.departmentForm.get('department_name')?.setValue(data.department_name);
+    this.departmentForm.get('ranking')?.setValue(data.ranking);
+    this.departmentForm.get('status')?.setValue(data.status);
+    this.departmentForm.get('created_by')?.setValue(data.created_by);
+    this.departmentForm.get('updated_by')?.setValue(this.user_data.user_id);
+  }
+
+  onUpdate() {
     this.api
       .patchCall(
-        `/dept/updateDept/${this.user_data.user_id}`,
+        `/dept/updateDept/${this.departmentForm.value.department_id}`,
         this.departmentForm.value
       )
-      .subscribe((res)=>{
-        this.notification.createNotification(res.status,res.message)
-        this.api.getCall('/dept/getDepts').subscribe((list) => {
-          this.listOfData = list;
-        });
+      .subscribe((res) => {
+        this.notification.createNotification(res.status, res.message);
+        this.deptService
+          .getDepartments()
+          .subscribe((res) => (this.departments = res));
       });
     this.visible = false;
+  }
 
+  close(): void {
+    this.visible = false;
+  }
+
+  departmentFormValidators() {
+    this.departmentForm = this.fb.group({
+      department_id: [''],
+      department_name: ['', [Validators.required]],
+      ranking: ['', [Validators.required]],
+      status: ['', [Validators.required]],
+      created_date: ['', [Validators.required]],
+      created_by: ['', [Validators.required]],
+      updated_date: ['', [Validators.required]],
+      updated_by: ['', [Validators.required]],
+      department_code: ['', [Validators.required]],
+    });
   }
 }
