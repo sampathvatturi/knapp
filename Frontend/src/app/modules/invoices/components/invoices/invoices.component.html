@@ -73,23 +73,24 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Vendor</nz-form-label>
-        <nz-select
+        <nz-form-control nz-col nzSpan="10">
+          <nz-select
           formControlName="vendor_id"
-          nz-col
-          nzSpan="10"
           nzPlaceHolder="Vendor"
           nzShowSearch
         >
         <nz-option *ngFor="let v of vendor_array" nzValue={{v.vendor_id}} nzLabel={{v.vendor_name}}></nz-option>
 
         </nz-select>
+        </nz-form-control>
+        
       </nz-form-item>
     </div>
 
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Description</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Item">
           <input
             nz-input
             formControlName="invoice_item"
@@ -101,7 +102,7 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Quantity</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Quantity">
           <input
             nz-input
             formControlName="quantity"
@@ -114,7 +115,7 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Amount</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Amount">
           <input
             nz-input
             formControlName="amount"
@@ -128,7 +129,8 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Transaction Type</nz-form-label>
-        <nz-select
+        <nz-form-control nz-col nzSpan="10">
+          <nz-select
           formControlName="trnsx_type"
           nz-col
           nzSpan="10"
@@ -139,13 +141,15 @@
           <nz-option nzValue="credit" nzLabel="Credit"></nz-option>
           <nz-option nzValue="refund" nzLabel="Refund"></nz-option>
         </nz-select>
+        </nz-form-control>
+        
       </nz-form-item>
     </div>
 
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Tax</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Tax">
           <input
             nz-input
             formControlName="tax"
@@ -173,16 +177,16 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Department</nz-form-label>
-        <nz-select
+        <nz-form-control nz-col nzSpan="10">
+          <nz-select
           formControlName="department_id"
-          nz-col
-          nzSpan="10"
           nzPlaceHolder="Department"
           nzShowSearch
         >
         <nz-option *ngFor="let d of depts" nzValue={{d.department_id}} nzLabel={{d.department_name}}></nz-option>
 
         </nz-select>
+        </nz-form-control>
       </nz-form-item>
     </div>
 

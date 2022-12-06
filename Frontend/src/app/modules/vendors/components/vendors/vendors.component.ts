@@ -63,35 +63,58 @@ export class VendorsComponent implements OnInit {
     this.visible = false;
   }
   onSubmit() {
-    console.log(this.vendorForm);
+    if (this.vendorForm.valid){
     this.api.postCall('/vendor/createVendor', this.vendorForm.value).subscribe();
     this.visible = false;
 
     this.vendor.getVendors().subscribe((res) => this.vendor_info = res);
+    }
+
+    else {
+      console.log('invalid')
+      Object.values(this.vendorForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
   }
   onUpdate() {
-    
-    this.api.patchCall('/vendor/updateVendor/'+this.vendorForm.value.vendor_id,this.vendorForm.value).subscribe((res) =>{
+    if (this.vendorForm.valid){
+      this.api.patchCall('/vendor/updateVendor/'+this.vendorForm.value.vendor_id,this.vendorForm.value).subscribe((res) =>{
       
-      this.notification.createNotification(res.status,res.message);
-
-      this.vendor.getVendors().subscribe((res) => this.vendor_info = res);
-
-    });
-    this.visible = false;
+        this.notification.createNotification(res.status,res.message);
+  
+        this.vendor.getVendors().subscribe((res) => this.vendor_info = res);
+  
+      });
+      this.visible = false;
+    }
+    
+      else {
+        console.log('invalid')
+        Object.values(this.vendorForm.controls).forEach(control => {
+          if (control.invalid) {
+            control.markAsDirty();
+            control.updateValueAndValidity({ onlySelf: true });
+          }
+        });
+      }
+    
   }
 
   vendorFormValidators(){
     this.vendorForm = this.fb.group({
-      vendor_id: ['',[Validators.required]],
+      vendor_id: [''],
       vendor_name: ['',[Validators.required]],
       phone_number:['',[Validators.required]],
       address:['',[Validators.required]],
       status:['',[Validators.required]],
-      created_date: ['',[Validators.required]],
-      created_by: ['',[Validators.required]],
-      updated_date: ['',[Validators.required]],
-      updated_by: ['',[Validators.required]],
+      created_date: [''],
+      created_by: [''],
+      updated_date: [''],
+      updated_by: [''],
     });
   }
 }

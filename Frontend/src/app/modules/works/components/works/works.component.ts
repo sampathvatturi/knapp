@@ -18,6 +18,7 @@ export class WorksComponent implements OnInit {
   works:any = [];
   user_data:any = [];
   searchText = '';
+  errTip = '';
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -61,41 +62,66 @@ export class WorksComponent implements OnInit {
       this.visible = false;
     }
     onSubmit() {
-      this.api.postCall('/work/createWork', this.workForm.value).subscribe((res)=>{
-        if(res.status === "success"){
-          console.log('jmh')
-          this.notification.createNotification(res.status,res.message);
-          this.visible = false;
-          this.work.getWorks().subscribe((res) => this.works = res)
-        }else{
-          console.log('567')
-          this.notification.createNotification(res.status,res.message);
-        }
-      });
+      console.log('submit')
+
+      if (this.workForm.valid){
+        console.log('valid')
+        this.api.postCall('/work/createWork', this.workForm.value).subscribe((res)=>{
+          if(res.status === "success"){
+            console.log('jmh')
+            this.notification.createNotification(res.status,res.message);
+            this.visible = false;
+            this.work.getWorks().subscribe((res) => this.works = res)
+          }else{
+            console.log('567')
+            this.notification.createNotification(res.status,res.message);
+          }
+        });
+        
+      }
+      else {
+        console.log('invalid')
+        Object.values(this.workForm.controls).forEach(control => {
+          if (control.invalid) {
+            control.markAsDirty();
+            control.updateValueAndValidity({ onlySelf: true });
+          }
+        });
+      }
+      
     }
     onUpdate() {
-      this.api.patchCall('/work/updateWork/'+this.workForm.value.work_id,this.workForm.value).subscribe((res) =>{
-        if(res.status === 'success'){
-          console.log('123')
-          this.notification.createNotification(res.status,res.message);
-          this.visible = false;
-          this.work.getWorks().subscribe((res) => this.works = res)
-        }
-        else{
-          console.log('dsd')
-          this.notification.createNotification(res.status,res.message);
-        }
-      });
+      if (this.workForm.valid){
+        this.api.patchCall('/work/updateWork/'+this.workForm.value.work_id,this.workForm.value).subscribe((res) =>{
+          if(res.status === 'success'){
+            this.notification.createNotification(res.status,res.message);
+            this.visible = false;
+            this.work.getWorks().subscribe((res) => this.works = res)
+          }
+          else{  
+            this.notification.createNotification(res.status,res.message);
+          }
+        });
+      }
+      else {
+        console.log('invalid')
+        Object.values(this.workForm.controls).forEach(control => {
+          if (control.invalid) {
+            control.markAsDirty();
+            control.updateValueAndValidity({ onlySelf: true });
+          }
+        });
+      }
     }
 
     worksFormValidators(){
       this.workForm = this.fb.group({
-        vwork_id: ['',[Validators.required]],
+        work_id: [''],
         work_name: ['',[Validators.required]],
-        created_date: ['',[Validators.required]],
-        created_by: ['',[Validators.required]],
-        updated_date: ['',[Validators.required]],
-        updated_by: ['',[Validators.required]],
+        created_date: [''],
+        created_by: [''],
+        updated_date: [''],
+        updated_by: [''],
       });
     }
 }

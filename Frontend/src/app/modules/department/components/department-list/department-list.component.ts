@@ -57,18 +57,26 @@ export class DepartmentListComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.departmentForm);
-    this.api
-      .postCall('/dept/createDept/', this.departmentForm.value)
-      .subscribe((res) => {
-        this.notification.createNotification('success', res.message);
-        if (res.status === 'success') {
-          this.visible = false;
-          this.deptService
-            .getDepartments()
-            .subscribe((res) => (this.departments = res));
+    if (this.departmentForm.valid) {
+      this.api
+        .postCall('/dept/createDept/', this.departmentForm.value)
+        .subscribe((res) => {
+          this.notification.createNotification('success', res.message);
+          if (res.status === 'success') {
+            this.visible = false;
+            this.deptService
+              .getDepartments()
+              .subscribe((res) => (this.departments = res));
+          }
+        });
+    } else {
+      Object.values(this.departmentForm.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
         }
       });
+    }
   }
 
   edit(data: any) {
@@ -85,18 +93,27 @@ export class DepartmentListComponent implements OnInit {
   }
 
   onUpdate() {
-    this.api
-      .patchCall(
-        `/dept/updateDept/${this.departmentForm.value.department_id}`,
-        this.departmentForm.value
-      )
-      .subscribe((res) => {
-        this.notification.createNotification(res.status, res.message);
-        this.deptService
-          .getDepartments()
-          .subscribe((res) => (this.departments = res));
+    if (this.departmentForm.valid) {
+      this.api
+        .patchCall(
+          `/dept/updateDept/${this.departmentForm.value.department_id}`,
+          this.departmentForm.value
+        )
+        .subscribe((res) => {
+          this.notification.createNotification(res.status, res.message);
+          this.deptService
+            .getDepartments()
+            .subscribe((res) => (this.departments = res));
+        });
+      this.visible = false;
+    } else {
+      Object.values(this.departmentForm.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
       });
-    this.visible = false;
+    }
   }
 
   close(): void {
@@ -109,11 +126,11 @@ export class DepartmentListComponent implements OnInit {
       department_name: ['', [Validators.required]],
       ranking: ['', [Validators.required]],
       status: ['', [Validators.required]],
-      created_date: ['', [Validators.required]],
-      created_by: ['', [Validators.required]],
-      updated_date: ['', [Validators.required]],
-      updated_by: ['', [Validators.required]],
-      department_code: ['', [Validators.required]],
+      created_date: [''],
+      created_by: [''],
+      updated_date: [''],
+      updated_by: [''],
+      department_code: [''],
     });
   }
 }

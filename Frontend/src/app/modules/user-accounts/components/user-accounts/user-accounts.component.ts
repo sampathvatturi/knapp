@@ -117,7 +117,8 @@ export class UserAccountsComponent implements OnInit {
   }
 
   onUpdate() {
-    this.api
+    if (this.createUserForm.valid){
+      this.api
       .patchCall(
         `/user/updateUser/${this.createUserForm.value.user_id}`,
         this.createUserForm.value
@@ -128,6 +129,16 @@ export class UserAccountsComponent implements OnInit {
       this.users = [];
       this.users = res;
     });
+    }
+    else {
+      
+      Object.values(this.createUserForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
   }
 
   close(): void {

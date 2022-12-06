@@ -65,7 +65,7 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Vendor Name</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Vendor Name">
           <input
             nz-input
             formControlName="vendor_name"
@@ -80,7 +80,7 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Phone Number</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Phone Number">
           <input
             nz-input
             formControlName="phone_number"
@@ -95,7 +95,7 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Address</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Address">
           <textarea formControlName="address" nz-input rows="2" placeholder="Enter Your address"></textarea>
         </nz-form-control>
       </nz-form-item>
@@ -104,17 +104,20 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Status</nz-form-label>
-        <nz-select
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Select Status">
+          
+          <nz-select
           formControlName="status"
-          nz-col
-          nzSpan="10"
           nzPlaceHolder="Status"
           nzShowSearch
+          
         >
           <nz-option nzValue="active" nzLabel="Active"></nz-option>
           <nz-option nzValue="inactive" nzLabel="Inactive"></nz-option>
 
         </nz-select>
+        </nz-form-control>
+        
       </nz-form-item>
     </div>
 
