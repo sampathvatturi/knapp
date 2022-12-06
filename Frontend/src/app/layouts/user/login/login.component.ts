@@ -31,6 +31,12 @@ export class LoginComponent implements OnInit {
       password: [null, [Validators.required]],
       remember: [true]
     });
+    this.storageClear();
+  }
+
+  storageClear(): void {
+    localStorage.clear();
+    sessionStorage.clear();
   }
 
   signup() {

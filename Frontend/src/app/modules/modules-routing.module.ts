@@ -33,6 +33,7 @@ const routes: Routes = [
   ...USER_ACCOUNTS_ROUTES,
   ...VENDORS_ROUTES,
   ...WORKS_ROUTES,
+  { path: '**', redirectTo: 'login', pathMatch: 'full' }
 ];
 
 @NgModule({
