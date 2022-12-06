@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
+import { WorksService } from 'src/app/services/works.service';
 
 @Component({
   selector: 'app-works',
@@ -21,22 +22,15 @@ export class WorksComponent implements OnInit {
   constructor(
     private fb: UntypedFormBuilder,
     private api: ApiService,
-    private notification:NotificationService
+    private notification:NotificationService,private work:WorksService
     ) { }
 
     ngOnInit(): void {
-      this.workForm = this.fb.group({
-        vwork_id: [{ value: ''}],
-        work_name: [''],
-        created_date: [''],
-        created_by: [''],
-        updated_date: [''],
-        updated_by: [''],
-      });
+      
+      this.worksFormValidators();
 
-      this.api.getCall('/work/getWorks').subscribe((res) =>{
-        this.works = res;
-      })
+      this.work.getWorks().subscribe((res) => this.works = res)
+
 
       this.user_data = sessionStorage.getItem('user_data');
       this.user_data = JSON.parse(this.user_data);
@@ -46,25 +40,21 @@ export class WorksComponent implements OnInit {
       this.submit = false;
       this.drawerTitle = 'Edit';
       this.visible = true;
-      this.workForm = this.fb.group({
-        work_id: [
-          data.work_id,
-          [Validators.required],
-        ],
-        work_name: [data.vendor_name, [Validators.required]],
-        updated_by: [this.user_data.user_id],
-      });
+      this.worksFormValidators();
+      this.workForm.get('work_id')?.setValue(data.work_id);
+      this.workForm.get('work_name')?.setValue(data.work_name);
+      this.workForm.get('updated_by')?.setValue(this.user_data.user_id);
+      
     }
-    open(): void {
+    create(): void {
       this.submit = true;
       this.drawerTitle = 'New';
       this.visible = true;
-      this.workForm = this.fb.group({
-        work_id: [''],
-        work_name: ['', [Validators.required]],
-        created_by: [this.user_data.user_id],
-        updated_by: [this.user_data.user_id],
-      });
+
+      this.worksFormValidators();
+      this.workForm.get('created_by')?.setValue(this.user_data.user_id);
+      this.workForm.get('updated_by')?.setValue(this.user_data.user_id);
+      
     }
 
     close(): void {
@@ -76,28 +66,36 @@ export class WorksComponent implements OnInit {
           console.log('jmh')
           this.notification.createNotification(res.status,res.message);
           this.visible = false;
-          this.api.getCall('/work/getWorks').subscribe((res) =>{
-            this.works = res;
-          })
+          this.work.getWorks().subscribe((res) => this.works = res)
         }else{
           console.log('567')
           this.notification.createNotification(res.status,res.message);
         }
       });
     }
-    update() {
+    onUpdate() {
       this.api.patchCall('/work/updateWork/'+this.workForm.value.work_id,this.workForm.value).subscribe((res) =>{
         if(res.status === 'success'){
           console.log('123')
           this.notification.createNotification(res.status,res.message);
           this.visible = false;
-          this.api.getCall('/work/getWorks').subscribe((res) =>{
-          this.works = res;
-          })
-        }else{
+          this.work.getWorks().subscribe((res) => this.works = res)
+        }
+        else{
           console.log('dsd')
           this.notification.createNotification(res.status,res.message);
         }
+      });
+    }
+
+    worksFormValidators(){
+      this.workForm = this.fb.group({
+        vwork_id: ['',[Validators.required]],
+        work_name: ['',[Validators.required]],
+        created_date: ['',[Validators.required]],
+        created_by: ['',[Validators.required]],
+        updated_date: ['',[Validators.required]],
+        updated_by: ['',[Validators.required]],
       });
     }
 }

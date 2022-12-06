@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
+import { VendorsService } from 'src/app/services/vendors.service';
 
 @Component({
   selector: 'app-vendors',
@@ -18,25 +19,15 @@ export class VendorsComponent implements OnInit {
   vendor_array:any = [];
   user_data:any = [];
   searchText = '';
-  constructor(private fb: UntypedFormBuilder, private api: ApiService,private notification:NotificationService) {}
+  constructor(private fb: UntypedFormBuilder, 
+              private api: ApiService,
+              private notification:NotificationService,private vendor:VendorsService) {}
 
   ngOnInit(): void {
-    this.vendorForm = this.fb.group({
-      vendor_id: [{ value: ''}],
-      vendor_name: [''],
-      phone_number:[''],
-      address:[''],
-      status:[''],
-      created_date: [''],
-      created_by: [''],
-      updated_date: [''],
-      updated_by: [''],
-    });
+    
+    this.vendorFormValidators();
 
-    this.api.getCall('/vendor/getVendors').subscribe((items) =>{
-      this.vendor_info = items;
-      console.log(this.vendor_info);
-    })
+    this.vendor.getVendors().subscribe((res) => this.vendor_info = res);
 
     this.user_data = sessionStorage.getItem('user_data');
     this.user_data = JSON.parse(this.user_data);
@@ -44,35 +35,28 @@ export class VendorsComponent implements OnInit {
 
   edit(data: any) {
     this.submit = false;
-    this.drawerTitle = 'Edit';
+    this.drawerTitle = 'Edit Vendor Details';
     this.visible = true;
-    this.vendorForm = this.fb.group({
-      vendor_id: [
-        data.vendor_id,
-        [Validators.required],
-      ],
-      vendor_name: [data.vendor_name, [Validators.required]],
-      address: [data.address, [Validators.required]],
-      status: [data.status, [Validators.required]],
-      phone_number:[data.phone_number,[Validators.required]],
-      updated_by: [this.user_data.user_id],
-    });
+
+    this.vendorFormValidators();
+    this.vendorForm.get('vendor_id')?.setValue(data.vendor_id);
+    this.vendorForm.get('vendor_name')?.setValue(data.vendor_name);
+    this.vendorForm.get('address')?.setValue(data.address);
+    this.vendorForm.get('status')?.setValue(data.status);
+    this.vendorForm.get('phone_number')?.setValue(data.phone_number);
+    this.vendorForm.get('updated_by')?.setValue(this.user_data.user_id);
+    
+    
   }
-  open(): void {
+  create(): void {
     this.submit = true;
-    this.drawerTitle = 'New';
+    this.drawerTitle = 'Add New Vendor';
     this.visible = true;
-    this.vendorForm = this.fb.group({
-      vendor_id: [''],
-      vendor_name: ['', [Validators.required]],
-      phone_number:[''],
-      address:[''],
-      status:[''],
 
-      created_by: [this.user_data.user_id],
+    this.vendorFormValidators();
 
-      updated_by: [this.user_data.user_id],
-    });
+    this.vendorForm.get('created_by')?.setValue(this.user_data.user_id);
+    this.vendorForm.get('updated_by')?.setValue(this.user_data.user_id);
   }
 
   close(): void {
@@ -83,22 +67,31 @@ export class VendorsComponent implements OnInit {
     this.api.postCall('/vendor/createVendor', this.vendorForm.value).subscribe();
     this.visible = false;
 
-    this.api.getCall('/vendor/getVendors').subscribe((items) =>{
-      this.vendor_info = items;
-      console.log(this.vendor_info);
-    })
+    this.vendor.getVendors().subscribe((res) => this.vendor_info = res);
   }
-  update() {
-    console.log(this.vendorForm.value.vendor_id)
+  onUpdate() {
+    
     this.api.patchCall('/vendor/updateVendor/'+this.vendorForm.value.vendor_id,this.vendorForm.value).subscribe((res) =>{
+      
       this.notification.createNotification(res.status,res.message);
 
-      this.api.getCall('/vendor/getVendors').subscribe((items) =>{
-        this.vendor_info = items;
-        console.log(this.vendor_info);
-      })
+      this.vendor.getVendors().subscribe((res) => this.vendor_info = res);
 
     });
     this.visible = false;
+  }
+
+  vendorFormValidators(){
+    this.vendorForm = this.fb.group({
+      vendor_id: ['',[Validators.required]],
+      vendor_name: ['',[Validators.required]],
+      phone_number:['',[Validators.required]],
+      address:['',[Validators.required]],
+      status:['',[Validators.required]],
+      created_date: ['',[Validators.required]],
+      created_by: ['',[Validators.required]],
+      updated_date: ['',[Validators.required]],
+      updated_by: ['',[Validators.required]],
+    });
   }
 }
