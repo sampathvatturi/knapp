@@ -20,7 +20,7 @@ nz-header {
   z-index: 2;
 }
 .logo {
-  height: 63px;
+  height: 60px;
   background: rgb(255, 255, 255);
   position: sticky;
     top: 0;
@@ -29,6 +29,8 @@ nz-header {
 }
 .image {
   height: 60px;
+  margin-right: 0px;
+  padding-top: 10px;
 }
 
 .para {
@@ -65,6 +67,7 @@ scrollbar-width: none;  /* Firefox */
 }
 .list {
   width: 200px;
+  border-radius: 10px;
 }
 .item {
   height: 50px;
@@ -117,4 +120,21 @@ scrollbar-width: none;  /* Firefox */
 
 nz-avatar {
   margin-right: 0px !important;
+}
+
+.text-center{
+  padding-top: 10px;
+  font-weight: 500 !important;
+}
+
+.text-danger{
+  font-weight: 500 !important;
+  padding-bottom: 10px;
+  text-align: center !important;
+  font-size: 18px;
+}
+
+hr {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
 }

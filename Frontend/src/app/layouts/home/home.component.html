@@ -61,21 +61,14 @@
               <div>
                 <p class="text-center">Account</p>
                 <hr />
-                <div>
-                  <div class="avatar">
-                    <nz-avatar [nzText]="first_name + last_name"></nz-avatar>
-                    <p class="ml-4" style="font-size: 20px">
-                      {{ user_data.user_name }}
-                    </p>
+                <div class="pl-2">
+                  <div style="font-size: 14px">
+                    {{ user_data.first_name }} {{ user_data.last_name }}
                   </div>
-
-                  <div class="avatar">
-                    <p>Role</p>
-                    <p class="ml-4 stat">{{ user_data.status }}</p>
-                  </div>
+                  <div>Department: {{user_data?.department_name}}</div>
+                  <div>Staus: <span style="color: green; font-weight: 600;">{{ user_data.status }}</span></div>
                 </div>
                 <hr />
-
                 <div class="av1 pl-2">
                   <a class="text-primary">Settings</a>
                   <a class="text-primary" routerLink="modules/profile"
@@ -83,7 +76,9 @@
                   >
                 </div>
                 <hr />
-                <a (click)="logout()" class="text-danger pl-2">LogOut</a>
+                <div class="text-danger">                  
+                  <a (click)="logout()" >Logout</a>
+                </div>
               </div>
             </ul>
           </nz-dropdown-menu>
