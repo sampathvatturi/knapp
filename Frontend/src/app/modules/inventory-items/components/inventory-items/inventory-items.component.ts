@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { InventoryItemsService } from './../../../../services/inventory-items.service';
+import { GlobalConstants } from 'src/app/shared/global_constants';
 
 @Component({
   selector: 'app-inventory-items',
@@ -109,7 +110,7 @@ export class InventoryItemsComponent implements OnInit {
   inventoryFormValidators() {
     this.inventoryForm = this.fb.group({
       item_id: [''],
-      item_name: ['', [Validators.required]],
+      item_name: ['', [Validators.required,Validators.pattern(GlobalConstants.nameRegex),Validators.minLength(3),Validators.maxLength(50)]],
       quantity: ['', [Validators.required]],
       price: ['', [Validators.required]],
       tax: ['', [Validators.required]],

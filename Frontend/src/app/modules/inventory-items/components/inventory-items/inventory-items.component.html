@@ -65,7 +65,7 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Item Name</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Item Name">
+        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="inventoryErrorTip">
           <input
             nz-input
             formControlName="item_name"
@@ -73,6 +73,12 @@
             nz-input
             placeholder="please enter Item Name"
           />
+          <ng-template #inventoryErrorTip let-control>
+            <ng-container *ngIf="control.hasError('required')">Please enter item name</ng-container>
+            <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 3 characters<br /></ng-container>
+            <ng-container *ngIf="control.hasError('maxlength')">Maximum length exceeded<br /></ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">Please enter valid input</ng-container>
+          </ng-template>
         </nz-form-control>
       </nz-form-item>
     </div>

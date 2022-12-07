@@ -5,6 +5,7 @@ import { DepartmentService } from 'src/app/services/department.service';
 import { InvoicesService } from 'src/app/services/invoices.service';
 import { VendorsService } from 'src/app/services/vendors.service';
 import { NotificationService } from './../../../../services/auth/notification.service';
+import { GlobalConstants } from 'src/app/shared/global_constants';
 
 @Component({
   selector: 'app-invoices',
@@ -184,11 +185,11 @@ export class InvoicesComponent implements OnInit {
     this.invoiceForm = this.fb.group({
       invoice_details_id: [''],
       vendor_id: ['', [Validators.required]],
-      invoice_item: ['', [Validators.required]],
-      quantity: ['', [Validators.required]],
-      amount: ['', [Validators.required]],
+      invoice_item: ['', [Validators.required,Validators.minLength(10),Validators.maxLength(200),Validators.pattern(GlobalConstants.nameRegex)]],
+      quantity: ['', [Validators.required,Validators.pattern(GlobalConstants.amountNumberRegex)]],
+      amount: ['', [Validators.required,Validators.pattern(GlobalConstants.amountNumberRegex)]],
       trnsx_type: ['', [Validators.required]],
-      tax: ['', [Validators.required]],
+      tax: ['', [Validators.required,Validators.pattern(GlobalConstants.amountNumberRegex)]],
       total: ['', [Validators.required]],
       created_date: [''],
       created_by: [''],

@@ -59,7 +59,7 @@
   <div>
     <nz-form-item>
       <nz-form-label nz-col nzSpan="5">Work Name</nz-form-label>
-      <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Work Name">
+      <nz-form-control nz-col nzSpan="10" [nzErrorTip]="worksErrorTip">
         <input
           nz-input
           formControlName="work_name"
@@ -67,6 +67,12 @@
           nz-input
           placeholder="please enter Work Name"
         />
+        <ng-template #worksErrorTip let-control>
+          <ng-container *ngIf="control.hasError('required')">Please enter work name</ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">Please enter valid input<br /></ng-container>
+            <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 3 characters<br /></ng-container>
+            <ng-container *ngIf="control.hasError('maxlength')">Maximum length exceeded</ng-container>
+        </ng-template>
       </nz-form-control>
     </nz-form-item>
   </div>

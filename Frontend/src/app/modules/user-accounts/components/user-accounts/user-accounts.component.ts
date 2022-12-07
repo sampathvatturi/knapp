@@ -5,6 +5,7 @@ import { NotificationService } from 'src/app/services/auth/notification.service'
 import { Md5hashService } from 'src/app/services/md5hash.service';
 import { UserService } from 'src/app/services/user.service';
 import { DepartmentService } from 'src/app/services/department.service';
+import { GlobalConstants } from 'src/app/shared/global_constants';
 
 @Component({
   selector: 'app-user-accounts',
@@ -123,7 +124,9 @@ export class UserAccountsComponent implements OnInit {
         `/user/updateUser/${this.createUserForm.value.user_id}`,
         this.createUserForm.value
       )
-      .subscribe();
+      .subscribe(res =>{
+        this.notificationService.createNotification(res.status, res.message);
+      });
     this.visible = false;
     this.api.getCall('/user/getUsers').subscribe((res) => {
       this.users = [];
@@ -147,15 +150,15 @@ export class UserAccountsComponent implements OnInit {
 
   userAccountsFormValidators() {
     this.createUserForm = this.fb.group({
-      first_name: [null, [Validators.required]],
-      last_name: [null, [Validators.required]],
-      email: [null, [Validators.required, Validators.email]],
-      user_name: [null, [Validators.required]],
+      first_name: [null, [Validators.required,Validators.pattern(GlobalConstants.usernanmeRegex),Validators.minLength(3),Validators.maxLength(50)]],
+      last_name: [null, [Validators.required,Validators.pattern(GlobalConstants.usernanmeRegex),Validators.minLength(3),Validators.maxLength(50)]],
+      email: [null, [Validators.required,Validators.pattern(GlobalConstants.emailRegex)]],
+      user_name: [null, [Validators.required,Validators.pattern(GlobalConstants.nameRegex),Validators.minLength(8),Validators.maxLength(50)]],
       password_md5: [null, [Validators.required]],
       cnfrm_password_md5: [null, [Validators.required]],
-      phone_number: [null, [Validators.required]],
+      phone_number: [null, [Validators.required,Validators.pattern(GlobalConstants.contactNumberRegex)]],
       department_id: [null, [Validators.required]],
-      address: [null, [Validators.required]],
+      address: [null, [Validators.required,Validators.pattern(GlobalConstants.addressRegex),Validators.minLength(15),Validators.maxLength(150)]],
       city: [null, [Validators.required]],
       district: [null, [Validators.required]],
       created_by: [this.user_data.user_id],

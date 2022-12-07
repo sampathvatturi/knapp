@@ -73,7 +73,7 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Vendor</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Select Vendor">
           <nz-select
           formControlName="vendor_id"
           nzPlaceHolder="Vendor"
@@ -90,24 +90,34 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Description</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Item">
+        <nz-form-control nz-col nzSpan="10" [nzErrorTip] = "invoiceErrorTip1">
           <input
             nz-input
             formControlName="invoice_item"
             placeholder="Enter Invoice Item"
           />
+          <ng-template #invoiceErrorTip1 let-control>
+            <ng-container *ngIf="control.hasError('required')">Please enter invoice item</ng-container>
+            <ng-container *ngIf="control.hasError('maxlength')">Maxlength exceeded<br /></ng-container>
+            <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 10 characters<br /></ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">Please enter valid input</ng-container>
+          </ng-template>
         </nz-form-control>
       </nz-form-item>
     </div>
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Quantity</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Quantity">
+        <nz-form-control nz-col nzSpan="10" [nzErrorTip] = "invoiceErrorTip2">
           <input
             nz-input
             formControlName="quantity"
             placeholder="Enter Quantity"  (keyup)="change()"
           />
+          <ng-template #invoiceErrorTip2 let-control>
+            <ng-container *ngIf="control.hasError('required')">Please enter quantity</ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">Invalid - Numbers Only</ng-container>
+          </ng-template>
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -115,13 +125,17 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Amount</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Amount">
+        <nz-form-control nz-col nzSpan="10" [nzErrorTip] = "invoiceErrorTip3">
           <input
             nz-input
             formControlName="amount"
             placeholder="Enter Amount"
             (keyup)="change()"
           />
+          <ng-template #invoiceErrorTip3 let-control>
+            <ng-container *ngIf="control.hasError('required')">Please enter amount</ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">Invalid - Numbers Only</ng-container>
+          </ng-template>
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -129,7 +143,7 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Transaction Type</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Select Transaction Type">
           <nz-select
           formControlName="trnsx_type"
           nz-col
@@ -149,13 +163,18 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Tax</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Tax">
+        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="invoiceErrorTip4">
           <input
             nz-input
             formControlName="tax"
             placeholder="Enter Tax"
             (keyup)="change()"
           />
+          <ng-template #invoiceErrorTip4 let-control>
+            <ng-container *ngIf="control.hasError('required')">Please enter Tax</ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">Invalid - Numbers Only</ng-container>
+          </ng-template>
+
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -177,7 +196,7 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Department</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Select Department">
           <nz-select
           formControlName="department_id"
           nzPlaceHolder="Department"

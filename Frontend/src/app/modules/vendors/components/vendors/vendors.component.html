@@ -65,7 +65,7 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Vendor Name</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Vendor Name">
+        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="vendorErrorTip1">
           <input
             nz-input
             formControlName="vendor_name"
@@ -73,6 +73,12 @@
             nz-input
             placeholder="please enter Vendor Name"
           />
+          <ng-template #vendorErrorTip1 let-control>
+            <ng-container *ngIf="control.hasError('required')">Please enter vendor name</ng-container>
+            <ng-container *ngIf="control.hasError('maxlength')">Maxlength exceeded<br /></ng-container>
+            <ng-container *ngIf="control.hasError('minlength')">Enter atleast 3 characters<br /></ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">Please enter valid input</ng-container>
+          </ng-template>
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -80,7 +86,7 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Phone Number</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Phone Number">
+        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="vendorErrorTip2">
           <input
             nz-input
             formControlName="phone_number"
@@ -88,6 +94,10 @@
             nz-input
             placeholder="please enter Phone Number"
           />
+          <ng-template #vendorErrorTip2 let-control>
+            <ng-container *ngIf="control.hasError('required')">Please enter phone number</ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">Invalid - numbers only</ng-container>
+          </ng-template>
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -95,9 +105,15 @@
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Address</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Address">
+        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="vendorErrorTip3">
           <textarea formControlName="address" nz-input rows="2" placeholder="Enter Your address"></textarea>
         </nz-form-control>
+        <ng-template #vendorErrorTip3 let-control>
+          <ng-container *ngIf="control.hasError('required')">Please enter address</ng-container>
+          <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 15 characters<br /></ng-container>
+          <ng-container *ngIf="control.hasError('maxlength')">maximum length exceeded<br /></ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">Please enter valid input</ng-container>
+        </ng-template>
       </nz-form-item>
     </div>
 

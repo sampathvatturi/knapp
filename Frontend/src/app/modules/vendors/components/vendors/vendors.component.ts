@@ -3,6 +3,7 @@ import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
 import { VendorsService } from 'src/app/services/vendors.service';
+import { GlobalConstants } from 'src/app/shared/global_constants';
 
 @Component({
   selector: 'app-vendors',
@@ -107,9 +108,9 @@ export class VendorsComponent implements OnInit {
   vendorFormValidators(){
     this.vendorForm = this.fb.group({
       vendor_id: [''],
-      vendor_name: ['',[Validators.required]],
-      phone_number:['',[Validators.required]],
-      address:['',[Validators.required]],
+      vendor_name: ['',[Validators.required,Validators.pattern(GlobalConstants.nameRegex),Validators.maxLength(50),Validators.minLength(3)]],
+      phone_number:['',[Validators.required,Validators.pattern(GlobalConstants.contactNumberRegex)]],
+      address:['',[Validators.required,Validators.pattern(GlobalConstants.addressRegex),Validators.minLength(15),Validators.maxLength(150)]],
       status:['',[Validators.required]],
       created_date: [''],
       created_by: [''],

@@ -78,7 +78,7 @@
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label class="lab">First Name</nz-form-label>
               <nz-form-control
-                nzErrorTip="Please input your First Name!"
+                [nzErrorTip]="firstNameErrTip"
                 class="create"
               >
                 <input
@@ -87,13 +87,19 @@
                   formControlName="first_name"
                   placeholder="First Name"
                 />
+                <ng-template #firstNameErrTip let-control>
+                  <ng-container *ngIf="control.hasError('required')">Please enter first name</ng-container>
+                  <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 3 characters<br /></ng-container>
+                  <ng-container *ngIf="control.hasError('maxlength')">Maxlength exceeded<br /></ng-container>
+                  <ng-container *ngIf="control.hasError('pattern')">Please enter valid input<br /></ng-container>
+                </ng-template>
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label>Last Name</nz-form-label>
               <nz-form-control
-                nzErrorTip="Please input your Last Name"
+                [nzErrorTip]="lastNameErrTip"
                 class="create"
               >
                 <input
@@ -102,13 +108,19 @@
                   formControlName="last_name"
                   placeholder="Last Name"
                 />
+                <ng-template #lastNameErrTip let-control>
+                  <ng-container *ngIf="control.hasError('required')">Please enter last name</ng-container>
+                  <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 3 characters<br /></ng-container>
+                  <ng-container *ngIf="control.hasError('maxlength')">Maxlength exceeded<br /></ng-container>
+                  <ng-container *ngIf="control.hasError('pattern')">Please enter valid input<br /></ng-container>
+                </ng-template>
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label>Email</nz-form-label>
               <nz-form-control
-                nzErrorTip="Please input your Email!"
+                [nzErrorTip]="emailErrorTip"
                 class="create"
               >
                 <input
@@ -117,13 +129,17 @@
                   formControlName="email"
                   placeholder="Email"
                 />
+                <ng-template #emailErrorTip let-control>
+                  '<ng-container *ngIf="control.hasError('required')">Please enter email</ng-container>
+                  <ng-container *ngIf="control.hasError('pattern')">Please enter valid email<br /></ng-container>
+                </ng-template>
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label>User Name</nz-form-label>
               <nz-form-control
-                nzErrorTip="Please input your username"
+                [nzErrorTip]="userNameErrorTip"
                 class="create"
               >
                 <input
@@ -132,6 +148,12 @@
                   formControlName="user_name"
                   placeholder="User name"
                 />
+                <ng-template #userNameErrorTip let-control>
+                  <ng-container *ngIf="control.hasError('required')">Please enter user name</ng-container>
+                  <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 8 characters<br /></ng-container>
+                  <ng-container *ngIf="control.hasError('maxlength')">Maxlength exceeded<br /></ng-container>
+                  <ng-container *ngIf="control.hasError('pattern')">Please enter valid input<br /></ng-container>
+                </ng-template>
               </nz-form-control>
             </nz-form-item>
 
@@ -146,34 +168,28 @@
                   nz-input
                   formControlName="password_md5"
                   placeholder="Password"
+                  autocomplete="new-password"
                 />
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label>Confirm Password</nz-form-label>
-              <nz-form-control [nzErrorTip]="errorTpl" class="create">
+              <nz-form-control  class="create" nzErrorTip="Please confirm your password!">
                 <input
                   type="password"
                   nz-input
                   formControlName="cnfrm_password_md5"
                   placeholder="Re-enter Password"
+                  
                 />
-                <ng-template #errorTpl let-control>
-                  <ng-container *ngIf="control.hasError('required')"
-                    >Please confirm your password!</ng-container
-                  >
-                  <ng-container *ngIf="control.hasError('confirm')">
-                    Two passwords that you enter is inconsistent!
-                  </ng-container>
-                </ng-template>
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label>Mobile Number</nz-form-label>
               <nz-form-control
-                nzErrorTip="Please input your Mobile Number"
+                [nzErrorTip]="mobileErrorTip"
                 class="create"
               >
                 <input
@@ -182,12 +198,16 @@
                   formControlName="phone_number"
                   placeholder="Mobile Number"
                 />
+                <ng-template #mobileErrorTip let-control>
+                  '<ng-container *ngIf="control.hasError('required')">Please enter mobile number</ng-container>
+                  <ng-container *ngIf="control.hasError('pattern')">Invalid - numbers only<br /></ng-container>
+                </ng-template>
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label>Department</nz-form-label>
-              <nz-form-control class="create">
+              <nz-form-control class="create" nzErrorTip="Please Select Department">
                 <nz-select
                   nzShowSearch
                   nzAllowClear
@@ -207,7 +227,7 @@
             <nz-form-item nz-col nzSpan="24">
               <nz-form-label style="margin-bottom: none">Address</nz-form-label>
               <nz-form-control
-                nzErrorTip="Please enter your address"
+                [nzErrorTip]="addressErrorTip"
                 class="address"
               >
                 <nz-input-group nzPrefixIcon="home">
@@ -217,13 +237,20 @@
                     formControlName="address"
                     placeholder="Address"
                   />
+                  <ng-template #addressErrorTip let-control>
+                    <ng-container *ngIf="control.hasError('required')">Please enter address</ng-container>
+                    <ng-container *ngIf="control.hasError('minlength')">please enter atleast 15 characters<br /></ng-container>
+                    <ng-container *ngIf="control.hasError('maxlength')">Maximum length exceeded<br /></ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">Please enter valid input</ng-container>
+                  </ng-template>
+                  
                 </nz-input-group>
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label>City</nz-form-label>
-              <nz-form-control class="create">
+              <nz-form-control class="create" nzErrorTip="Please Select City">
                 <nz-select
                   formControlName="city"
                   nzShowSearch
@@ -238,7 +265,7 @@
 
             <nz-form-item nz-col nzSpan="12">
               <nz-form-label>District</nz-form-label>
-              <nz-form-control class="create">
+              <nz-form-control class="create" nzErrorTip="Please Select District">
                 <nz-select
                   formControlName="district"
                   nzShowSearch
