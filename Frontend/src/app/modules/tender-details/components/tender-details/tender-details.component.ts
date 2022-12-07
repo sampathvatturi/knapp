@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { cO, X } from 'chart.js/dist/chunks/helpers.core';
+import { arraysEqual } from 'ng-zorro-antd/core/util';
+import { of } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
+import { WorksService } from 'src/app/services/works.service';
 
 @Component({
   selector: 'app-tender-details',
@@ -19,9 +23,8 @@ export class TenderDetailsComponent implements OnInit {
   vendors:any = [];
   user_data:any = [];
   searchText = '';
-  works:any []= [];
-  departments:any []= [];
-  departmentsSelected:any []= [];
+  worksDetails:any []= [];
+  worksNames:any []= [];
   usersSelected:any []= [];
   showUsers: any ;
   departmentUsers:any []= [];
@@ -29,14 +32,23 @@ export class TenderDetailsComponent implements OnInit {
   constructor(
     private fb: UntypedFormBuilder,
     private api: ApiService,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private works:WorksService
   ) {}
+
+
 
   ngOnInit(): void {
     this.tendorsFormValidators();
     this.api.getCall('/tickets/getTickets').subscribe((res) => {
       if(res.length > 0){
         this.tenders = res;
+        // this.tenders.forEach((work:any)=>{
+        //   var work_id = work.toString();
+        //   this.works.getWorkDetailsById().subscribe((res) => {
+        //     this.works = res;
+        //   })
+        // })
       }else{
         this.tenders = [];
       }
@@ -47,9 +59,7 @@ export class TenderDetailsComponent implements OnInit {
       this.vendors = res;
     })
 
-    this.api.getCall('/work/getWorks').subscribe((res) => {
-      this.works = res;
-    })
+
 
     this.api.getCall('/user/getUsersByDepartment').subscribe((res) => {
       res.forEach((data:any) => {
@@ -63,13 +73,19 @@ export class TenderDetailsComponent implements OnInit {
       });
     })
 
-    this.api.getCall('/dept/getDepts').subscribe((res) => {
-        this.departments = res;
+    this.works.getWorks().subscribe((res:any)=>{
+        this.worksDetails=res;
+      res.forEach((data:any)=>{
+        this.worksNames[data.work_id] = data.work_name;
+      })
     })
 
+
     this.user_data = sessionStorage.getItem('user_data');
-    this.user_data = JSON.parse(this.user_data)
+    this.user_data = JSON.parse(this.user_data);
+
   }
+
   edit(data: any) {
     this.submit = false;
     this.drawerTitle = 'Edit Tender details';
@@ -83,8 +99,6 @@ export class TenderDetailsComponent implements OnInit {
       });
     }else
       selectedUsers =[];
-
-
 
     this.tenderDetailsForm.get('ticket_id')?.setValue(data.ticket_id);
     this.tenderDetailsForm.get('vendor_id')?.setValue(data.vendor_id.toString());
@@ -156,4 +170,26 @@ export class TenderDetailsComponent implements OnInit {
       updated_by: [null, [Validators.required]],
     });
   }
+
+  getWorknames(id:any){
+    var workNames="";
+    if(Array.isArray(id) === true)
+        id = id;
+    else
+      id = id.split(',');
+    if(id.length === 1){
+      workNames = this.worksNames[id];
+      return workNames;
+    }else{
+      id.forEach((val:any) => {
+        if(workNames == '')
+          workNames= this.worksNames[val];
+        else
+          workNames=workNames+','+this.worksNames[val];
+      })
+      return workNames;
+    }
+  }
+
+
 }

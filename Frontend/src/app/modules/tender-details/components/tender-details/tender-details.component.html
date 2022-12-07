@@ -1,7 +1,7 @@
 <nz-breadcrumb>
   <nz-breadcrumb-item>Home</nz-breadcrumb-item>
   <nz-breadcrumb-item>
-    <a routerLink="modules/dashboard">Dashboard</a>
+    <a routerLink="../dashboard">Dashboard</a>
   </nz-breadcrumb-item>
   <nz-breadcrumb-item>Tender Details</nz-breadcrumb-item>
 </nz-breadcrumb>
@@ -29,6 +29,7 @@
         <th>S.No.</th>
         <th>Ticket Description</th>
         <th>Vendor</th>
+        <th>Works</th>
         <th>Location</th>
         <th>Tender Cost</th>
         <th>Status</th>
@@ -43,10 +44,11 @@
         <td>{{ i+1 }}</td>
         <td>{{ data.ticket_description }}</td>
         <td>{{ data.vendor_name }}</td>
+        <td>{{getWorknames(data.work_id)}}</td>
         <td>{{ data.location }}</td>
         <td>{{ data.tender_cost }}</td>
         <td>{{ data.status }}</td>
-        <td>{{ data.created_date }}</td>
+        <td>{{ data.created_date | date : "medium"}}</td>
         <td>
           <div class="editbtn">
             <a (click)="edit(data)">Edit</a> / <a (click)="edit(data)">view</a>
@@ -102,7 +104,7 @@
         formControlName="work_id"
         nzPlaceHolder="Select Works"
       >
-          <nz-option *ngFor="let w of works"
+          <nz-option *ngFor="let w of worksDetails"
           [nzLabel]="w.work_name"
           [nzValue]="w.work_id"
           ></nz-option>
@@ -127,46 +129,6 @@
         </nz-form-control>
       </nz-form-item>
     </div>
-
-    <!-- <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Department</nz-form-label>
-        <nz-select
-        nz-col
-        nzSpan="16"
-        nzMode="multiple"
-        formControlName="department_id"
-        nzPlaceHolder="Select Department to assign"
-        (ngModelChange)="getUsers($event)"
-      >
-          <nz-option *ngFor="let d of departments"
-          [nzLabel]="d.department_name"
-          [nzValue]="d.department_id"
-          ></nz-option>
-        </nz-select>
-      </nz-form-item>
-    </div>
-
-    <div>
-      <nz-form-item *ngIf="showUsers">
-        <nz-form-label nz-col nzSpan="5">Users</nz-form-label>
-        <nz-select
-        nz-col
-        nzSpan="16"
-        [nzMaxTagCount]="3"
-        nzMode="multiple"
-        formControlName="user_id"
-        nzPlaceHolder="Select User to assign"
-      >
-      <nz-option-group *ngFor="let d of departmentsSelected" [nzLabel]="d">
-        <nz-option
-        [nzValue]="d.user_id"
-        [nzLabel]="d.first_name"
-        ></nz-option>
-      </nz-option-group>
-        </nz-select>
-      </nz-form-item>
-    </div> -->
 
     <div>
       <nz-form-item>

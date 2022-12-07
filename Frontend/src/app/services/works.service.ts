@@ -18,11 +18,11 @@ export class WorksService {
     );
   }
 
-  // getWorkById(id: any): Observable<any>{
-  //   return this.apiService.getCall(''+id).pipe(
-  //     map((response: any) => {
-  //       return response;
-  //     })
-  //   );
-  // }
+  getWorkById(id: any): Observable<any>{
+    return this.apiService.getCall('/work/getWork/'+id).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
 }
