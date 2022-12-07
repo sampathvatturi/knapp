@@ -8,16 +8,18 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-import { catchError } from 'rxjs/operators';
+import { catchError, finalize } from 'rxjs/operators';
 import { NotificationService } from './notification.service';
 import { GlobalConstants } from 'src/app/shared/global_constants';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Injectable()
 export class TokenInterceptorInterceptor implements HttpInterceptor {
 
   constructor(
     private router: Router,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private ngxUiLoaderService: NgxUiLoaderService,
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -26,9 +28,11 @@ export class TokenInterceptorInterceptor implements HttpInterceptor {
       request = request.clone({
         setHeaders: {Authorization: `Bearer ${token}`}
       });
-    }
-    return next.handle(request).pipe(
-      catchError((error) => {
+    }    
+    // this.ngxUiLoaderService.start();
+    return next.handle(request).pipe(         
+      // finalize(() => this.ngxUiLoaderService.stop()),
+      catchError((error) => {  
         if(error instanceof HttpErrorResponse){
           console.log("Interceptor Error: ", error.url);
           if(error.status === 401 || error.status === 402){
@@ -46,7 +50,7 @@ export class TokenInterceptorInterceptor implements HttpInterceptor {
           this.notificationService.createNotification('error', error.error.message ?? GlobalConstants.genericError);  
         }
         return throwError(error);
-      })
+      })   
     );
   }
 }

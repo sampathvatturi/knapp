@@ -24,11 +24,15 @@ export class HomeComponent implements OnInit {
     this.menuItems = mainMenu?.mainMenu;
     console.log(this.menuItems);
     this.user_data = sessionStorage.getItem('user_data');
-    this.user_data = JSON.parse(this.user_data);
-    this.first_name = this.user_data.first_name.slice(0, 1).toUpperCase();
-    this.last_name = this.user_data.last_name.slice(0, 1).toUpperCase();
-    this.full_name = this.user_data.first_name + ' ' + this.user_data.last_name;
-    this.getDepartments();
+    if(this.user_data) {      
+      this.user_data = JSON.parse(this.user_data);
+      this.first_name = this.user_data.first_name.slice(0, 1).toUpperCase();
+      this.last_name = this.user_data.last_name.slice(0, 1).toUpperCase();
+      this.full_name = this.user_data.first_name + ' ' + this.user_data.last_name;
+      this.getDepartments();
+    } else {
+      this.logout();
+    }
   }
 
   getDepartments(): void {
@@ -38,7 +42,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  logout() {
+  logout(): void {
     localStorage.clear();
     sessionStorage.clear();
     this.route.navigateByUrl('/login');
