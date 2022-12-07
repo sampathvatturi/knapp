@@ -2,5 +2,61 @@
 @import "~ng-zorro-antd/ng-zorro-antd.css";
 
 .ant-notification-notice-icon {
-    line-height: 0 !important;
+  line-height: 0 !important;
+}
+
+/* red marker for required form lables*/
+.required::after {
+  display: inline-block;
+  margin-left: -7px;
+  color: #ff4d4f;
+  font-size: 14px;
+  vertical-align: super;
+  font-family: SimSun, sans-serif;
+  line-height: 1;
+  content: "*";
+}
+
+/* class for nz-content inside components*/
+.component-content {
+  background: #fff;
+  padding: 24px;
+  padding-top: 12px;
+  height: auto;
+}
+
+/* id for all breadcrumbs*/
+#breadcrumb {
+  padding-top: 2px;
+  padding-bottom: 5px;
+}
+
+/* drawer form labels*/
+.drawer-form nz-form-label {
+  text-align: left;
+}
+
+/* view and edit links in tables*/
+#editbtn {
+  width: fit-content;
+}
+#editbtn a:hover {
+  color: #1890ff;
+  text-decoration: underline;
+}
+
+/* searchbox and create button*/
+#search-create {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+#search-create nz-input-group {
+  width: 200px;
+}
+
+/* close button on drawer form*/
+.fa-circle-xmark {
+  color: rgb(237, 61, 61);
+  font-size: x-large;
 }

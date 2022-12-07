@@ -1,4 +1,4 @@
-<nz-breadcrumb>
+<nz-breadcrumb id="breadcrumb">
   <nz-breadcrumb-item>Home</nz-breadcrumb-item>
   <nz-breadcrumb-item>
     <a routerLink="/app/modules">Dashboard</a>
@@ -6,9 +6,9 @@
   <nz-breadcrumb-item>Departments</nz-breadcrumb-item>
 </nz-breadcrumb>
 
-<nz-content>
-  <div class="cbutton" >
-    <nz-input-group [nzSuffix]="suffixIconSearch" class="searchInput">
+<nz-content class="component-content">
+  <div id="search-create" >
+    <nz-input-group [nzSuffix]="suffixIconSearch">
       <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText"/>
     </nz-input-group>
     <ng-template #suffixIconSearch>
@@ -42,7 +42,7 @@
         <td>{{ data.status }}</td>
         <td>{{ data.created_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
         <td>
-          <div class="editbtn">
+          <div id="editbtn">
             <a (click)="edit(data)">Edit</a> / <a (click)="edit(data)">view</a>
           </div>
         </td>
@@ -52,18 +52,25 @@
 </nz-content>
 <nz-drawer
   [nzBodyStyle]="{ overflow: 'auto' }"
-  [nzMaskClosable]="false"
-  [nzWidth]="720"
+  [nzMaskClosable]="true"
+  [nzWidth]="600"
   [nzVisible]="visible"
   [nzTitle]="drawerTitle"
   [nzFooter]="footerTpl"
   (nzOnClose)="close()"
+  [nzClosable]="false"
+  [nzCloseIcon]="icon"
+  [nzExtra]="icon"
+  class="drawer"
 >
-  <form nz-form *nzDrawerContent [formGroup]="departmentForm">
+<ng-template #icon>
+  <i (click)="close()" class="fa-solid fa-circle-xmark"></i>
+</ng-template>
+  <form nz-form *nzDrawerContent [formGroup]="departmentForm" class="drawer-form">
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5" nzRequired>Department Name</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" nzHasFeedback [nzErrorTip]="deptErrorTp">
+        <nz-form-label nz-col nzSpan="10" nzRequired>Department Name</nz-form-label>
+        <nz-form-control nz-col nzSpan="12" nzHasFeedback [nzErrorTip]="deptErrorTp">
           <input
             nz-input
             formControlName="department_name"
@@ -73,8 +80,8 @@
           />
           <ng-template #deptErrorTp let-control>
             <ng-container *ngIf="control.hasError('required')">Please Enter Department Name</ng-container>
-            <ng-container *ngIf="control.hasError('maxlength')">Maxlength is 50</ng-container>
-            <ng-container *ngIf="control.hasError('minlength')">Minlength is 10</ng-container>
+            <ng-container *ngIf="control.hasError('maxlength')">Maxlength is 50 <br /></ng-container>
+            <ng-container *ngIf="control.hasError('minlength')">Minlength is 10 <br /></ng-container>
             <ng-container *ngIf="control.hasError('pattern')">Please Enter Valid Department Name</ng-container>
           </ng-template>
         </nz-form-control>
@@ -83,8 +90,8 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Ranking</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Rank">
+        <nz-form-label nz-col nzSpan="10">Ranking</nz-form-label>
+        <nz-form-control nz-col nzSpan="12" nzErrorTip="Please Enter Rank">
           <input
             nz-input
             formControlName="ranking"
@@ -98,11 +105,11 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Status</nz-form-label>
+        <nz-form-label nz-col nzSpan="10">Status</nz-form-label>
         <nz-select
           formControlName="status"
           nz-col
-          nzSpan="10"
+          nzSpan="12"
           nzPlaceHolder="Status"
           nzShowSearch
         >

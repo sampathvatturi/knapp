@@ -1,55 +1,34 @@
 nz-header {
-    background: none;
-    font-size: x-large;
-    font-weight: 500;
-  }
-  nz-content {
-    background: #fff;
-    padding: 24px;
-    min-height: 80vh;}
+  background: none;
+  font-size: x-large;
+  font-weight: 500;
+}
+nz-content {
+  background: #fff;
+  padding: 24px;
+  min-height: 80vh;
+}
+nz-breadcrumb {
+  padding-top: 2px;
+  padding-bottom: 5px;
+}
 
-    .login-form-margin {
-    
-        margin-top:10px;
-        
-      }
-      .login-form-forgot {
-        float: right;
-      }
-      .box{
-        width: 620px;
-        
-      }
-      .signup{
-        width:250px;
-        margin-left:2px;
-      }
-    .ant-form-item{
-      margin-bottom:0px;
-    }
-    
-    .ant-form-item-label .label{
-    margin-bottom:0px;
-    }
-    
-    
-    nz-form-label{
-      margin-bottom:-10px;
-    }
-    .address{
-        width:560px;
-    }
-    nz-form-label::after{
-      display: inline-block;
-      margin-left: -7px;
-      color: #ff4d4f;
-      font-size: 14px;
-      font-family: SimSun,sans-serif;
-      line-height: 1;
-      content: '*';
-    }
-.order{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+.box {
+  width: 620px;
+}
+nz-form-label{
+  margin-right: 10px;
+}
+
+.order {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+[nz-form] {
+  max-width: 600px;
+}
+
+button {
+  margin-left: 12px;
 }

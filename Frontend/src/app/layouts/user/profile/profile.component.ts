@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators,FormControl} from '@angular/forms';
-import { ApiService } from 'src/app/services/api.service';
+import { UntypedFormBuilder, FormGroup, Validators,FormControl, UntypedFormControl, UntypedFormGroup, ValidationErrors} from '@angular/forms';
+import { Observable, Observer } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -8,39 +8,52 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  validateForm!: FormGroup;
-  user_data: any;
-  departments: any;
-  dept:any;
 
-  constructor(private fb: UntypedFormBuilder,private api:ApiService) { }
-  
+
+  constructor(private fb: UntypedFormBuilder) {
+    this.validateForm = this.fb.group({
+      current_password: ['', [Validators.required]],
+      password: ['', [Validators.required]],
+      confirm: ['', [this.confirmValidator]],
+    });
+  }
+
 
   ngOnInit(): void {
-    this.api.getCall('/dept/getDepts').subscribe((list) => {
-      this.departments = list;
-    });
-    this.user_data = sessionStorage.getItem('user_data');
-    this.user_data = JSON.parse(this.user_data);
-    this.validateForm = this.fb.group({
-      first_name: [this.user_data.first_name, [Validators.required]],
-      last_name: [this.user_data.last_name, [Validators.required]],
-      email: [this.user_data.email, [Validators.required,Validators.email]],
-      password: [null, [Validators.required]],
-      phone_number: [this.user_data.phone_number, [Validators.required]],
-      department_id: [this.user_data.department_id, [Validators.required]],
-      address: [this.user_data.address, [Validators.required]],
-      city: [this.user_data.city, [Validators.required]],
-      district: [this.user_data.district, [Validators.required]],
-    });
-
-    this.dept = this.departments.department_id
-    
-    
   }
-  
+  validateForm: UntypedFormGroup;
 
-  
-  
+  submitForm(): void {
+    console.log('submit', this.validateForm.value);
+  }
+
+  resetForm(e: MouseEvent): void {
+    e.preventDefault();
+    this.validateForm.reset();
+    for (const key in this.validateForm.controls) {
+      if (this.validateForm.controls.hasOwnProperty(key)) {
+        this.validateForm.controls[key].markAsPristine();
+        this.validateForm.controls[key].updateValueAndValidity();
+      }
+    }
+  }
+
+  validateConfirmPassword(): void {
+    setTimeout(() => this.validateForm.controls['confirm'].updateValueAndValidity());
+  }
+
+  confirmValidator = (control: UntypedFormControl): { [s: string]: boolean } => {
+    if (!control.value) {
+      return { error: true, required: true };
+    } else if (control.value !== this.validateForm.controls['password'].value) {
+      return { confirm: true, error: true };
+    }
+    return {};
+  };
+
+
+
+
+
 }
 
