@@ -49,7 +49,7 @@ export class DepartmentListComponent implements OnInit {
 
   create(): void {
     this.submit = true;
-    this.drawerTitle = 'Add New Department';
+    this.drawerTitle = 'Add Department';
     this.visible = true;
     this.departmentFormValidators();
     this.departmentForm.get('status')?.setValue('active');
@@ -125,8 +125,8 @@ export class DepartmentListComponent implements OnInit {
     this.departmentForm = this.fb.group({
       department_id: [''],
       department_name: ['', [ Validators.required,
-                              Validators.maxLength(50), 
-                              Validators.minLength(10), 
+                              Validators.maxLength(50),
+                              Validators.minLength(10),
                               Validators.pattern(GlobalConstants.nameRegex)
                             ]
                        ],

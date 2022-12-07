@@ -1,4 +1,4 @@
-<nz-breadcrumb>
+<nz-breadcrumb id="breadcrumb">
   <nz-breadcrumb-item>Home</nz-breadcrumb-item>
   <nz-breadcrumb-item>
     <a routerLink="../dashboard">Dashboard</a>
@@ -6,15 +6,22 @@
   <nz-breadcrumb-item>Tender Details</nz-breadcrumb-item>
 </nz-breadcrumb>
 
-<nz-content>
-  <div class="cbutton" >
-    <nz-input-group [nzSuffix]="suffixIconSearch" class="searchInput">
-      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText"/>
+<nz-content id="component-content">
+  <div id="search-create">
+    <nz-input-group [nzSuffix]="suffixIconSearch">
+      <input
+        type="text"
+        nz-input
+        placeholder="Search"
+        [(ngModel)]="searchText"
+      />
     </nz-input-group>
     <ng-template #suffixIconSearch>
       <span nz-icon nzType="search"></span>
     </ng-template>
-    <button nz-button nzType="default" (click)="open()">Create</button>
+    <button nz-button nzType="default" (click)="create()">
+      Add &nbsp; <i class="fa-solid fa-plus"></i>
+    </button>
   </div>
 
   <nz-table
@@ -35,23 +42,32 @@
         <th>Status</th>
         <th>Created Date</th>
         <th>Action</th>
-
-
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of basicTable.data | globalTablesearch: searchText, let i=index">
-        <td>{{ i+1 }}</td>
+      <tr
+        *ngFor="
+          let data of basicTable.data | globalTablesearch : searchText;
+          let i = index
+        "
+      >
+        <td>{{ i + 1 }}</td>
         <td>{{ data.ticket_description }}</td>
         <td>{{ data.vendor_name }}</td>
-        <td>{{getWorknames(data.work_id)}}</td>
+        <td>{{ getWorknames(data.work_id) }}</td>
         <td>{{ data.location }}</td>
         <td>{{ data.tender_cost }}</td>
         <td>{{ data.status }}</td>
-        <td>{{ data.created_date | date : "medium"}}</td>
+        <td>{{ data.created_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
         <td>
           <div class="editbtn">
-            <a (click)="edit(data)">Edit</a> / <a (click)="edit(data)">view</a>
+            <a nz-tooltip="Edit" (click)="edit(data)"
+              ><i class="fa-regular fa-pen-to-square"></i
+            ></a>
+            <b> / </b>
+            <a nz-tooltip="View" (click)="edit(data)"
+              ><i class="fa-regular fa-eye"></i
+            ></a>
           </div>
         </td>
       </tr>
@@ -60,27 +76,44 @@
 </nz-content>
 <nz-drawer
   [nzBodyStyle]="{ overflow: 'auto' }"
-  [nzMaskClosable]="false"
+  [nzMaskClosable]="true"
   [nzWidth]="720"
   [nzVisible]="visible"
   [nzTitle]="drawerTitle"
   [nzFooter]="footerTpl"
   (nzOnClose)="close()"
+  [nzClosable]="false"
+  [nzCloseIcon]="icon"
+  [nzExtra]="icon"
 >
-  <form nz-form *nzDrawerContent [formGroup]="tenderDetailsForm">
-
+  <ng-template #icon>
+    <i (click)="close()" class="fa-solid fa-circle-xmark"></i>
+  </ng-template>
+  <form
+    nz-form
+    *nzDrawerContent
+    [formGroup]="tenderDetailsForm"
+    class="drawer-form"
+  >
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Ticket Description</nz-form-label>
+        <nz-form-label class="required" nz-col nzSpan="5"
+          >Ticket Description</nz-form-label
+        >
         <nz-form-control nz-col nzSpan="10">
-          <textarea formControlName="ticket_description" nz-input rows="2" placeholder="Enter Ticket Description"></textarea>
+          <textarea
+            formControlName="ticket_description"
+            nz-input
+            rows="2"
+            placeholder="Enter Ticket Description"
+          ></textarea>
         </nz-form-control>
       </nz-form-item>
     </div>
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Vendor</nz-form-label>
+        <nz-form-label class="required" nz-col nzSpan="5">Vendor</nz-form-label>
         <nz-select
           formControlName="vendor_id"
           nz-col
@@ -88,25 +121,10 @@
           nzPlaceHolder="Vendor"
           nzShowSearch
         >
-        <nz-option *ngFor="let v of vendors" nzValue={{v.vendor_id}} nzLabel={{v.vendor_name}}></nz-option>
-
-        </nz-select>
-      </nz-form-item>
-    </div>
-
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Works</nz-form-label>
-        <nz-select
-        nz-col
-        nzSpan="16"
-        nzMode="multiple"
-        formControlName="work_id"
-        nzPlaceHolder="Select Works"
-      >
-          <nz-option *ngFor="let w of worksDetails"
-          [nzLabel]="w.work_name"
-          [nzValue]="w.work_id"
+          <nz-option
+            *ngFor="let v of vendors"
+            nzValue="{{ v.vendor_id }}"
+            nzLabel="{{ v.vendor_name }}"
           ></nz-option>
         </nz-select>
       </nz-form-item>
@@ -114,40 +132,75 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Location</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <textarea formControlName="location" nz-input rows="2" placeholder="Enter Your location"></textarea>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Tender Cost</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input type="number" formControlName="tender_cost" nz-input  placeholder="Enter Ticket Est. Cost" />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Assign to</nz-form-label>
+        <nz-form-label class="required" nz-col nzSpan="5">Works</nz-form-label>
         <nz-select
-        nz-col
-        nzSpan="16"
-        nzMode="multiple"
-        formControlName="assign_to"
-        nzPlaceHolder="Select User to assign"
-        [nzOptions]="departmentUsers"
-      >
+          nz-col
+          nzSpan="16"
+          nzMode="multiple"
+          formControlName="work_id"
+          nzPlaceHolder="Select Works"
+        >
+          <nz-option
+            *ngFor="let w of worksDetails"
+            [nzLabel]="w.work_name"
+            [nzValue]="w.work_id"
+          ></nz-option>
         </nz-select>
       </nz-form-item>
     </div>
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Status</nz-form-label>
+        <nz-form-label class="required" nz-col nzSpan="5"
+          >Location</nz-form-label
+        >
+        <nz-form-control nz-col nzSpan="10">
+          <textarea
+            formControlName="location"
+            nz-input
+            rows="2"
+            placeholder="Enter Your location"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div>
+      <nz-form-item>
+        <nz-form-label class="required" nz-col nzSpan="5"
+          >Tender Cost</nz-form-label
+        >
+        <nz-form-control nz-col nzSpan="10">
+          <input
+            type="number"
+            formControlName="tender_cost"
+            nz-input
+            placeholder="Enter Ticket Est. Cost"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div>
+      <nz-form-item>
+        <nz-form-label class="required" nz-col nzSpan="5"
+          >Assign to</nz-form-label
+        >
+        <nz-select
+          nz-col
+          nzSpan="16"
+          nzMode="multiple"
+          formControlName="assign_to"
+          nzPlaceHolder="Select User to assign"
+          [nzOptions]="departmentUsers"
+        >
+        </nz-select>
+      </nz-form-item>
+    </div>
+
+    <div>
+      <nz-form-item>
+        <nz-form-label class="required" nz-col nzSpan="5">Status</nz-form-label>
         <nz-select
           formControlName="status"
           nz-col
@@ -162,9 +215,7 @@
         </nz-select>
       </nz-form-item>
     </div>
-
-    </form>
-
+  </form>
 
   <ng-template #footerTpl>
     <div style="float: right">
@@ -174,7 +225,7 @@
       <button nz-button *ngIf="submit" nzType="primary" (click)="onSubmit()">
         Submit
       </button>
-      <button nz-button *ngIf="!submit" nzType="primary" (click)="update()">
+      <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdate()">
         Update
       </button>
     </div>

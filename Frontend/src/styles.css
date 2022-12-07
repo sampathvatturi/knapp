@@ -5,7 +5,7 @@
   line-height: 0 !important;
 }
 
-/* red marker for required form lables*/
+/* red marker for required form lables (nz-form-lables)*/
 .required::after {
   display: inline-block;
   margin-left: -7px;
@@ -18,7 +18,7 @@
 }
 
 /* class for nz-content inside components*/
-.component-content {
+#component-content {
   background: #fff;
   padding: 24px;
   padding-top: 12px;
@@ -39,6 +39,11 @@
 /* view and edit links in tables*/
 #editbtn {
   width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+#editbtn i {
+  font-size: 15px;
 }
 #editbtn a:hover {
   color: #1890ff;
@@ -59,4 +64,10 @@
 .fa-circle-xmark {
   color: rgb(237, 61, 61);
   font-size: x-large;
+}
+
+/*center all table items*/
+#component-content th,
+#component-content td {
+  text-align: center;
 }
