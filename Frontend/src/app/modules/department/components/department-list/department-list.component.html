@@ -62,15 +62,21 @@
   <form nz-form *nzDrawerContent [formGroup]="departmentForm">
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Department Name</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Department">
+        <nz-form-label nz-col nzSpan="5" nzRequired>Department Name</nz-form-label>
+        <nz-form-control nz-col nzSpan="10" nzHasFeedback [nzErrorTip]="deptErrorTp">
           <input
             nz-input
             formControlName="department_name"
             type="text"
             nz-input
-            placeholder="please enter Department Name"
+            placeholder="Please Enter Department Name"
           />
+          <ng-template #deptErrorTp let-control>
+            <ng-container *ngIf="control.hasError('required')">Please Enter Department Name</ng-container>
+            <ng-container *ngIf="control.hasError('maxlength')">Maxlength is 50</ng-container>
+            <ng-container *ngIf="control.hasError('minlength')">Minlength is 10</ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">Please Enter Valid Department Name</ng-container>
+          </ng-template>
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -84,7 +90,7 @@
             formControlName="ranking"
             type="number"
             nz-input
-            placeholder="please enter Rank"
+            placeholder="Please Enter Rank"
           />
         </nz-form-control>
       </nz-form-item>

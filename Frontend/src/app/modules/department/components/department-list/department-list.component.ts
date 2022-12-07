@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormGroup, PatternValidator, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
 import { DepartmentService } from 'src/app/services/department.service';
+import { GlobalConstants } from 'src/app/shared/global_constants';
 
 interface DataItem {
   status: string;
@@ -123,7 +124,12 @@ export class DepartmentListComponent implements OnInit {
   departmentFormValidators() {
     this.departmentForm = this.fb.group({
       department_id: [''],
-      department_name: ['', [Validators.required]],
+      department_name: ['', [ Validators.required,
+                              Validators.maxLength(50), 
+                              Validators.minLength(10), 
+                              Validators.pattern(GlobalConstants.nameRegex)
+                            ]
+                       ],
       ranking: ['', [Validators.required]],
       status: ['', [Validators.required]],
       created_date: [''],
