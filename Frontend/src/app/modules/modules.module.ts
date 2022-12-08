@@ -19,7 +19,8 @@ import { WORKS_COMPONENTS } from './works';
 import { NgChartsModule } from 'ng2-charts';
 import { SURVEY_REPORT_COMPONENTS } from './survey-report';
 import { WORK_ORDERS_COMPONENTS } from './work-orders';
-
+import { ACCOUNTING_DETAILS_COMPONENTS } from './accounting-details';
+import { TRANSACTION_DETAILS_COMPONENTS } from './transaction-details';
 
 @NgModule({
   declarations: [
@@ -37,15 +38,17 @@ import { WORK_ORDERS_COMPONENTS } from './work-orders';
     ...VENDORS_COMPONENTS,
     ...WORKS_COMPONENTS,
     ...SURVEY_REPORT_COMPONENTS,
-    ...WORK_ORDERS_COMPONENTS
+    ...WORK_ORDERS_COMPONENTS,
+    ...ACCOUNTING_DETAILS_COMPONENTS,
+    ...TRANSACTION_DETAILS_COMPONENTS,
   ],
   imports: [
-  ModulesRoutingModule,
+    ModulesRoutingModule,
     NgAntdModule,
     ReactiveFormsModule,
     CommonModule,
     FormsModule,
-    NgChartsModule
+    NgChartsModule,
   ],
 })
 export class ModulesModule {}

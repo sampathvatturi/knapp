@@ -15,6 +15,8 @@ import { VENDORS_ROUTES } from './vendors';
 import { WORKS_ROUTES } from './works';
 import { SURVEY_REPORT_ROUTES } from './survey-report';
 import { WORK_ORDERS_ROUTES } from './work-orders';
+import { ACCOUNTING_DETAILS_ROUTES } from './accounting-details';
+import { TRANSACTION_DETAILS_ROUTES } from './transaction-details';
 
 const routes: Routes = [
   {
@@ -37,7 +39,9 @@ const routes: Routes = [
   ...WORKS_ROUTES,
   ...SURVEY_REPORT_ROUTES,
   ...WORK_ORDERS_ROUTES,
-  { path: '**', redirectTo: 'login', pathMatch: 'full' }
+  ...ACCOUNTING_DETAILS_ROUTES,
+  ...TRANSACTION_DETAILS_ROUTES,
+  { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];
 
 @NgModule({
