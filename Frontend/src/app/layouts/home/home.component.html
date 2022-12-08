@@ -14,16 +14,28 @@
     </div>
 
     <ul nz-menu nzMode="inline">
-      <li
-        nz-menu-item
-        routerLink="{{ item.route }}"
-        *ngFor="let item of menuItems"
-        [nzMatchRouter]="true"
-        [nzSelected]="true"
-      >
-        <span nz-icon><i class="{{ item.icon }}"></i></span>
-        <span>{{ item.title }}</span>
-      </li>
+      <ng-container *ngFor="let item of menuItems">
+        <li *ngIf="!item.children" nz-menu-item routerLink="{{ item.route }}">
+          <span nz-icon><i class="{{ item.icon }}"></i></span>
+          <span>{{ item.title }}</span>
+        </li>
+        <li *ngIf="item.children" nz-submenu [nzTitle]="title">
+          <ul>
+            <li
+              nz-menu-item
+              routerLink="{{ child.route }}"
+              *ngFor="let child of item.children"
+            >
+              <span nz-icon><i class="{{ child.icon }}"></i></span>
+              <span>{{ child.title }}</span>
+            </li>
+          </ul>
+        </li>
+        <ng-template #title>
+          <span nz-icon><i class="{{ item.icon }}"></i></span>
+          <span>{{ item.title }}</span>
+        </ng-template>
+      </ng-container>
     </ul>
   </nz-sider>
 

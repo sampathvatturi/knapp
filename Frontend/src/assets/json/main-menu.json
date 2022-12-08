@@ -9,7 +9,8 @@
       "title": "Tender Details",
       "route": "modules/tender-details",
       "icon": "fa-solid fa-circle-info"
-    },    {
+    },
+    {
       "title": "Survey Report",
       "route": "modules/survey-report",
       "icon": "fa-solid fa-file-contract"
@@ -55,6 +56,22 @@
       "icon": "fa-solid fa-person-digging"
     },
     {
+      "title": "Accouting",
+      "icon": "fa-solid fa-building-columns",
+      "children": [
+        {
+          "title": "Accouting Details",
+          "route": "modules/accounting-details",
+          "icon": "fa-solid fa-calculator"
+        },
+        {
+          "title": "Transaction Details",
+          "route": "modules/transaction-details",
+          "icon": "fa-solid fa-hands"
+        }
+      ]
+    },
+    {
       "title": "User Accounts",
       "route": "modules/user-accounts",
       "icon": "fa-solid fa-users"
@@ -64,12 +81,11 @@
       "route": "modules/payment-proceedings",
       "icon": "fa-solid fa-money-check-dollar"
     },
-    
+
     {
       "title": "Approvals",
       "route": "modules/approvals",
       "icon": "fa-solid fa-thumbs-up"
-    } 
-    
+    }
   ]
 }
