@@ -17,6 +17,9 @@ import { USER_ACCOUNTS_COMPONENTS } from './user-accounts';
 import { VENDORS_COMPONENTS } from './vendors';
 import { WORKS_COMPONENTS } from './works';
 import { NgChartsModule } from 'ng2-charts';
+import { SURVEY_REPORT_COMPONENTS } from './survey-report';
+import { WORK_ORDERS_COMPONENTS } from './work-orders';
+
 
 @NgModule({
   declarations: [
@@ -33,9 +36,11 @@ import { NgChartsModule } from 'ng2-charts';
     ...USER_ACCOUNTS_COMPONENTS,
     ...VENDORS_COMPONENTS,
     ...WORKS_COMPONENTS,
+    ...SURVEY_REPORT_COMPONENTS,
+    ...WORK_ORDERS_COMPONENTS
   ],
   imports: [
-    ModulesRoutingModule,
+  ModulesRoutingModule,
     NgAntdModule,
     ReactiveFormsModule,
     CommonModule,

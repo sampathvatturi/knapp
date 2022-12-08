@@ -6,17 +6,24 @@
   <nz-breadcrumb-item>Expenditure</nz-breadcrumb-item>
 </nz-breadcrumb>
 
-<nz-content>
-  <div class="cbutton" >
-    <nz-input-group [nzSuffix]="suffixIconSearch" class="searchInput">
-      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText"/>
+<nz-content id="component-content">
+  <div id="search-create">
+    <nz-input-group [nzSuffix]="suffixIconSearch">
+      <input
+        type="text"
+        nz-input
+        placeholder="Search"
+        [(ngModel)]="searchText"
+      />
     </nz-input-group>
     <ng-template #suffixIconSearch>
       <span nz-icon nzType="search"></span>
     </ng-template>
-    <button nz-button nzType="default" (click)="open()">Create</button>
+    <button nz-button nzType="default" (click)="create()">
+      Add &nbsp; <i class="fa-solid fa-plus"></i>
+    </button>
   </div>
-  
+
   <nz-table
     #basicTable
     [nzData]="listOfData"
@@ -26,29 +33,25 @@
   >
     <thead>
       <tr>
-        <th>Dept ID</th>
-        <th>Dept Name</th>
-        <th>Ranking</th>
-        <th>Status</th>
-        <th>Created Date</th>
-        <th>Created By</th>
-        <th>Update Date</th>
-        <th>Update By</th>
-        <th>Dept Code</th>
+        <th>S.No.</th>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+        <th>Purchase Date</th>
+        <th>Purchased By</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of basicTable.data">
-        <td>{{ data.department_id }}</td>
-        <td>{{ data.department_name }}</td>
-        <td>{{ data.ranking }}</td>
-        <td>{{ data.status }}</td>
-        <td>{{ data.created_date }}</td>
-        <td>{{ data.created_by }}</td>
-        <td>{{ data.updated_date }}</td>
-        <td>{{ data.updated_by }}</td>
-        <td>{{ data.department_code }}</td>
+      <tr *ngFor="let data of basicTable.data; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ data.description }}</td>
+        <td>{{ data.quantity }}</td>
+        <td>{{ data.price }}</td>
+        <td>{{ data.total }}</td>
+        <td>{{ data.purchase_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
+        <td>{{ data.purchased_by }}</td>
         <td>
           <button nz-button nzType="primary" (click)="edit(data)">Edit</button>
         </td>
@@ -64,30 +67,29 @@
   [nzTitle]="drawerTitle"
   [nzFooter]="footerTpl"
   (nzOnClose)="close()"
+  [nzClosable]="false"
+  [nzCloseIcon]="icon"
+  [nzExtra]="icon"
 >
-  <form nz-form *nzDrawerContent [formGroup]="departmentform">
+  <ng-template #icon>
+    <i (click)="close()" class="fa-solid fa-circle-xmark"></i>
+  </ng-template>
+  <form
+    nz-form
+    *nzDrawerContent
+    [formGroup]="departmentform"
+    class="drawer-form"
+  >
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Dept ID</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="department_id"
-            placeholder="please enter Department ID"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Department Name</nz-form-label>
+        <nz-form-label class="required" nz-col nzSpan="5">Description</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
             formControlName="department_name"
             type="text"
             nz-input
-            placeholder="please enter Department Name"
+            placeholder="please enter Description"
           />
         </nz-form-control>
       </nz-form-item>
@@ -95,14 +97,14 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Ranking</nz-form-label>
+        <nz-form-label class="required" nz-col nzSpan="5">Quantity</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
             formControlName="ranking"
             type="number"
             nz-input
-            placeholder="please enter Rank"
+            placeholder="please enter Quantity"
           />
         </nz-form-control>
       </nz-form-item>
@@ -110,14 +112,14 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Status</nz-form-label>
+        <nz-form-label class="required" nz-col nzSpan="5">Price</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
             formControlName="status"
             type="text"
             nz-input
-            placeholder="please enter Status"
+            placeholder="please enter Price"
           />
         </nz-form-control>
       </nz-form-item>
@@ -125,14 +127,28 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Department Code</nz-form-label>
+        <nz-form-label class="required" nz-col nzSpan="5">Total</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
             formControlName="department_code"
             type="text"
             nz-input
-            placeholder="please enter Department code"
+            placeholder="please enter Total"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div>
+      <nz-form-item>
+        <nz-form-label class="required" nz-col nzSpan="5">Purchased By</nz-form-label>
+        <nz-form-control nz-col nzSpan="10">
+          <input
+            nz-input
+            formControlName="department_code"
+            type="text"
+            nz-input
+            placeholder="please enter Purchased By"
           />
         </nz-form-control>
       </nz-form-item>

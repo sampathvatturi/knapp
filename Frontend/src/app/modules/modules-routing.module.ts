@@ -13,6 +13,8 @@ import { PROFILE_ROUTES } from '../layouts/user/profile';
 import { USER_ACCOUNTS_ROUTES } from './user-accounts';
 import { VENDORS_ROUTES } from './vendors';
 import { WORKS_ROUTES } from './works';
+import { SURVEY_REPORT_ROUTES } from './survey-report';
+import { WORK_ORDERS_ROUTES } from './work-orders';
 
 const routes: Routes = [
   {
@@ -33,6 +35,8 @@ const routes: Routes = [
   ...USER_ACCOUNTS_ROUTES,
   ...VENDORS_ROUTES,
   ...WORKS_ROUTES,
+  ...SURVEY_REPORT_ROUTES,
+  ...WORK_ORDERS_ROUTES,
   { path: '**', redirectTo: 'login', pathMatch: 'full' }
 ];
 

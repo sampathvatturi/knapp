@@ -15,7 +15,7 @@ export class ExpenditureComponent implements OnInit {
   drawerTitle: string = '';
   departmentform!: FormGroup;
   searchText = '';
-  
+
   constructor(
     private fb: UntypedFormBuilder,
     private api: ApiService
@@ -33,14 +33,14 @@ export class ExpenditureComponent implements OnInit {
       updated_by: [''],
       department_code: [''],
     });
-    this.api.getCall('/dept/getDepts').subscribe((list) => {
-      this.listOfData = list;
-      console.log(this.listOfData);
-    });
+    // this.api.getCall('/dept/getDepts').subscribe((list) => {
+    //   this.listOfData = list;
+    //   console.log(this.listOfData);
+    // });
   }
   edit(data: any) {
     this.submit = false;
-    this.drawerTitle = 'Edit';
+    this.drawerTitle = 'Edit Purchase';
     this.visible = true;
     this.departmentform = this.fb.group({
       department_id: [data.department_id, [Validators.required]],
@@ -54,9 +54,9 @@ export class ExpenditureComponent implements OnInit {
       department_code: [data.department_code, [Validators.required]],
     });
   }
-  open(): void {
+  create(): void {
     this.submit = true;
-    this.drawerTitle = 'New';
+    this.drawerTitle = 'Add Purchase';
     this.visible = true;
     this.departmentform = this.fb.group({
       department_id: [''],
