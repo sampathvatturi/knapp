@@ -28,6 +28,7 @@ export class InvoicesComponent implements OnInit {
   amt: any;
   tot: any;
   tx: any;
+  globalConstants = GlobalConstants;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -186,10 +187,10 @@ export class InvoicesComponent implements OnInit {
       invoice_details_id: [''],
       vendor_id: ['', [Validators.required]],
       invoice_item: ['', [Validators.required,Validators.minLength(10),Validators.maxLength(200),Validators.pattern(GlobalConstants.nameRegex)]],
-      quantity: ['', [Validators.required,Validators.pattern(GlobalConstants.amountNumberRegex)]],
-      amount: ['', [Validators.required,Validators.pattern(GlobalConstants.amountNumberRegex)]],
+      quantity: ['', [Validators.required,Validators.pattern(GlobalConstants.numberRegex)]],
+      amount: ['', [Validators.required, Validators.pattern(GlobalConstants.amountRegex)]],
       trnsx_type: ['', [Validators.required]],
-      tax: ['', [Validators.required,Validators.pattern(GlobalConstants.amountNumberRegex)]],
+      tax: ['', [Validators.required,Validators.pattern(GlobalConstants.numberRegex)]],
       total: ['', [Validators.required]],
       created_date: [''],
       created_by: [''],

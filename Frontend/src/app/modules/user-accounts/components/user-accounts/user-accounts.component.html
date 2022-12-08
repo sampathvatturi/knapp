@@ -200,7 +200,7 @@
                 />
                 <ng-template #mobileErrorTip let-control>
                   '<ng-container *ngIf="control.hasError('required')">Please enter mobile number</ng-container>
-                  <ng-container *ngIf="control.hasError('pattern')">Invalid - numbers only<br /></ng-container>
+                  <ng-container *ngIf="control.hasError('pattern')">Please enter valid Mobile Number<br /></ng-container>
                 </ng-template>
               </nz-form-control>
             </nz-form-item>

@@ -134,7 +134,7 @@
           />
           <ng-template #invoiceErrorTip3 let-control>
             <ng-container *ngIf="control.hasError('required')">Please enter amount</ng-container>
-            <ng-container *ngIf="control.hasError('pattern')">Invalid - Numbers Only</ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">{{globalConstants.amountError}}</ng-container>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
