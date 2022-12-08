@@ -10,6 +10,7 @@ const vendorRoutes = require('./routes/vendorRoutes');
 const inventoryRoutes = require('./routes/inventoryRoutes');
 const invoiceRoutes = require('./routes/invoiceRoutes');
 const workRoutes = require('./routes/workRoutes');
+const fundRoutes = require('./routes/fundRoutes');
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use('/vendor', vendorRoutes);
 app.use('/inventory', inventoryRoutes);
 app.use('/invoicedetails', invoiceRoutes);
 app.use('/work', workRoutes);
+app.use('/fund', fundRoutes);
 
 module.exports = app;
 

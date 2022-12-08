@@ -24,7 +24,7 @@ exports.createdepartment = async (req, res) => {
         updated_by: data.updated_by,
       },
     ],
-    (err, result, fields) => {
+    (err, result) => {
       if (!err) {
         res
           .status(200)
@@ -51,7 +51,7 @@ exports.updateDepartment = async (req, res) => {
       },
       req.params.id,
     ],
-    (err, result, fields) => {
+    (err, result) => {
       if (!err)
         res
           .status(200)
@@ -68,7 +68,7 @@ exports.deleteDepartment = async (req, res) => {
   db.query(
     "delete from departments where department_id = ?",
     [req.params.id],
-    (err, result, fields) => {
+    (err, result) => {
       if (!err)
         res
           .status(200)
@@ -85,7 +85,7 @@ exports.getDepartment = async (req, res) => {
   db.query(
     "select * from departments where department_id = ?",
     [req.params.id],
-    (err, result, fiels) => {
+    (err, result) => {
       if (!err) {
         if (result.length === 1) res.status(200).send(result);
         else res.status(401).json({ message: "Department not found" });
