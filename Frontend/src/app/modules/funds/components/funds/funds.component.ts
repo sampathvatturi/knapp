@@ -32,14 +32,14 @@ export class FundsComponent implements OnInit {
       updated_by: [''],
       department_code: [''],
     });
-    this.api.getCall('/dept/getDepts').subscribe((list) => {
-      this.listOfData = list;
-      console.log(this.listOfData);
-    });
+    // this.api.getCall('/dept/getDepts').subscribe((list) => {
+    //   this.listOfData = list;
+    //   console.log(this.listOfData);
+    // });
   }
   edit(data: any) {
     this.submit = false;
-    this.drawerTitle = 'Edit';
+    this.drawerTitle = 'Edit Fund Details';
     this.visible = true;
     this.departmentform = this.fb.group({
       department_id: [data.department_id, [Validators.required]],
@@ -53,9 +53,9 @@ export class FundsComponent implements OnInit {
       department_code: [data.department_code, [Validators.required]],
     });
   }
-  open(): void {
+  create(): void {
     this.submit = true;
-    this.drawerTitle = 'New';
+    this.drawerTitle = 'Add Fund Details';
     this.visible = true;
     this.departmentform = this.fb.group({
       department_id: [''],

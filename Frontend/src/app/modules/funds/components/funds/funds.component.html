@@ -1,4 +1,4 @@
-<nz-breadcrumb>
+<nz-breadcrumb id="breadcrumb">
   <nz-breadcrumb-item>Home</nz-breadcrumb-item>
   <nz-breadcrumb-item>
     <a routerLink="modules/dashboard">Dashboard</a>
@@ -6,15 +6,22 @@
   <nz-breadcrumb-item>Funds</nz-breadcrumb-item>
 </nz-breadcrumb>
 
-<nz-content>
-  <div class="cbutton" >
-    <nz-input-group [nzSuffix]="suffixIconSearch" class="searchInput">
-      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText"/>
+<nz-content id="component-content">
+  <div id="search-create">
+    <nz-input-group [nzSuffix]="suffixIconSearch">
+      <input
+        type="text"
+        nz-input
+        placeholder="Search"
+        [(ngModel)]="searchText"
+      />
     </nz-input-group>
     <ng-template #suffixIconSearch>
       <span nz-icon nzType="search"></span>
     </ng-template>
-    <button nz-button nzType="default" (click)="open()">Create</button>
+    <button nz-button nzType="default" (click)="create()">
+      Add &nbsp; <i class="fa-solid fa-plus"></i>
+    </button>
   </div>
   
   <nz-table
@@ -26,31 +33,33 @@
   >
     <thead>
       <tr>
-        <th>Dept ID</th>
-        <th>Dept Name</th>
-        <th>Ranking</th>
+        <th>S.No</th>
+        <th>Proposed Amount</th>
+        <th>Funded By</th>
         <th>Status</th>
-        <th>Created Date</th>
-        <th>Created By</th>
-        <th>Update Date</th>
-        <th>Update By</th>
-        <th>Dept Code</th>
+        <th>Proposed Date</th>
+        <th>Deptartment</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of basicTable.data">
-        <td>{{ data.department_id }}</td>
-        <td>{{ data.department_name }}</td>
-        <td>{{ data.ranking }}</td>
+      <tr *ngFor="let data of basicTable.data  | globalTablesearch : searchText;let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ data.proposed_amount }}</td>
+        <td>{{ data.funded_by }}</td>
         <td>{{ data.status }}</td>
-        <td>{{ data.created_date }}</td>
-        <td>{{ data.created_by }}</td>
-        <td>{{ data.updated_date }}</td>
-        <td>{{ data.updated_by }}</td>
-        <td>{{ data.department_code }}</td>
+        <td>{{ data.proposed_date }}</td>
+        <td>{{ data.department_id }}</td>
         <td>
-          <button nz-button nzType="primary" (click)="edit(data)">Edit</button>
+          <div id="editbtn">
+            <a nz-tooltip="Edit" (click)="edit(data)"
+              ><i class="fa-regular fa-pen-to-square"></i
+            ></a>
+            <b> / </b>
+            <a nz-tooltip="View" (click)="edit(data)"
+              ><i class="fa-regular fa-eye"></i
+            ></a>
+          </div>
         </td>
       </tr>
     </tbody>
@@ -64,79 +73,97 @@
   [nzTitle]="drawerTitle"
   [nzFooter]="footerTpl"
   (nzOnClose)="close()"
+  [nzClosable]="false"
+  [nzCloseIcon]="icon"
+  [nzExtra]="icon"
 >
-  <form nz-form *nzDrawerContent [formGroup]="departmentform">
+<ng-template #icon>
+  <i (click)="close()" class="fa-solid fa-circle-xmark"></i>
+</ng-template>
+  <form class="drawer-form" nz-form *nzDrawerContent [formGroup]="departmentform" class="drawer-form">
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Dept ID</nz-form-label>
+        <nz-form-label class = "required" nz-col nzSpan="5">Fund Id</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
-            formControlName="department_id"
-            placeholder="please enter Department ID"
+            formControlName="fund_id"
+            placeholder="please enter Fund Id"
           />
         </nz-form-control>
       </nz-form-item>
     </div>
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Department Name</nz-form-label>
+        <nz-form-label class = "required" nz-col nzSpan="5">Proposed Amount</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
-            formControlName="department_name"
+            formControlName="proposed_amount"
             type="text"
             nz-input
-            placeholder="please enter Department Name"
+            placeholder="please enter Proposed Amount"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div>
+      <nz-form-item>
+        <nz-form-label class = "required" nz-col nzSpan="5">Funded By</nz-form-label>
+        <nz-form-control nz-col nzSpan="10">
+          <input
+            nz-input
+            formControlName="proposed_amount"
+            type="text"
+            nz-input
+            placeholder="Funded By"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div>
+      <nz-form-item>
+        <nz-form-label class = "required" nz-col nzSpan="5">Status</nz-form-label>
+        <nz-form-control nz-col nzSpan="10">
+          <input
+            nz-input
+            formControlName="proposed_amount"
+            type="text"
+            nz-input
+            placeholder="Status"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div>
+      <nz-form-item>
+        <nz-form-label class = "required" nz-col nzSpan="5">Proposed Date</nz-form-label>
+        <nz-form-control nz-col nzSpan="10">
+          <input
+            nz-input
+            formControlName="proposed_amount"
+            type="text"
+            nz-input
+            placeholder="Proposed Date"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div>
+      <nz-form-item>
+        <nz-form-label class = "required" nz-col nzSpan="5">Department</nz-form-label>
+        <nz-form-control nz-col nzSpan="10">
+          <input
+            nz-input
+            formControlName="proposed_amount"
+            type="text"
+            nz-input
+            placeholder="Department"
           />
         </nz-form-control>
       </nz-form-item>
     </div>
 
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Ranking</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="ranking"
-            type="number"
-            nz-input
-            placeholder="please enter Rank"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Status</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="status"
-            type="text"
-            nz-input
-            placeholder="please enter Status"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Department Code</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="department_code"
-            type="text"
-            nz-input
-            placeholder="please enter Department code"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
   </form>
 
   <ng-template #footerTpl>

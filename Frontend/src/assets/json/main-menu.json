@@ -6,24 +6,18 @@
       "icon": "fa-solid fa-house"
     },
     {
-      "title": "Approvals",
-      "route": "modules/approvals",
-      "icon": "fa-solid fa-thumbs-up"
+      "title": "Tender Details",
+      "route": "modules/tender-details",
+      "icon": "fa-solid fa-circle-info"
+    },    {
+      "title": "Survey Report",
+      "route": "modules/survey-report",
+      "icon": "fa-solid fa-file-contract"
     },
     {
-      "title": "Department",
-      "route": "modules/department",
-      "icon": "fa-solid fa-building"
-    },
-    {
-      "title": "Expenditure",
-      "route": "modules/expenditure",
-      "icon": "fa-solid fa-hand-holding-dollar"
-    },
-    {
-      "title": "Funds",
-      "route": "modules/funds",
-      "icon": "fa-solid fa-dollar-sign"
+      "title": "Work Orders",
+      "route": "modules/work-orders",
+      "icon": "fa-solid fa-folder-open"
     },
     {
       "title": "Inventory Items",
@@ -31,24 +25,24 @@
       "icon": "fa-solid fa-warehouse"
     },
     {
+      "title": "Funds",
+      "route": "modules/funds",
+      "icon": "fa-solid fa-dollar-sign"
+    },
+    {
+      "title": "Expenditure",
+      "route": "modules/expenditure",
+      "icon": "fa-solid fa-hand-holding-dollar"
+    },
+    {
       "title": "Invoices",
       "route": "modules/invoices",
       "icon": "fa-solid fa-file-invoice-dollar"
     },
     {
-      "title": "Payment Proceedings",
-      "route": "modules/payment-proceedings",
-      "icon": "fa-solid fa-money-check-dollar"
-    },
-    {
-      "title": "Tender Details",
-      "route": "modules/tender-details",
-      "icon": "fa-solid fa-circle-info"
-    },
-    {
-      "title": "User Accounts",
-      "route": "modules/user-accounts",
-      "icon": "fa-solid fa-users"
+      "title": "Department",
+      "route": "modules/department",
+      "icon": "fa-solid fa-building"
     },
     {
       "title": "Vendors",
@@ -59,6 +53,23 @@
       "title": "Works",
       "route": "modules/works",
       "icon": "fa-solid fa-person-digging"
-    }
+    },
+    {
+      "title": "User Accounts",
+      "route": "modules/user-accounts",
+      "icon": "fa-solid fa-users"
+    },
+    {
+      "title": "Payment Proceedings",
+      "route": "modules/payment-proceedings",
+      "icon": "fa-solid fa-money-check-dollar"
+    },
+    
+    {
+      "title": "Approvals",
+      "route": "modules/approvals",
+      "icon": "fa-solid fa-thumbs-up"
+    } 
+    
   ]
 }
