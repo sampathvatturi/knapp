@@ -35,7 +35,7 @@ export class InventoryItemsComponent implements OnInit {
 
   create(): void {
     this.submit = true;
-    this.drawerTitle = 'Add New Inventory Item';
+    this.drawerTitle = 'Add Inventory Item';
     this.visible = true;
     this.inventoryFormValidators();
     this.inventoryForm.get('crated_by')?.setValue(this.user_data.user_id);

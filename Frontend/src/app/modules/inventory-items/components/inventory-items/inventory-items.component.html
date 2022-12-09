@@ -72,7 +72,7 @@
 </nz-content>
 <nz-drawer
   [nzBodyStyle]="{ overflow: 'auto' }"
-  [nzMaskClosable]="false"
+  [nzMaskClosable]="true"
   [nzWidth]="720"
   [nzVisible]="visible"
   [nzTitle]="drawerTitle"
@@ -93,14 +93,14 @@
   >
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Item Name</nz-form-label>
+        <nz-form-label nz-col nzSpan="5" class="required">Item Name</nz-form-label>
         <nz-form-control nz-col nzSpan="10" [nzErrorTip]="inventoryErrorTip">
           <input
             nz-input
             formControlName="item_name"
             type="text"
             nz-input
-            placeholder="please enter Item Name"
+            placeholder="Please Enter Item Name"
           />
           <ng-template #inventoryErrorTip let-control>
             <ng-container *ngIf="control.hasError('required')"
@@ -122,7 +122,7 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Quantity</nz-form-label>
+        <nz-form-label nz-col nzSpan="5" class="required">Quantity</nz-form-label>
         <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Quantity">
           <input
             nz-input
@@ -137,7 +137,7 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Price</nz-form-label>
+        <nz-form-label nz-col nzSpan="5" class="required">Price</nz-form-label>
         <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Price">
           <input
             nz-input
@@ -152,7 +152,7 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Tax</nz-form-label>
+        <nz-form-label nz-col nzSpan="5" class="required">Tax</nz-form-label>
         <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Tax">
           <input
             nz-input

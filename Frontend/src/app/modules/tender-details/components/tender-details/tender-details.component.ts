@@ -74,7 +74,7 @@ export class TenderDetailsComponent implements OnInit {
 
   create(): void {
     this.submit = true;
-    this.drawerTitle = 'Add New Tender';
+    this.drawerTitle = 'Add Tender';
     this.visible = true;
     this.tendorsFormValidators();
     this.tenderDetailsForm.get('status')?.setValue('open');

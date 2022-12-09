@@ -10,7 +10,6 @@ import { GlobalConstants } from 'src/app/shared/global_constants';
   styleUrls: ['./works.component.css']
 })
 export class WorksComponent implements OnInit {
-  listOfData: any[] = [];
   visible = false;
   submit = true;
   drawerTitle: string = '';
@@ -49,7 +48,7 @@ export class WorksComponent implements OnInit {
     }
     create(): void {
       this.submit = true;
-      this.drawerTitle = 'New';
+      this.drawerTitle = 'Add Work';
       this.visible = true;
 
       this.worksFormValidators();

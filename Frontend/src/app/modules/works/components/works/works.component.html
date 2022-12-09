@@ -65,7 +65,7 @@
 </nz-content>
 <nz-drawer
   [nzBodyStyle]="{ overflow: 'auto' }"
-  [nzMaskClosable]="false"
+  [nzMaskClosable]="true"
   [nzWidth]="720"
   [nzVisible]="visible"
   [nzTitle]="drawerTitle"
@@ -81,14 +81,14 @@
   <form nz-form *nzDrawerContent [formGroup]="workForm" class="drawer-form">
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Work Name</nz-form-label>
+        <nz-form-label nz-col nzSpan="5" class="required">Work Name</nz-form-label>
         <nz-form-control nz-col nzSpan="10" [nzErrorTip]="worksErrorTip">
           <input
             nz-input
             formControlName="work_name"
             type="text"
             nz-input
-            placeholder="please enter Work Name"
+            placeholder="Please Enter Work Name"
           />
           <ng-template #worksErrorTip let-control>
             <ng-container *ngIf="control.hasError('required')"

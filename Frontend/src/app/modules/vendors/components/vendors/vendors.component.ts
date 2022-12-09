@@ -20,6 +20,7 @@ export class VendorsComponent implements OnInit {
   vendor_array:any = [];
   user_data:any = [];
   searchText = '';
+  mode:any = '';
   constructor(private fb: UntypedFormBuilder,
               private api: ApiService,
               private notification:NotificationService,private vendor:VendorsService) {
@@ -40,6 +41,7 @@ export class VendorsComponent implements OnInit {
     this.submit = false;
     this.drawerTitle = 'Edit Vendor Details';
     this.visible = true;
+    this.mode = false;
 
     this.vendorFormValidators();
     this.vendorForm.get('vendor_id')?.setValue(data.vendor_id);
@@ -53,8 +55,9 @@ export class VendorsComponent implements OnInit {
   }
   create(): void {
     this.submit = true;
-    this.drawerTitle = 'Add New Vendor';
+    this.drawerTitle = 'Add Vendor';
     this.visible = true;
+    this.mode = true;
 
     this.vendorFormValidators();
 
@@ -111,21 +114,21 @@ export class VendorsComponent implements OnInit {
     this.vendorForm = this.fb.group({
       vendor_id: [''],
       vendor_name: ['',[Validators.required,Validators.pattern(GlobalConstants.nameRegex),Validators.maxLength(50),Validators.minLength(3)]],
-      phone_number:['',[Validators.required,Validators.pattern(GlobalConstants.contactNumberRegex)]],
+      phone_number:['',[Validators.required,Validators.pattern(GlobalConstants.contactNumberRegex),Validators.minLength(10),Validators.maxLength(10)]],
       address:['',[Validators.required,Validators.pattern(GlobalConstants.addressRegex),Validators.minLength(15),Validators.maxLength(150)]],
       status:['',[Validators.required]],
       created_date: [''],
       created_by: [''],
       updated_date: [''],
       updated_by: [''],
-      user_name: ['',[Validators.required]],
+      user_name: ['',[Validators.required,Validators.pattern(GlobalConstants.nameRegex),Validators.maxLength(50),Validators.minLength(3)]],
 
-      password_md5: ['',[Validators.required]],
+      password_md5: ['',[Validators.required ,Validators.minLength(8),Validators.maxLength(8)]],
       confirm: ['',[this.confirmValidator]],
       email: [null, [Validators.required,Validators.pattern(GlobalConstants.emailRegex)]],
-      city: ['',[Validators.required]],
-      state: ['',[Validators.required]],
-      gst_num: ['',[Validators.required]],
+      city: ['',[Validators.required,Validators.pattern(GlobalConstants.firstLastNameRegex),Validators.maxLength(50),Validators.minLength(3)]],
+      state: ['',[Validators.required,Validators.pattern(GlobalConstants.firstLastNameRegex),Validators.maxLength(50),Validators.minLength(3)]],
+      gst_num: ['',[Validators.required,Validators.pattern(GlobalConstants.nameRegex),Validators.maxLength(50),Validators.minLength(3)]],
     });
   }
   validateConfirmPassword(): void {

@@ -71,7 +71,7 @@
 </nz-content>
 <nz-drawer
   [nzBodyStyle]="{ overflow: 'auto' }"
-  [nzMaskClosable]="false"
+  [nzMaskClosable]="true"
   [nzWidth]="720"
   [nzVisible]="visible"
   [nzTitle]="drawerTitle"
@@ -87,14 +87,14 @@
   <form nz-form *nzDrawerContent [formGroup]="vendorForm" class="drawer-form">
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Vendor Name</nz-form-label>
+        <nz-form-label nz-col nzSpan="5" class="required">Vendor Name</nz-form-label>
         <nz-form-control nz-col nzSpan="10" [nzErrorTip]="vendorErrorTip1">
           <input
             nz-input
             formControlName="vendor_name"
             type="text"
             nz-input
-            placeholder="please enter Vendor Name"
+            placeholder="Please Enter Vendor Name"
           />
           <ng-template #vendorErrorTip1 let-control>
             <ng-container *ngIf="control.hasError('required')"
@@ -116,21 +116,27 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Phone Number</nz-form-label>
+        <nz-form-label nz-col nzSpan="5" class="required">Phone Number</nz-form-label>
         <nz-form-control nz-col nzSpan="10" [nzErrorTip]="vendorErrorTip2">
           <input
             nz-input
             formControlName="phone_number"
             type="text"
             nz-input
-            placeholder="please enter Phone Number"
+            placeholder="Please Enter Phone Number"
           />
           <ng-template #vendorErrorTip2 let-control>
             <ng-container *ngIf="control.hasError('required')"
               >Please enter phone number</ng-container
             >
             <ng-container *ngIf="control.hasError('pattern')"
-              >Invalid - numbers only</ng-container
+              >Enter numbers only<br /></ng-container
+            >
+            <ng-container *ngIf="control.hasError('minlength')"
+              >Minimum length is 10<br /></ng-container
+            >
+            <ng-container *ngIf="control.hasError('maxlength')"
+              >Maximum length exceeded</ng-container
             >
           </ng-template>
         </nz-form-control>
@@ -139,13 +145,13 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Address</nz-form-label>
+        <nz-form-label nz-col nzSpan="5" class="required">Address</nz-form-label>
         <nz-form-control nz-col nzSpan="10" [nzErrorTip]="vendorErrorTip3">
           <textarea
             formControlName="address"
             nz-input
             rows="2"
-            placeholder="Enter Your address"
+            placeholder="Please Enter Address"
           ></textarea>
         </nz-form-control>
         <ng-template #vendorErrorTip3 let-control>
@@ -167,7 +173,7 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Status</nz-form-label>
+        <nz-form-label nz-col nzSpan="5" class="required">Status</nz-form-label>
         <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Select Status">
           <nz-select
             formControlName="status"
@@ -180,20 +186,21 @@
         </nz-form-control>
       </nz-form-item>
     </div>
+
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">City</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="vendorErrorTip1">
+        <nz-form-label nz-col nzSpan="5" class="required">City</nz-form-label>
+        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="city">
           <input
             nz-input
             formControlName="city"
             type="text"
             nz-input
-            placeholder="please enter City"
+            placeholder="Please Enter City"
           />
-          <ng-template #vendorErrorTip1 let-control>
+          <ng-template #city let-control>
             <ng-container *ngIf="control.hasError('required')"
-              >Please enter vendor name</ng-container
+              >Please enter city</ng-container
             >
             <ng-container *ngIf="control.hasError('maxlength')"
               >Maxlength exceeded<br
@@ -210,18 +217,18 @@
     </div>
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">State</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="vendorErrorTip1">
+        <nz-form-label nz-col nzSpan="5" class="required">State</nz-form-label>
+        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="state">
           <input
             nz-input
             formControlName="state"
             type="text"
             nz-input
-            placeholder="please enter State"
+            placeholder="Please Enter State"
           />
-          <ng-template #vendorErrorTip1 let-control>
+          <ng-template #state let-control>
             <ng-container *ngIf="control.hasError('required')"
-              >Please enter vendor name</ng-container
+              >Please enter state</ng-container
             >
             <ng-container *ngIf="control.hasError('maxlength')"
               >Maxlength exceeded<br
@@ -238,18 +245,18 @@
     </div>
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">GST IN</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="vendorErrorTip1">
+        <nz-form-label nz-col nzSpan="5" class="required">GST IN</nz-form-label>
+        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="gst">
           <input
             nz-input
             formControlName="gst_num"
             type="text"
             nz-input
-            placeholder="please enter GST"
+            placeholder="Please Enter GST Number"
           />
-          <ng-template #vendorErrorTip1 let-control>
+          <ng-template #gst let-control>
             <ng-container *ngIf="control.hasError('required')"
-              >Please enter vendor name</ng-container
+              >Please enter GST number</ng-container
             >
             <ng-container *ngIf="control.hasError('maxlength')"
               >Maxlength exceeded<br
@@ -264,108 +271,122 @@
         </nz-form-control>
       </nz-form-item>
     </div>
-    <nz-divider nzText="Vendor Login Details" nzOrientation="left"></nz-divider>
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5" class="required"
-          >Username</nz-form-label
-        >
-        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="vendorErrorTip1">
-          <input
-            nz-input
-            formControlName="user_name"
-            type="text"
-            nz-input
-            placeholder="please enter Username"
-          />
-          <ng-template #vendorErrorTip1 let-control>
-            <ng-container *ngIf="control.hasError('required')"
-              >Please enter vendor Username</ng-container
-            >
-            <ng-container *ngIf="control.hasError('maxlength')"
-              >Maxlength exceeded<br
-            /></ng-container>
-            <ng-container *ngIf="control.hasError('minlength')"
-              >Enter atleast 3 characters<br
-            /></ng-container>
-            <ng-container *ngIf="control.hasError('pattern')"
-              >Please enter valid input</ng-container
-            >
-          </ng-template>
-        </nz-form-control>
-      </nz-form-item>
+    <div *ngIf="mode">
+      
+        <nz-divider nzText="Vendor Login Details" nzOrientation="left"></nz-divider>
+          <div>
+            <nz-form-item>
+              <nz-form-label nz-col nzSpan="5" class="required"
+                >Username</nz-form-label
+              >
+              <nz-form-control nz-col nzSpan="10" [nzErrorTip]="vendorUserName">
+                <input
+                  nz-input
+                  formControlName="user_name"
+                  type="text"
+                  nz-input
+                  placeholder="Please Enter Username"
+                />
+                <ng-template #vendorUserName let-control>
+                  <ng-container *ngIf="control.hasError('required')"
+                    >Please enter vendor username</ng-container
+                  >
+                  <ng-container *ngIf="control.hasError('maxlength')"
+                    >Maxlength exceeded<br
+                  /></ng-container>
+                  <ng-container *ngIf="control.hasError('minlength')"
+                    >Enter atleast 3 characters<br
+                  /></ng-container>
+                  <ng-container *ngIf="control.hasError('pattern')"
+                    >Please enter valid input</ng-container
+                  >
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div>
+            <nz-form-item>
+              <nz-form-label nz-col class="required" nzSpan="5"
+                >Password</nz-form-label
+              >
+              <nz-form-control nz-col nzSpan="10" [nzErrorTip]="password">
+                <input
+                  nz-input
+                  type="password"
+                  formControlName="password_md5"
+                  placeholder="New Password"
+                  (ngModelChange)="validateConfirmPassword()"
+                  autocomplete="new-password"
+                />
+                <ng-template #password let-control>
+                  <ng-container *ngIf="control.hasError('required')"
+                    >Please enter password</ng-container
+                  >
+                  <ng-container *ngIf="control.hasError('minlength')"
+                    >please enter atleast 8 characters<br
+                  /></ng-container>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div>
+            <nz-form-item>
+              <nz-form-label nz-col class="required" nzSpan="5"
+                >Confirm Password</nz-form-label
+              >
+              <nz-form-control
+                nz-col
+                nzSpan="10"
+                nzHasFeedback
+                [nzErrorTip]="passwordErrorTpl"
+              >
+                <input
+                  nz-input
+                  type="password"
+                  formControlName="confirm"
+                  placeholder="Confirm Password"
+                />
+                <ng-template #passwordErrorTpl let-control>
+                  <ng-container *ngIf="control.hasError('required')"
+                    >Please confirm your new password!</ng-container
+                  >
+                  <ng-container *ngIf="control.hasError('confirm')"
+                    >Password is inconsistent!</ng-container
+                  >
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div>
+            <nz-form-item>
+              <nz-form-label nz-col class="required" nzSpan="5">Email</nz-form-label>
+              <nz-form-control
+                nz-col
+                nzSpan="10"
+                [nzErrorTip]="emailErrorTip"
+                class="create"
+              >
+                <input
+                  type="text"
+                  nz-input
+                  formControlName="email"
+                  placeholder="Email"
+                />
+                <ng-template #emailErrorTip let-control>
+                  <ng-container *ngIf="control.hasError('required')"
+                    >Please enter email</ng-container
+                  >
+                  <ng-container *ngIf="control.hasError('pattern')"
+                    >Please enter valid email<br
+                  /></ng-container>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+      
     </div>
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col class="required" nzSpan="5"
-          >Password</nz-form-label
-        >
-        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please input password!">
-          <input
-            nz-input
-            type="password"
-            formControlName="password_md5"
-            placeholder="New password"
-            (ngModelChange)="validateConfirmPassword()"
-            autocomplete="new-password"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col class="required" nzSpan="5"
-          >Confirm Password</nz-form-label
-        >
-        <nz-form-control
-          nz-col
-          nzSpan="10"
-          nzHasFeedback
-          [nzErrorTip]="passwordErrorTpl"
-        >
-          <input
-            nz-input
-            type="password"
-            formControlName="confirm"
-            placeholder="confirm password"
-          />
-          <ng-template #passwordErrorTpl let-control>
-            <ng-container *ngIf="control.hasError('required')"
-              >Please confirm your new password!</ng-container
-            >
-            <ng-container *ngIf="control.hasError('confirm')"
-              >Password is inconsistent!</ng-container
-            >
-          </ng-template>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col class="required" nzSpan="5">Email</nz-form-label>
-        <nz-form-control
-          nz-col
-          nzSpan="10"
-          [nzErrorTip]="emailErrorTip"
-          class="create"
-        >
-          <input
-            type="text"
-            nz-input
-            formControlName="email"
-            placeholder="Email"
-          />
-          <ng-template #emailErrorTip let-control>
-            <ng-container *ngIf="control.hasError('required')"
-              >Please enter email</ng-container
-            >
-            <ng-container *ngIf="control.hasError('pattern')"
-              >Please enter valid email<br
-            /></ng-container>
-          </ng-template>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
+    
+    
   </form>
 
   <ng-template #footerTpl>
