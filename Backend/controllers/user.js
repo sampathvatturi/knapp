@@ -143,14 +143,16 @@ exports.deleteUser = async (req, res) => {
 };
 
 exports.getUser = async (req, res) => {
+  console.log(req.params.id)
   db.query(
     "select * from users where user_id = ?",
     [req.params.id],
     (err, result, fields) => {
       if (!err) {
+        console.log(result.length)
         if (result.length === 1)
-          res.status(200).json({ message: "User not found" });
-        else res.status(401).json(result);
+          res.status(401).json(result);
+        else res.status(200).json({ message: "User not found" });
       } else res.status(401).send(json({ status: "failed" }));
     }
   );
