@@ -55,7 +55,8 @@
         <td>{{ data.trsxcn_to }}</td>
         <td>{{ data.category }}</td>
         <td>{{ data.amount }}</td>
-        <td>{{ data.trscxn_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
+        <td>{{ data.mode }}</td>
+        <td>{{ data.trsxcn_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
         <td>
           <div id="editbtn">
             <a nz-tooltip="Edit" (click)="edit(data)"
@@ -204,16 +205,17 @@
         <nz-form-label nz-col nzSpan="10" class="required"
           >Category</nz-form-label
         >
-        <nz-select
+        <nz-form-control nz-col nzSpan="12" nzErrorTip="Please Select Category">
+          <nz-select
           formControlName="category"
-          nz-col
-          nzSpan="12"
           nzPlaceHolder="Category"
           nzShowSearch
         >
           <nz-option nzValue="electricity" nzLabel="electricity"></nz-option>
           <nz-option nzValue="salary" nzLabel="salary"></nz-option>
         </nz-select>
+        </nz-form-control>
+
       </nz-form-item>
     </div>
     <div>
@@ -234,7 +236,7 @@
     </div>
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="10">Transaction Mode</nz-form-label>
+        <nz-form-label nz-col nzSpan="10" class="required">Transaction Mode</nz-form-label>
         <nz-form-control nz-col nzSpan="12" nzErrorTip="Please Select Transaction Type">
           <nz-select
           formControlName="mode"
@@ -251,6 +253,33 @@
       </nz-form-item>
     </div>
 
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="10">Remarks (if any)</nz-form-label>
+        <nz-form-control nz-col nzSpan="12" >
+          <textarea
+            formControlName="remarks"
+            nz-input
+            rows="2"
+            placeholder="Remarks if any"
+          ></textarea>
+        </nz-form-control>
+        <!-- <ng-template #vendorErrorTip3 let-control>
+          <ng-container *ngIf="control.hasError('required')"
+            >Please enter address</ng-container
+          >
+          <ng-container *ngIf="control.hasError('minlength')"
+            >Please enter atleast 15 characters<br
+          /></ng-container>
+          <ng-container *ngIf="control.hasError('maxlength')"
+            >maximum length exceeded<br
+          /></ng-container>
+          <ng-container *ngIf="control.hasError('pattern')"
+            >Please enter valid input</ng-container
+          >
+        </ng-template> -->
+      </nz-form-item>
+    </div>
   </form>
 
   <ng-template #footerTpl>

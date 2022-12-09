@@ -45,11 +45,11 @@
     <tbody>
       <tr *ngFor="let data of basicTable.data  | globalTablesearch : searchText;let i = index">
         <td>{{ i + 1 }}</td>
-        <td>{{ data.proposed_amount }}</td>
-        <td>{{ data.funded_by }}</td>
-        <td>{{ data.status }}</td>
-        <td>{{ data.proposed_date }}</td>
-        <td>{{ data.department_id }}</td>
+        <td>{{ data.fund_type }}</td>
+        <td>{{ data.fund_description }}</td>
+        <td>{{ data.transaction_mode }}</td>
+        <td>{{ data.fund_value | currencyIn }}</td>
+        <td>{{ data.fund_released_date | date : "dd-MM-YYYY"}}</td>
         <td>
           <div id="editbtn">
             <a nz-tooltip="Edit" (click)="edit(data)"
@@ -160,8 +160,8 @@
     <div>
       <nz-form-item>
         <nz-form-label class = "required" nz-col nzSpan="5">Date</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" nzErrorTip="Enter Amount">
-          <nz-date-picker formControlName="fund_release_date"></nz-date-picker>
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Enter Date">
+          <nz-date-picker type="Date" formControlName="fund_released_date"></nz-date-picker>
         </nz-form-control>
       </nz-form-item>
     </div>

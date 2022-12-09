@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
-import { DepartmentService } from 'src/app/services/department.service';
+import { TransactionDetailsService } from 'src/app/services/transaction-details.service';
 import { GlobalConstants } from 'src/app/shared/global_constants';
 
 @Component({
@@ -21,9 +21,13 @@ export class TransactionDetailsComponent implements OnInit {
   constructor(private fb: UntypedFormBuilder,
     private api: ApiService,
     private notification: NotificationService,
-    private deptService: DepartmentService) { }
+    private transService: TransactionDetailsService) { }
 
   ngOnInit(): void {
+    this.transactionsFormValidators();
+    this.transService.getTransactions().subscribe( res =>{
+      this.transactions = res;
+    })
   }
   create(): void {
     this.submit = true;
@@ -103,12 +107,10 @@ export class TransactionDetailsComponent implements OnInit {
       category: ['' , [Validators.required] ],
       amount: ['', [Validators.required]],
       mode: ['', [Validators.required]],
-      trscxn_date: [''],
+      trsxcn_date: ['', [Validators.required]],
       title: ['', [Validators.required]],
       remarks: [''],
-      created_date: [''],
       created_by: [''],
-      updated_date: [''],
       updated_by: [''],
     });
   }

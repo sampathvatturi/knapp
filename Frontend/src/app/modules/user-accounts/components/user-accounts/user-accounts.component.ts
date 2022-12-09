@@ -35,7 +35,9 @@ export class UserAccountsComponent implements OnInit {
     private md5: Md5hashService,
     private user: UserService,
     private deptService: DepartmentService
-  ) {}
+  ) {
+    this.userAccountsFormValidators();
+  }
   formArray = [
     {
       label: 'Invoice Id',
