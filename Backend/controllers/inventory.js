@@ -7,7 +7,7 @@ exports.getInventory = async (req, res) => {
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
       else res.status(404).json({ message: "Inventory data not found" });
-    } else res.status(401).send(err).json({ status: "failed" });
+    } else res.status(401).json({ status: "failed" });
   });
 };
 
@@ -33,7 +33,7 @@ exports.createInventory = async (req, res) => {
             status: "success",
             message: data.item_name+" added successfully",
           });
-      } else res.status(401).send(err).json({ status: "failed" });
+      } else res.status(401).json({ status: "failed" });
     }
   );
 };
@@ -61,7 +61,7 @@ exports.updateInventory = async (req, res) => {
             status: "success",
             message: data.item_name+" updated successfully",
           });
-      else res.status(401).send(err).json({ status: "failed" });
+      else res.status(401).json({ status: "failed" });
     }
   );
 };
@@ -78,7 +78,7 @@ exports.deleteInventory = async (req, res) => {
             status: "success",
             message: "Inventory item deleted successfully",
           });
-      else res.status(401).send(err).json({ status: "failed" });
+      else res.status(401).json({ status: "failed" });
     }
   );
 };
@@ -91,7 +91,7 @@ exports.getInventoryitem = async (req, res) => {
       if (!err) {
         if (result.length === 1) res.status(200).send(result);
         else res.status(401).json({ message: "Invoice details not found" });
-      } else res.status(401).send(err).json({ status: "failed" });
+      } else res.status(401).json({ status: "failed" });
     }
   );
 };

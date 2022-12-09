@@ -7,7 +7,7 @@ exports.getWorks = async (req, res) => {
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
       else res.json({ message: "Works not found" });
-    } else res.status(401).send(err).json({ status: "failed" });
+    } else res.status(401).json({ status: "failed" });
   });
 };
 
@@ -30,7 +30,7 @@ exports.createWork = async (req, res) => {
             status: "success",
             message: "Work added successfully",
           });
-      } else res.status(401).send(err).json({ status: "failed" });
+      } else res.status(401).json({ status: "failed" });
     }
   );
 };
@@ -55,7 +55,7 @@ exports.updateWork = async (req, res) => {
             status: "success",
             message: "Work updated successfully",
           });
-      else res.status(401).send(err).json({ status: "failed" });
+      else res.status(401).json({ status: "failed" });
     }
   );
 };
@@ -72,7 +72,7 @@ exports.deleteWork = async (req, res) => {
             status: "success",
             message: "Work deleted successfully",
           });
-      else res.status(401).send(err).json({ status: "failed" });
+      else res.status(401).json({ status: "failed" });
     }
   );
 };
@@ -85,7 +85,7 @@ exports.getWork = async (req, res) => {
       if (!err) {
         if (result.length === 1) res.status(200).send(result);
         else res.status(401).json({ message: "Work not found" });
-      } else res.status(401).send(err).json({ status: "failed" });
+      } else res.status(401).json({ status: "failed" });
     }
   );
 };

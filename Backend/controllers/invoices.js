@@ -3,18 +3,18 @@ const currdateTime = require('../middleware/currdate');
 
 //departments
 exports.getInvoicelogs = async (req, res) => {
-  db.query("select * from invoice_details", (err, result, fiels) => {
+  db.query("select * from invoice", (err, result, fiels) => {
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
       else res.status(404).json({ message: "Invoice details not found" });
-    } else res.status(401).send(err).json({ status: "failed" });
+    } else res.status(401).json({ status: "failed" });
   });
 };
 
 exports.createInvoicelog = async (req, res) => {
   data = req.body;
   db.query(
-    "INSERT INTO `invoice_details` SET ? ",
+    "INSERT INTO `invoice` SET ? ",
     [
       {
         vendor_id: data.vendor_id,
@@ -37,7 +37,7 @@ exports.createInvoicelog = async (req, res) => {
             status: "success",
             message: "Invoice added successfully",
           });
-      } else res.status(401).send(err).json({ status: "failed" });
+      } else res.status(401).json({ status: "failed" });
     }
   );
 };
@@ -45,7 +45,7 @@ exports.createInvoicelog = async (req, res) => {
 exports.updateInvoicelog = async (req, res) => {
   data = req.body;
   db.query(
-    "update invoice_details set ? where invoice_details_id = ? ",
+    "update invoice set ? where invoice_id = ? ",
     [
       {
         vendor_id: data.vendor_id,
@@ -68,14 +68,14 @@ exports.updateInvoicelog = async (req, res) => {
             status: "success",
             message: "Invoice details updated successfully",
           });
-      else res.status(401).send(err).json({ status: "failed" });
+      else res.status(401).json({ status: "failed" });
     }
   );
 };
 
 exports.deleteInvoicelog = async (req, res) => {
   db.query(
-    "delete from invoice_details where invoice_details_id = ?",
+    "delete from invoice where invoice_id = ?",
     [req.params.id],
     (err, result, fields) => {
       if (!err)
@@ -85,20 +85,20 @@ exports.deleteInvoicelog = async (req, res) => {
             status: "success",
             message: "Invoice details deleted successfully",
           });
-      else res.status(401).send(err).json({ status: "failed" });
+      else res.status(401).json({ status: "failed" });
     }
   );
 };
 
 exports.getInvoicelog = async (req, res) => {
   db.query(
-    "select * from invoice_details where invoice_details_id = ?",
+    "select * from invoice where invoice_id = ?",
     [req.params.id],
     (err, result, fiels) => {
       if (!err) {
         if (result.length === 1) res.status(200).send(result);
         else res.status(401).json({ message: "Invoice details not found" });
-      } else res.status(401).send(err).json({ status: "failed" });
+      } else res.status(401).json({ status: "failed" });
     }
   );
 };

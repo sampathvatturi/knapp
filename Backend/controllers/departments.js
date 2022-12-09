@@ -7,7 +7,7 @@ exports.getDepartments = async (req, res) => {
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
       else res.status(404).json({ message: "Departments not found" });
-    } else res.status(401).send(err).json({ status: "failed" });
+    } else res.status(401).json({ status: "failed" });
   });
 };
 
@@ -32,7 +32,7 @@ exports.createdepartment = async (req, res) => {
             status: "success",
             message: "Department added successfully",
           });
-      } else res.status(401).send(err).json({ status: "failed" });
+      } else res.status(401).json({ status: "failed" });
     }
   );
 };
@@ -59,7 +59,7 @@ exports.updateDepartment = async (req, res) => {
             status: "success",
             message: "Department updated successfully",
           });
-      else res.status(401).send(err).json({ status: "failed" });
+      else res.status(401).json({ status: "failed" });
     }
   );
 };
@@ -76,7 +76,7 @@ exports.deleteDepartment = async (req, res) => {
             status: "success",
             message: "Department deleted successfully",
           });
-      else res.status(401).send(err).json({ status: "failed" });
+      else res.status(401).json({ status: "failed" });
     }
   );
 };
@@ -89,7 +89,7 @@ exports.getDepartment = async (req, res) => {
       if (!err) {
         if (result.length === 1) res.status(200).send(result);
         else res.status(401).json({ message: "Department not found" });
-      } else res.status(401).send(err).json({ status: "failed" });
+      } else res.status(401).json({ status: "failed" });
     }
   );
 };

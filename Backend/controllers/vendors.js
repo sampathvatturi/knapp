@@ -7,7 +7,7 @@ exports.getVendors = async (req, res) => {
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
       else res.status(404).json({ message: "Vendors not found" });
-    } else res.status(401).send(err).json({ status: "failed" });
+    } else res.status(401).json({ status: "failed" });
   });
 };
 
@@ -33,7 +33,7 @@ exports.createVendor = async (req, res) => {
             status: "success",
             message: "Vendor added successfully",
           });
-      } else res.status(401).send(err).json({ status: "failed" });
+      } else res.status(401).json({ status: "failed" });
     }
   );
 };
@@ -61,7 +61,7 @@ exports.updateVendor = async (req, res) => {
             status: "success",
             message: "Vendor updated successfully",
           });
-      else res.status(401).send(err).json({ status: "failed" });
+      else res.status(401).json({ status: "failed" });
     }
   );
 };
@@ -78,7 +78,7 @@ exports.deleteVendor = async (req, res) => {
             status: "success",
             message: "Vendor deleted successfully",
           });
-      else res.status(401).send(err).json({ status: "failed" });
+      else res.status(401).json({ status: "failed" });
     }
   );
 };
@@ -91,7 +91,7 @@ exports.getVendor = async (req, res) => {
       if (!err) {
         if (result.length === 1) res.status(200).send(result);
         else res.status(401).json({ message: "Vendor not found" });
-      } else res.status(401).send(err).json({ status: "failed" });
+      } else res.status(401).json({ status: "failed" });
     }
   );
 };

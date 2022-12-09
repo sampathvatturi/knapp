@@ -20,6 +20,7 @@ exports.loginUser = async (req, res) => {
     "' and password_md5 = '" +
     password +
     "')";
+    console.log(query);
   db.query(query, (err, result) => {
     if (!err) {
       if (result.length === 1) {
