@@ -30,17 +30,20 @@
     nzShowPagination
     nzShowSizeChanger
     [nzPageSizeOptions]="[5, 10, 15, 20]"
+    nzSize="middle"
+    
   >
     <thead>
       <tr>
         <th>S.No.</th>
-        <th>Ticket Description</th>
+        <th>Title</th>
         <th>Vendor</th>
         <th>Works</th>
         <th>Location</th>
         <th>Tender Cost</th>
         <th>Status</th>
-        <th>Created Date</th>
+        <th>Start Date</th>
+        <th>End Date</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -52,13 +55,14 @@
         "
       >
         <td>{{ i + 1 }}</td>
-        <td>{{ data.ticket_description }}</td>
+        <td>{{data.title}}</td>
         <td>{{ data.vendor_name }}</td>
         <td>{{ getWorknames(data.work_id) }}</td>
         <td>{{ data.location }}</td>
         <td>{{ data.tender_cost }}</td>
         <td>{{ data.status }}</td>
-        <td>{{ data.created_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
+        <td>{{ data.start_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
+        <td>{{ data.end_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
         <td>
           <div class="editbtn">
             <a nz-tooltip="Edit" (click)="edit(data)"
@@ -95,25 +99,116 @@
     [formGroup]="tenderDetailsForm"
     class="drawer-form"
   >
+
+  <div>
+    <nz-form-item>
+      <nz-form-label class="required" nz-col nzSpan="5"
+        >Title</nz-form-label
+      >
+      <nz-form-control nz-col nzSpan="15" [nzErrorTip]="title1">
+        <input
+          formControlName="title"
+          nz-input
+          
+          placeholder="Enter Ticket Title"
+        />
+        <ng-template #title1 let-control>
+          <ng-container *ngIf="control.hasError('pattern')">Please enter valid input</ng-container>
+          <ng-container *ngIf="control.hasError('required')">Please enter title</ng-container>
+        </ng-template>
+
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
     <div>
       <nz-form-item>
         <nz-form-label class="required" nz-col nzSpan="5"
           >Ticket Description</nz-form-label
         >
-        <nz-form-control nz-col nzSpan="10">
+        <nz-form-control nz-col nzSpan="15" [nzErrorTip]="description">
           <textarea
             formControlName="ticket_description"
             nz-input
             rows="2"
             placeholder="Enter Ticket Description"
           ></textarea>
+          <ng-template #description let-control>
+            <ng-container *ngIf="control.hasError('required')">Please enter ticket description</ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">Please enter valid input</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    
+
+    <div>
+      <nz-form-item>
+        <nz-form-label class="required" nz-col nzSpan="5">Works</nz-form-label>
+        <nz-form-control nzErrorTip="Please select a work">
+        <nz-select
+          nz-col
+          nzSpan="15"
+          nzMode="multiple"
+          formControlName="work_id"
+          nzPlaceHolder="Select Works"
+        >
+          <nz-option
+            *ngFor="let w of worksDetails"
+            [nzLabel]="w.work_name"
+            [nzValue]="w.work_id"
+          ></nz-option>
+        </nz-select>
         </nz-form-control>
       </nz-form-item>
     </div>
 
     <div>
       <nz-form-item>
-        <nz-form-label class="required" nz-col nzSpan="5">Vendor</nz-form-label>
+        <nz-form-label class="required" nz-col nzSpan="5"
+          >Assign to</nz-form-label
+        >
+        <nz-form-control nzErrorTip="please select a user">
+        <nz-select
+          nz-col
+          nzSpan="15"
+          nzMode="multiple"
+          formControlName="assign_to"
+          nzPlaceHolder="Select User to assign"
+          [nzOptions]="departmentUsers"
+        >
+        </nz-select>
+      </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div>
+      <nz-form-item>
+        <nz-form-label class="required" nz-col nzSpan="5"
+          >Location</nz-form-label
+        >
+        <nz-form-control nz-col nzSpan="15" [nzErrorTip]="location">
+          <textarea
+            formControlName="location"
+            nz-input
+            rows="2"
+            placeholder="Enter Your location"
+          ></textarea>
+          <ng-template #location let-control>
+            <ng-container *ngIf="control.hasError('required')">Please enter location</ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">Please enter valid location</ng-container>
+          </ng-template>
+
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-row>
+      <div nz-col nzSpan="12">
+      <nz-form-item >
+        <nz-form-label class="required" nz-col nzSpan="10">Vendor</nz-form-label>
+        <nz-form-control nzErrorTip="Please select vendor">
         <nz-select
           formControlName="vendor_id"
           nz-col
@@ -127,50 +222,16 @@
             nzLabel="{{ v.vendor_name }}"
           ></nz-option>
         </nz-select>
-      </nz-form-item>
-    </div>
-
-    <div>
-      <nz-form-item>
-        <nz-form-label class="required" nz-col nzSpan="5">Works</nz-form-label>
-        <nz-select
-          nz-col
-          nzSpan="16"
-          nzMode="multiple"
-          formControlName="work_id"
-          nzPlaceHolder="Select Works"
-        >
-          <nz-option
-            *ngFor="let w of worksDetails"
-            [nzLabel]="w.work_name"
-            [nzValue]="w.work_id"
-          ></nz-option>
-        </nz-select>
-      </nz-form-item>
-    </div>
-
-    <div>
-      <nz-form-item>
-        <nz-form-label class="required" nz-col nzSpan="5"
-          >Location</nz-form-label
-        >
-        <nz-form-control nz-col nzSpan="10">
-          <textarea
-            formControlName="location"
-            nz-input
-            rows="2"
-            placeholder="Enter Your location"
-          ></textarea>
         </nz-form-control>
       </nz-form-item>
     </div>
 
-    <div>
-      <nz-form-item>
-        <nz-form-label class="required" nz-col nzSpan="5"
-          >Tender Cost</nz-form-label
+    
+    <div nz-col nzSpan="12">
+      <nz-form-item >
+        <nz-form-label class="required" nz-col nzSpan="7">Tender Cost</nz-form-label
         >
-        <nz-form-control nz-col nzSpan="10">
+        <nz-form-control nz-col nzSpan="9" nzErrorTip="Please enter cost">
           <input
             type="number"
             formControlName="tender_cost"
@@ -180,27 +241,14 @@
         </nz-form-control>
       </nz-form-item>
     </div>
+    
+  </div>
+    
 
-    <div>
+    <div nz-row>
+    <div nz-col nzSpan="12">
       <nz-form-item>
-        <nz-form-label class="required" nz-col nzSpan="5"
-          >Assign to</nz-form-label
-        >
-        <nz-select
-          nz-col
-          nzSpan="16"
-          nzMode="multiple"
-          formControlName="assign_to"
-          nzPlaceHolder="Select User to assign"
-          [nzOptions]="departmentUsers"
-        >
-        </nz-select>
-      </nz-form-item>
-    </div>
-
-    <div>
-      <nz-form-item>
-        <nz-form-label class="required" nz-col nzSpan="5">Status</nz-form-label>
+        <nz-form-label class="required" nz-col nzSpan="10">Status</nz-form-label>
         <nz-select
           formControlName="status"
           nz-col
@@ -215,6 +263,20 @@
         </nz-select>
       </nz-form-item>
     </div>
+    <div nz-col nzSpan="12">
+      <nz-form-label class="required" nz-col nzSpan="16">Upload File</nz-form-label>
+      <nz-upload
+      nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+      [nzHeaders]="{ authorization: 'authorization-text' }"
+      (nzChange)="handleChange($event)"
+    >
+      <button nz-button class="ml-3">
+        <span nz-icon nzType="upload"></span>
+        Upload
+      </button>
+    </nz-upload>
+    </div>
+  </div>
   </form>
 
   <ng-template #footerTpl>

@@ -3,6 +3,9 @@ import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
 import { WorksService } from 'src/app/services/works.service';
+import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { GlobalConstants } from 'src/app/shared/global_constants';
 
 @Component({
   selector: 'app-tender-details',
@@ -28,7 +31,8 @@ export class TenderDetailsComponent implements OnInit {
     private fb: UntypedFormBuilder,
     private api: ApiService,
     private notification: NotificationService,
-    private works: WorksService
+    private works: WorksService,
+    private msg: NzMessageService
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +44,7 @@ export class TenderDetailsComponent implements OnInit {
         this.tenders = [];
       }
     });
-
+    
     this.api.getCall('/vendor/getVendors').subscribe((res) => {
       this.vendors = res;
     });
@@ -80,9 +84,10 @@ export class TenderDetailsComponent implements OnInit {
     this.submit = false;
     this.drawerTitle = 'Edit Tender details';
     this.visible = true;
-    this.tendorsFormValidators();
 
-    let selectedUsers: any[] = [];
+    
+      this.tendorsFormValidators();
+      let selectedUsers: any[] = [];
     if (data.json_status != '' && data.json_status != null) {
       JSON.parse(data.json_status).forEach((x: any) => {
         selectedUsers.push(x.user_id);
@@ -104,10 +109,15 @@ export class TenderDetailsComponent implements OnInit {
     this.tenderDetailsForm.get('tender_cost')?.setValue(data.tender_cost);
     this.tenderDetailsForm.get('status')?.setValue(data.status);
     this.tenderDetailsForm.get('updated_by')?.setValue(this.user_data.user_id);
+    
+    
+    
   }
 
   onSubmit() {
-    this.tenderDetailsForm.value.work_id =
+
+    if (this.tenderDetailsForm.valid){
+      this.tenderDetailsForm.value.work_id =
       this.tenderDetailsForm.value.work_id.toString();
     this.api
       .postCall('/tickets/createTicket', this.tenderDetailsForm.value)
@@ -122,6 +132,16 @@ export class TenderDetailsComponent implements OnInit {
           this.notification.createNotification(res.status, res.message);
         }
       });
+    }
+    else {
+      Object.values(this.tenderDetailsForm.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+    console.log(this.tenderDetailsForm.value)
   }
 
   onUpdate() {
@@ -148,25 +168,6 @@ export class TenderDetailsComponent implements OnInit {
     this.visible = false;
   }
 
-  tendorsFormValidators() {
-    this.tenderDetailsForm = this.fb.group({
-      ticket_id: [null],
-      ticket_description: [null, [Validators.required]],
-      vendor_id: [null, [Validators.required]],
-      work_id: [[], [Validators.required]],
-      location: [null, [Validators.required]],
-      tender_cost: [null, [Validators.required]],
-      department_id: [null, [Validators.required]],
-      user_id: [null, [Validators.required]],
-      assign_to: [[], [Validators.required]],
-      status: [null, [Validators.required]],
-      created_date: [null, [Validators.required]],
-      created_by: [null, [Validators.required]],
-      updated_date: [null, [Validators.required]],
-      updated_by: [null, [Validators.required]],
-    });
-  }
-
   getWorknames(id: any) {
     var workNames = '';
     if (Array.isArray(id) === true) id = id;
@@ -181,5 +182,36 @@ export class TenderDetailsComponent implements OnInit {
       });
       return workNames;
     }
+  }
+  handleChange(info: NzUploadChangeParam): void {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === 'done') {
+      this.msg.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === 'error') {
+      this.msg.error(`${info.file.name} file upload failed.`);
+    }
+  }
+  tendorsFormValidators() {
+    this.tenderDetailsForm = this.fb.group({
+      ticket_id: [null],
+      title:[null,[Validators.required,Validators.pattern(GlobalConstants.firstLastNameRegex)]],
+      ticket_description: [null, [Validators.required,Validators.pattern(GlobalConstants.addressRegex)]],
+      vendor_id: [null, [Validators.required]],
+      work_id: [[], [Validators.required]],
+      location: [null, [Validators.required,Validators.pattern(GlobalConstants.addressRegex)]],
+      tender_cost: [null, [Validators.required]],
+      department_id: [null],
+      user_id: [null],
+      assign_to: [[], [Validators.required]],
+      status: [null],
+      created_date: [null],
+      start_date:[null],
+      end_date:[null],
+      created_by: [null],
+      updated_date: [null],
+      updated_by: [null],
+    });
   }
 }
