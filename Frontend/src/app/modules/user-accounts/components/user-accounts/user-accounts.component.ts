@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  Validators,
+} from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
 import { Md5hashService } from 'src/app/services/md5hash.service';
@@ -118,24 +123,22 @@ export class UserAccountsComponent implements OnInit {
   }
 
   onUpdate() {
-    if (this.createUserForm.valid){
+    if (this.createUserForm.valid) {
       this.api
-      .patchCall(
-        `/user/updateUser/${this.createUserForm.value.user_id}`,
-        this.createUserForm.value
-      )
-      .subscribe(res =>{
-        this.notificationService.createNotification(res.status, res.message);
+        .patchCall(
+          `/user/updateUser/${this.createUserForm.value.user_id}`,
+          this.createUserForm.value
+        )
+        .subscribe((res) => {
+          this.notificationService.createNotification(res.status, res.message);
+        });
+      this.visible = false;
+      this.api.getCall('/user/getUsers').subscribe((res) => {
+        this.users = [];
+        this.users = res;
       });
-    this.visible = false;
-    this.api.getCall('/user/getUsers').subscribe((res) => {
-      this.users = [];
-      this.users = res;
-    });
-    }
-    else {
-      
-      Object.values(this.createUserForm.controls).forEach(control => {
+    } else {
+      Object.values(this.createUserForm.controls).forEach((control) => {
         if (control.invalid) {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });
@@ -150,20 +153,77 @@ export class UserAccountsComponent implements OnInit {
 
   userAccountsFormValidators() {
     this.createUserForm = this.fb.group({
-      first_name: [null, [Validators.required,Validators.pattern(GlobalConstants.firstLastNameRegex),Validators.minLength(3),Validators.maxLength(50)]],
-      last_name: [null, [Validators.required,Validators.pattern(GlobalConstants.firstLastNameRegex),Validators.minLength(3),Validators.maxLength(50)]],
-      email: [null, [Validators.required,Validators.pattern(GlobalConstants.emailRegex)]],
-      user_name: [null, [Validators.required,Validators.pattern(GlobalConstants.nameRegex),Validators.minLength(8),Validators.maxLength(50)]],
+      first_name: [
+        null,
+        [
+          Validators.required,
+          Validators.pattern(GlobalConstants.firstLastNameRegex),
+          Validators.minLength(3),
+          Validators.maxLength(50),
+        ],
+      ],
+      last_name: [
+        null,
+        [
+          Validators.required,
+          Validators.pattern(GlobalConstants.firstLastNameRegex),
+          Validators.minLength(3),
+          Validators.maxLength(50),
+        ],
+      ],
+      email: [
+        null,
+        [Validators.required, Validators.pattern(GlobalConstants.emailRegex)],
+      ],
+      user_name: [
+        null,
+        [
+          Validators.required,
+          Validators.pattern(GlobalConstants.nameRegex),
+          Validators.minLength(8),
+          Validators.maxLength(50),
+        ],
+      ],
       password_md5: [null, [Validators.required]],
-      cnfrm_password_md5: [null, [Validators.required]],
-      phone_number: [null, [ Validators.required,
-                             Validators.pattern(GlobalConstants.contactNumberRegex)]],
+      cnfrm_password_md5: [null, [this.confirmValidator]],
+      phone_number: [
+        null,
+        [
+          Validators.required,
+          Validators.pattern(GlobalConstants.contactNumberRegex),
+        ],
+      ],
       department_id: [null, [Validators.required]],
-      address: [null, [Validators.required,Validators.pattern(GlobalConstants.addressRegex),Validators.minLength(15),Validators.maxLength(150)]],
+      address: [
+        null,
+        [
+          Validators.required,
+          Validators.pattern(GlobalConstants.addressRegex),
+          Validators.minLength(15),
+          Validators.maxLength(150),
+        ],
+      ],
       city: [null, [Validators.required]],
       district: [null, [Validators.required]],
       created_by: [this.user_data.user_id],
       updated_by: [this.user_data.user_id],
     });
   }
+  validateConfirmPassword(): void {
+    setTimeout(() =>
+      this.createUserForm.controls['confirm'].updateValueAndValidity()
+    );
+  }
+  confirmValidator = (
+    control: UntypedFormControl
+  ): { [s: string]: boolean } => {
+    if (!control.value) {
+      return { error: true, required: true };
+    } else if (
+      control.value !== this.createUserForm.controls['password_md5'].value
+    ) {
+      return { confirm: true, error: true };
+    }
+    return {};
+  };
 }
