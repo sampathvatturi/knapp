@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, UntypedFormControl, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
 import { VendorsService } from 'src/app/services/vendors.service';
@@ -20,12 +20,14 @@ export class VendorsComponent implements OnInit {
   vendor_array:any = [];
   user_data:any = [];
   searchText = '';
-  constructor(private fb: UntypedFormBuilder, 
+  constructor(private fb: UntypedFormBuilder,
               private api: ApiService,
-              private notification:NotificationService,private vendor:VendorsService) {}
+              private notification:NotificationService,private vendor:VendorsService) {
+                this.vendorFormValidators()
+              }
 
   ngOnInit(): void {
-    
+
     this.vendorFormValidators();
 
     this.vendor.getVendors().subscribe((res) => this.vendor_info = res);
@@ -46,8 +48,8 @@ export class VendorsComponent implements OnInit {
     this.vendorForm.get('status')?.setValue(data.status);
     this.vendorForm.get('phone_number')?.setValue(data.phone_number);
     this.vendorForm.get('updated_by')?.setValue(this.user_data.user_id);
-    
-    
+
+
   }
   create(): void {
     this.submit = true;
@@ -84,15 +86,15 @@ export class VendorsComponent implements OnInit {
   onUpdate() {
     if (this.vendorForm.valid){
       this.api.patchCall('/vendor/updateVendor/'+this.vendorForm.value.vendor_id,this.vendorForm.value).subscribe((res) =>{
-      
+
         this.notification.createNotification(res.status,res.message);
-  
+
         this.vendor.getVendors().subscribe((res) => this.vendor_info = res);
-  
+
       });
       this.visible = false;
     }
-    
+
       else {
         console.log('invalid')
         Object.values(this.vendorForm.controls).forEach(control => {
@@ -102,7 +104,7 @@ export class VendorsComponent implements OnInit {
           }
         });
       }
-    
+
   }
 
   vendorFormValidators(){
@@ -116,6 +118,25 @@ export class VendorsComponent implements OnInit {
       created_by: [''],
       updated_date: [''],
       updated_by: [''],
+      user_name: ['',[Validators.required]],
+
+      password_md5: ['',[Validators.required]],
+      confirm: ['',[this.confirmValidator]],
+      email: [null, [Validators.required,Validators.pattern(GlobalConstants.emailRegex)]],
+      city: ['',[Validators.required]],
+      state: ['',[Validators.required]],
+      gst_num: ['',[Validators.required]],
     });
   }
+  validateConfirmPassword(): void {
+    setTimeout(() => this.vendorForm.controls['confirm'].updateValueAndValidity());
+  }
+  confirmValidator = (control: UntypedFormControl): { [s: string]: boolean } => {
+    if (!control.value) {
+      return { error: true, required: true };
+    } else if (control.value !== this.vendorForm.controls['password_md5'].value) {
+      return { confirm: true, error: true };
+    }
+    return {};
+  };
 }

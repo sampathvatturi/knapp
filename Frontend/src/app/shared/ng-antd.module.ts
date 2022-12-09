@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-
-
 import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzAnchorModule } from 'ng-zorro-antd/anchor';
@@ -51,7 +49,6 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
-//import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
@@ -74,10 +71,11 @@ import { NzResizableModule } from 'ng-zorro-antd/resizable';
 import { NzPipesModule } from 'ng-zorro-antd/pipes';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { GlobalTablesearchPipe } from './pipes/global-tablesearch.pipe';
+import { CurrencyPipe } from './pipes/currency.pipe';
 //import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 //import { NzGraphModule } from 'ng-zorro-antd/graph';
 
-const antdModules =[
+const antdModules = [
   NzAffixModule,
   NzAlertModule,
   NzAnchorModule,
@@ -124,7 +122,6 @@ const antdModules =[
   NzRateModule,
   NzResultModule,
   NzSegmentedModule,
-  //NzSelectModule,
   NzSkeletonModule,
   NzSliderModule,
   NzSpinModule,
@@ -147,21 +144,14 @@ const antdModules =[
   NzWaveModule,
   NzResizableModule,
   NzPipesModule,
-  NzSelectModule
- // NzCodeEditorModule,
+  NzSelectModule,
+  // NzCodeEditorModule,
   //NzGraphModule
 ];
 
 @NgModule({
-  declarations: [
-    GlobalTablesearchPipe
-  ],
-  imports: [
-    CommonModule,
-  ],
-  exports: [
-    ...antdModules,
-    GlobalTablesearchPipe
-  ]
+  declarations: [GlobalTablesearchPipe, CurrencyPipe],
+  imports: [CommonModule],
+  exports: [...antdModules, GlobalTablesearchPipe, CurrencyPipe],
 })
-export class NgAntdModule { }
+export class NgAntdModule {}

@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const connection = require('./config/connection');
 
-
+const createTables = require('./routes/createTableRoutes')
 const userRoutes = require('./routes/userroutes');
 const ticketRoutes = require('./routes/ticketroutes');
 const departmentRoutes = require('./routes/departmentroutes');
@@ -23,6 +23,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 //table Routes
+app.use('/createTables', createTables);
 app.use('/user', userRoutes);
 app.use('/tickets', ticketRoutes);
 app.use('/dept', departmentRoutes);
@@ -35,4 +36,5 @@ app.use('/transaction', transactionRoutes);
 
 module.exports = app;
 
-const time = require('./middleware/currdate')
+const time = require('./middleware/currdate');
+const req = require('express/lib/request');
