@@ -1,31 +1,38 @@
-<nz-breadcrumb>
+<nz-breadcrumb id="breadcrumb">
   <nz-breadcrumb-item>Home</nz-breadcrumb-item>
   <nz-breadcrumb-item>
     <a routerLink="/app/modules">Dashboard</a>
   </nz-breadcrumb-item>
   <nz-breadcrumb-item>Inventory Items</nz-breadcrumb-item>
 </nz-breadcrumb>
-<nz-content>
-  <div class="cbutton" >
+<nz-content id="component-content">
+  <div id="search-create">
     <nz-input-group [nzSuffix]="suffixIconSearch" class="searchInput">
-      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText"/>
+      <input
+        type="text"
+        nz-input
+        placeholder="Search"
+        [(ngModel)]="searchText"
+      />
     </nz-input-group>
     <ng-template #suffixIconSearch>
       <span nz-icon nzType="search"></span>
     </ng-template>
-    <button nz-button nzType="default" (click)="create()">Create</button>
+    <button nz-button nzType="default" (click)="create()">
+      Add &nbsp; <i class="fa-solid fa-plus"></i>
+    </button>
   </div>
 
   <nz-table
-  #basicTable
-  [nzData]="inventory_info"
+    #basicTable
+    [nzData]="inventory_info"
     nzShowPagination
     nzShowSizeChanger
     [nzPageSizeOptions]="[5, 10, 15, 20]"
   >
     <thead>
       <tr>
-        <th>S.No.</th>
+        <th nzWidth="100px">S.No.</th>
         <th>Item Name</th>
         <th>Quantity</th>
         <th>Price</th>
@@ -35,17 +42,28 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of basicTable.data | globalTablesearch: searchText, let i=index">
-        <td>{{ i+1 }}</td>
+      <tr
+        *ngFor="
+          let data of basicTable.data | globalTablesearch : searchText;
+          let i = index
+        "
+      >
+        <td>{{ i + 1 }}</td>
         <td>{{ data.item_name }}</td>
         <td>{{ data.quantity }}</td>
         <td>{{ data.price }}</td>
         <td>{{ data.tax }}</td>
-        <td>{{ data.created_date  | date : "dd-MM-YYYY hh:mm aaa"}}</td>
+        <td>{{ data.created_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
 
         <td>
-          <div class="editbtn">
-            <a (click)="edit(data)">Edit</a> / <a (click)="edit(data)">view</a>
+          <div id="editbtn">
+            <a nz-tooltip="Edit" (click)="edit(data)"
+              ><i class="fa-regular fa-pen-to-square"></i
+            ></a>
+            <b> / </b>
+            <a nz-tooltip="View" (click)="edit(data)"
+              ><i class="fa-regular fa-eye"></i
+            ></a>
           </div>
         </td>
       </tr>
@@ -60,8 +78,19 @@
   [nzTitle]="drawerTitle"
   [nzFooter]="footerTpl"
   (nzOnClose)="close()"
+  [nzClosable]="false"
+  [nzCloseIcon]="icon"
+  [nzExtra]="icon"
 >
-  <form nz-form *nzDrawerContent [formGroup]="inventoryForm">
+  <ng-template #icon>
+    <i (click)="close()" class="fa-solid fa-circle-xmark"></i>
+  </ng-template>
+  <form
+    nz-form
+    *nzDrawerContent
+    [formGroup]="inventoryForm"
+    class="drawer-form"
+  >
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Item Name</nz-form-label>
@@ -74,10 +103,18 @@
             placeholder="please enter Item Name"
           />
           <ng-template #inventoryErrorTip let-control>
-            <ng-container *ngIf="control.hasError('required')">Please enter item name</ng-container>
-            <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 3 characters<br /></ng-container>
-            <ng-container *ngIf="control.hasError('maxlength')">Maximum length exceeded<br /></ng-container>
-            <ng-container *ngIf="control.hasError('pattern')">Please enter valid input</ng-container>
+            <ng-container *ngIf="control.hasError('required')"
+              >Please enter item name</ng-container
+            >
+            <ng-container *ngIf="control.hasError('minlength')"
+              >Please enter atleast 3 characters<br
+            /></ng-container>
+            <ng-container *ngIf="control.hasError('maxlength')"
+              >Maximum length exceeded<br
+            /></ng-container>
+            <ng-container *ngIf="control.hasError('pattern')"
+              >Please enter valid input</ng-container
+            >
           </ng-template>
         </nz-form-control>
       </nz-form-item>
