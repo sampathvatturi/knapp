@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
+import { NotificationService } from 'src/app/services/auth/notification.service';
+import { GlobalConstants } from 'src/app/shared/global_constants';
 
 @Component({
   selector: 'app-funds',
@@ -8,84 +10,108 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./funds.component.css']
 })
 export class FundsComponent implements OnInit {
-  listOfData: any[] = [];
+  funds: any[] = [];
   visible = false;
   submit = true;
   drawerTitle: string = '';
-  departmentform!: FormGroup;
+  fundsForm!: FormGroup;
   searchText = '';
-  
+  user_data: any;
+  date :any;
+
   constructor(
     private fb: UntypedFormBuilder,
-    private api: ApiService
+    private api: ApiService,
+    private notification: NotificationService,
+
   ) {}
 
   ngOnInit(): void {
-    this.departmentform = this.fb.group({
-      department_id: [''],
-      department_name: [''],
-      ranking: [''],
-      status: [''],
-      created_date: [''],
-      created_by: [''],
-      updated_date: [''],
-      updated_by: [''],
-      department_code: [''],
+    this.fundsFormValidators();
+    this.api.getCall('/fund/getFunds').subscribe((res) => {
+      this.funds = res;
     });
-    // this.api.getCall('/dept/getDepts').subscribe((list) => {
-    //   this.listOfData = list;
-    //   console.log(this.listOfData);
-    // });
+    this.user_data = sessionStorage.getItem('user_data');
+    this.user_data = JSON.parse(this.user_data);
   }
   edit(data: any) {
     this.submit = false;
     this.drawerTitle = 'Edit Fund Details';
     this.visible = true;
-    this.departmentform = this.fb.group({
-      department_id: [data.department_id, [Validators.required]],
-      department_name: [data.department_name, [Validators.required]],
-      ranking: [data.ranking, [Validators.required]],
-      status: [data.status, [Validators.required]],
-      created_date: [data.created_date, [Validators.required]],
-      created_by: [data.created_by, [Validators.required]],
-      updated_date: [data.updated_date, [Validators.required]],
-      updated_by: [data.updated_by, [Validators.required]],
-      department_code: [data.department_code, [Validators.required]],
-    });
+    this.fundsFormValidators();
+    this.fundsForm.get('fund_type')?.setValue(data.fund_type);
+    this.fundsForm.get('fund_description')?.setValue(data.fund_description);
+    this.fundsForm.get('transaction_mode')?.setValue(data.transaction_mode);
+    this.fundsForm.get('fund_value')?.setValue(data.fund_value);
+    this.fundsForm.get('created_by')?.setValue(this.user_data.user_id);
+    this.fundsForm.get('updated_by')?.setValue(this.user_data.user_id);
   }
   create(): void {
     this.submit = true;
     this.drawerTitle = 'Add Fund Details';
     this.visible = true;
-    this.departmentform = this.fb.group({
-      department_id: [''],
-      department_name: ['', [Validators.required]],
-      ranking: ['', [Validators.required]],
-      status: ['', [Validators.required]],
-      created_date: [''],
-      created_by: [''],
-      updated_date: [''],
-      updated_by: [''],
-      department_code: [''],
-    });
+    this.fundsFormValidators();
+    this.fundsForm.get('fund_type')?.setValue('state');
+    this.fundsForm.get('created_by')?.setValue(this.user_data.user_id);
+    this.fundsForm.get('updated_by')?.setValue(this.user_data.user_id);
+
   }
 
   close(): void {
     this.visible = false;
   }
   onSubmit() {
-    console.log(this.departmentform);
-    this.api.postCall('/dept', this.departmentform.value).subscribe();
-    this.visible = false;
-    this.api.getCall('/dept').subscribe((list) => {
-      this.listOfData = list;
-    });
+
+    if(this.fundsForm.valid){
+      console.log(this.fundsForm.value);
+      this.api.postCall('/fund/createFund',this.fundsForm.value).subscribe( res =>{
+        this.notification.createNotification(res.status, res.message);
+        this.api.getCall('/fund/getFunds').subscribe((res) => {
+          this.funds = res;
+        });
+        this.visible = false;
+      })
+    }else{
+      Object.values(this.fundsForm.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+    }
+  onUpdate() {
+    if(this.fundsForm.valid){
+      console.log(this.fundsForm.value);
+      this.api.patchCall(`/updateFund/${this.fundsForm.value.fund_id}`,this.fundsForm.value).subscribe(res =>{
+        this.notification.createNotification(res.status, res.message);
+        this.api.getCall('/fund/getFunds').subscribe((res) => {
+          this.funds = res;
+        });
+        this.visible= false;
+      })
+    }else{
+      Object.values(this.fundsForm.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
   }
-  update() {
-    this.api.patchCall('/dept', this.departmentform.value).subscribe();
-    this.visible = false;
-    this.api.getCall('/dept').subscribe((list) => {
-      this.listOfData = list;
+
+  fundsFormValidators(){
+    this.fundsForm = this.fb.group({
+      fund_type: ['', [Validators.required]],
+      fund_description: ['', [Validators.required,
+      Validators.maxLength(50),
+      Validators.minLength(10),
+      Validators.pattern(GlobalConstants.nameRegex)]],
+      fund_release_date: ['', [Validators.required]],
+      transaction_mode: ['', [Validators.required]],
+      fund_value: ['', [Validators.required]],
+      created_by: [''],
+      updated_by: [''],
     });
   }
 

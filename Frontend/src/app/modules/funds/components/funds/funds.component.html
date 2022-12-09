@@ -23,10 +23,10 @@
       Add &nbsp; <i class="fa-solid fa-plus"></i>
     </button>
   </div>
-  
+
   <nz-table
     #basicTable
-    [nzData]="listOfData"
+    [nzData]="funds"
     nzShowPagination
     nzShowSizeChanger
     [nzPageSizeOptions]="[5, 10, 15, 20]"
@@ -34,11 +34,11 @@
     <thead>
       <tr>
         <th>S.No</th>
-        <th>Proposed Amount</th>
-        <th>Funded By</th>
-        <th>Status</th>
-        <th>Proposed Date</th>
-        <th>Deptartment</th>
+        <th>Fund Type</th>
+        <th>Fund Description</th>
+        <th>Transaction Mode</th>
+        <th>amount</th>
+        <th>Date</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -80,86 +80,88 @@
 <ng-template #icon>
   <i (click)="close()" class="fa-solid fa-circle-xmark"></i>
 </ng-template>
-  <form class="drawer-form" nz-form *nzDrawerContent [formGroup]="departmentform" class="drawer-form">
+  <form class="drawer-form" nz-form *nzDrawerContent [formGroup]="fundsForm" class="drawer-form">
     <div>
       <nz-form-item>
-        <nz-form-label class = "required" nz-col nzSpan="5">Fund Id</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
+        <nz-form-label nz-col nzSpan="5" class="required"
+          >Fund Type</nz-form-label
+        >
+        <nz-select
+          formControlName="fund_type"
+          nz-col
+          nzSpan="10"
+          nzShowSearch
+        >
+          <nz-option nzValue="state" nzLabel="State"></nz-option>
+          <nz-option nzValue="central" nzLabel="Central"></nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+    <div>
+      <nz-form-item>
+        <nz-form-label class = "required" nz-col nzSpan="5">Fund Description</nz-form-label>
+        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="error2">
           <input
             nz-input
-            formControlName="ranking"
-            placeholder="please enter Fund Id"
+            formControlName="fund_description"
+            type="text"
+            nz-input
+            placeholder="Fund Description"
+          />
+          <ng-template #error2 let-control>
+            <ng-container *ngIf="control.hasError('required')"
+              >Please Enter Fund Description</ng-container
+            >
+            <ng-container *ngIf="control.hasError('maxlength')"
+              >Maxlength is 50 <br
+            /></ng-container>
+            <ng-container *ngIf="control.hasError('minlength')"
+              >Minlength is 10 <br
+            /></ng-container>
+            <ng-container *ngIf="control.hasError('pattern')"
+              >Please Enter Valid Fund Description</ng-container
+            >
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="5">Transaction Mode</nz-form-label>
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Select Transaction Mode">
+          <nz-select
+            formControlName="transaction_mode"
+            nzPlaceHolder="Transaction Mode"
+            nzShowSearch
+          >
+            <nz-option nzValue="banking" nzLabel="Banking"></nz-option>
+            <nz-option nzValue="cash" nzLabel="Cash"></nz-option>
+            <nz-option nzValue="cheque" nzLabel="Cheque"></nz-option>
+            <nz-option nzValue="card" nzLabel="Card"></nz-option>
+            <nz-option nzValue="upi" nzLabel="UPI"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div>
+      <nz-form-item>
+        <nz-form-label class = "required" nz-col nzSpan="5">Amount</nz-form-label>
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Enter Amount">
+          <input
+            nz-input
+            formControlName="fund_value"
+            type="number"
+            nz-input
+            placeholder="Amount"
           />
         </nz-form-control>
       </nz-form-item>
     </div>
     <div>
       <nz-form-item>
-        <nz-form-label class = "required" nz-col nzSpan="5">Proposed Amount</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="ranking"
-            type="text"
-            nz-input
-            placeholder="please enter Proposed Amount"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div>
-      <nz-form-item>
-        <nz-form-label class = "required" nz-col nzSpan="5">Funded By</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="ranking"
-            type="text"
-            nz-input
-            placeholder="Funded By"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div>
-      <nz-form-item>
-        <nz-form-label class = "required" nz-col nzSpan="5">Status</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="ranking"
-            type="text"
-            nz-input
-            placeholder="Status"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div>
-      <nz-form-item>
-        <nz-form-label class = "required" nz-col nzSpan="5">Proposed Date</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="ranking"
-            type="text"
-            nz-input
-            placeholder="Proposed Date"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div>
-      <nz-form-item>
-        <nz-form-label class = "required" nz-col nzSpan="5">Department</nz-form-label>
-        <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="ranking"
-            type="text"
-            nz-input
-            placeholder="Department"
-          />
+        <nz-form-label class = "required" nz-col nzSpan="5">Date</nz-form-label>
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Enter Amount">
+          <nz-date-picker formControlName="fund_release_date"></nz-date-picker>
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -174,7 +176,7 @@
       <button nz-button *ngIf="submit" nzType="primary" (click)="onSubmit()">
         Submit
       </button>
-      <button nz-button *ngIf="!submit" nzType="primary" (click)="update()">
+      <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdate()">
         Update
       </button>
     </div>

@@ -1,1 +1,269 @@
-<p>transaction-details works!</p>
+<nz-breadcrumb id="breadcrumb">
+  <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+  <nz-breadcrumb-item>
+    <a routerLink="/app/modules">Dashboard</a>
+  </nz-breadcrumb-item>
+  <nz-breadcrumb-item>Transactions</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<nz-content id="component-content">
+  <div id="search-create">
+    <nz-input-group [nzSuffix]="suffixIconSearch">
+      <input
+        type="text"
+        nz-input
+        placeholder="Search"
+        [(ngModel)]="searchText"
+      />
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <span nz-icon nzType="search"></span>
+    </ng-template>
+    <button nz-button nzType="default" (click)="create()">
+      Add &nbsp; <i class="fa-solid fa-plus"></i>
+    </button>
+  </div>
+
+  <nz-table
+    #basicTable
+    [nzData]="transactions"
+    nzShowPagination
+    nzShowSizeChanger
+    [nzPageSizeOptions]="[5, 10, 15, 20]"
+  >
+    <thead>
+      <tr>
+        <th nzWidth="100px">S.No.</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Mode</th>
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let data of basicTable.data | globalTablesearch : searchText;
+          let i = index
+        "
+      >
+        <td>{{ i + 1 }}</td>
+        <td>{{ data.trsxcn_from }}</td>
+        <td>{{ data.trsxcn_to }}</td>
+        <td>{{ data.category }}</td>
+        <td>{{ data.amount }}</td>
+        <td>{{ data.trscxn_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
+        <td>
+          <div id="editbtn">
+            <a nz-tooltip="Edit" (click)="edit(data)"
+              ><i class="fa-regular fa-pen-to-square"></i
+            ></a>
+            <b> / </b>
+            <a nz-tooltip="View" (click)="edit(data)"
+              ><i class="fa-regular fa-eye"></i
+            ></a>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-content>
+<nz-drawer
+  [nzBodyStyle]="{ overflow: 'auto' }"
+  [nzMaskClosable]="true"
+  [nzWidth]="600"
+  [nzVisible]="visible"
+  [nzTitle]="drawerTitle"
+  [nzFooter]="footerTpl"
+  (nzOnClose)="close()"
+  [nzClosable]="false"
+  [nzCloseIcon]="icon"
+  [nzExtra]="icon"
+>
+  <ng-template #icon>
+    <i (click)="close()" class="fa-solid fa-circle-xmark"></i>
+  </ng-template>
+  <form
+    nz-form
+    *nzDrawerContent
+    [formGroup]="departmentForm"
+    class="drawer-form"
+  >
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="10" class="required"
+          >From</nz-form-label
+        >
+        <nz-form-control
+          nz-col
+          nzSpan="12"
+          nzHasFeedback
+          [nzErrorTip]="deptErrorTp"
+        >
+          <input
+            nz-input
+            formControlName="trsxcn_from"
+            type="text"
+            nz-input
+            placeholder="Please Enter From Name"
+          />
+          <ng-template #deptErrorTp let-control>
+            <ng-container *ngIf="control.hasError('required')"
+              >Please Enter From Name</ng-container
+            >
+            <ng-container *ngIf="control.hasError('maxlength')"
+              >Maxlength is 50 <br
+            /></ng-container>
+            <ng-container *ngIf="control.hasError('minlength')"
+              >Minlength is 10 <br
+            /></ng-container>
+            <ng-container *ngIf="control.hasError('pattern')"
+              >Please Enter Valid From Name</ng-container
+            >
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="10" class="required"
+          >To</nz-form-label
+        >
+        <nz-form-control
+          nz-col
+          nzSpan="12"
+          nzHasFeedback
+          [nzErrorTip]="deptErrorTp"
+        >
+          <input
+            nz-input
+            formControlName="trsxcn_to"
+            type="text"
+            nz-input
+            placeholder="Please Enter To Name"
+          />
+          <ng-template #deptErrorTp let-control>
+            <ng-container *ngIf="control.hasError('required')"
+              >Please Enter To Name</ng-container
+            >
+            <ng-container *ngIf="control.hasError('maxlength')"
+              >Maxlength is 50 <br
+            /></ng-container>
+            <ng-container *ngIf="control.hasError('minlength')"
+              >Minlength is 10 <br
+            /></ng-container>
+            <ng-container *ngIf="control.hasError('pattern')"
+              >Please Enter Valid To Name</ng-container
+            >
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="10" class="required"
+          >Title</nz-form-label
+        >
+        <nz-form-control
+          nz-col
+          nzSpan="12"
+          nzHasFeedback
+          [nzErrorTip]="deptErrorTp"
+        >
+          <input
+            nz-input
+            formControlName="title"
+            type="text"
+            nz-input
+            placeholder="Please Enter Title Name"
+          />
+          <ng-template #deptErrorTp let-control>
+            <ng-container *ngIf="control.hasError('required')"
+              >Please Enter Title Name</ng-container
+            >
+            <ng-container *ngIf="control.hasError('maxlength')"
+              >Maxlength is 50 <br
+            /></ng-container>
+            <ng-container *ngIf="control.hasError('minlength')"
+              >Minlength is 10 <br
+            /></ng-container>
+            <ng-container *ngIf="control.hasError('pattern')"
+              >Please Enter Valid Title Name</ng-container
+            >
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="10" class="required"
+          >Category</nz-form-label
+        >
+        <nz-select
+          formControlName="category"
+          nz-col
+          nzSpan="12"
+          nzPlaceHolder="Category"
+          nzShowSearch
+        >
+          <nz-option nzValue="electricity" nzLabel="electricity"></nz-option>
+          <nz-option nzValue="salary" nzLabel="salary"></nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="10" class="required"
+          >Amount</nz-form-label
+        >
+        <nz-form-control nz-col nzSpan="12" nzErrorTip="Please Enter Amount">
+          <input
+            nz-input
+            formControlName="amount"
+            type="number"
+            nz-input
+            placeholder="Please Enter Amount"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="10">Transaction Mode</nz-form-label>
+        <nz-form-control nz-col nzSpan="12" nzErrorTip="Please Select Transaction Type">
+          <nz-select
+          formControlName="mode"
+          nz-col
+          nzPlaceHolder="Transaction Mode"
+          nzShowSearch
+        >
+          <nz-option nzValue="debit" nzLabel="Debit"></nz-option>
+          <nz-option nzValue="credit" nzLabel="Credit"></nz-option>
+          <nz-option nzValue="refund" nzLabel="Refund"></nz-option>
+        </nz-select>
+        </nz-form-control>
+
+      </nz-form-item>
+    </div>
+
+  </form>
+
+  <ng-template #footerTpl>
+    <div style="float: right">
+      <button nz-button style="margin-right: 8px" (click)="close()">
+        Cancel
+      </button>
+      <button nz-button *ngIf="submit" nzType="primary" (click)="onSubmit()">
+        Submit
+      </button>
+      <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdate()">
+        Update
+      </button>
+    </div>
+  </ng-template>
+</nz-drawer>
