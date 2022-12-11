@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
     const formData = this.validateForm.value;
     const obj = {
       email: formData.email,
-      password: this.md5.logMd5(formData.password)
+      password: this.md5.passwordEncrypt(formData.password)
     };
     this.userService.login(obj).subscribe((response: any) => {
       console.log("response in Login: ", response);

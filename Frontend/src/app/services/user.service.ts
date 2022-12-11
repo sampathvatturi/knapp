@@ -15,8 +15,16 @@ export class UserService {
     private apiService: ApiService
   ) { }
 
-  signup(postDataObj: any): Observable<any> {
+  createUser(postDataObj: any): Observable<any> {
     return this.apiService.postCall('/user/createUser', postDataObj).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
+
+  updateUser(id: any, postDataObj: any): Observable<any> {
+    return this.apiService.patchCall('/user/updateUser/' + id, postDataObj).pipe(
       map((response: any) => {
         return response;
       })
@@ -32,7 +40,7 @@ export class UserService {
   }
 
   getUserById(id: any): Observable<any>{
-    return this.apiService.getCall('/user/getUserById/'+id).pipe(
+    return this.apiService.getCall('/user/getUserById/'+ id).pipe(
       map((response: any) => {
         return response;
       })

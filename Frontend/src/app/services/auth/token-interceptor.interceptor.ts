@@ -47,7 +47,7 @@ export class TokenInterceptorInterceptor implements HttpInterceptor {
           error.error.message = "ERR_INTERNET_DISCONNECTED";
         }
         if(!request.url.includes('user/login')){
-          this.notificationService.createNotification('error', error.error.message ?? GlobalConstants.genericError);  
+          this.notificationService.createNotification('error', error?.error?.message ?? GlobalConstants.genericError);  
         }
         return throwError(error);
       })   

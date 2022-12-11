@@ -1,7 +1,6 @@
 const db = require("../config/connection");
 const currdateTime = require('../middleware/currdate');
 
-//departments
 exports.getVendors = async (req, res) => {
   db.query("select * from vendors", (err, result, fiels) => {
     if (!err) {
@@ -19,6 +18,7 @@ exports.createVendor = async (req, res) => {
       {
         vendor_name: data.vendor_name,
         phone_number: data.phone_number,
+        email: data.email,
         address: data.address,
         status: data.status,
         created_by: data.created_by,
@@ -27,13 +27,31 @@ exports.createVendor = async (req, res) => {
     ],
     (err, result, fields) => {
       if (!err) {
-        res
-          .status(200)
-          .json({
-            status: "success",
-            message: "Vendor added successfully",
-          });
-      } else res.status(401).json({ status: "failed" });
+        // res.status(200).json({status: "success", message: "Vendor added successfully",});
+        db.query("INSERT INTO `users` SET ? ", 
+        [{
+          first_name: data.vendor_name,
+          user_name: data.user_name,
+          password_md5: data.password_md5,
+          phone_number: data.phone_number,
+          address: data.address,
+          email: data.email,
+          role: 'vendor',
+          status: data.status,
+          created_by: data.created_by,
+          updated_by: data.updated_by
+        }], 
+        (err, result, fields) => {
+          if (!err) {
+            res.status(200).json({ status: "success", message: "Vendor added successfully and created vendor logins." });
+          } else { 
+            res.status(404).send(json({ status: "failed" })); 
+          }
+        });
+
+      } else {
+        res.status(401).json({ status: "failed" });
+      }
     }
   );
 };

@@ -10,18 +10,11 @@ exports.loginUser = async (req, res) => {
   let data = req.body;
   user_name = data.email;
   password = data.password;
-  const query =
-    "select * from users where (user_name = '" +
-    user_name +
-    "' and password_md5 = '" +
-    password +
-    "') or (email = '" +
-    user_name +
-    "' and password_md5 = '" +
-    password +
-    "')";
-    console.log(query);
+  const query = "select * from users where (user_name = '" + user_name + "' and password_md5 = '"
+  + password  + "') or (email = '" + user_name + "' and password_md5 = '" + password + "')";
+  console.log(query);
   db.query(query, (err, result) => {
+    console.log(err, result);
     if (!err) {
       if (result.length === 1) {
         if (result[0].status == "inactive") {
@@ -37,7 +30,6 @@ exports.loginUser = async (req, res) => {
           const accessToken = jwt.sign(response, process.env.ACCESS_TOKEN, {
             expiresIn: "3h",
           });
-
           session_user_data = {
             user_id: result[0].user_id,
             first_name: result[0].first_name,
@@ -47,20 +39,10 @@ exports.loginUser = async (req, res) => {
             status: result[0].status,
             department_id: result[0].department_id,
           };
-          res
-            .status(200)
-            .json({ token: accessToken, user_data: session_user_data });
-          db.query(
-            "update users set login_time= '" +
-              dateTime +
-              "' where user_id = '" +
-              result[0].user_id +
-              "'"
-          );
+          res.status(200).json({ token: accessToken, user_data: session_user_data });
+          db.query("update users set login_time= '" + dateTime + "' where user_id = '" + result[0].user_id + "'");
         } else {
-          res
-            .status(400)
-            .json({ message: "Somthing went wrong, Please try again later." });
+          res.status(400).json({ message: "Somthing went wrong, Please try again later." });
         }
       } else {
         res.status(401).json({ message: "Incorrect Username or Password." });
@@ -71,11 +53,10 @@ exports.loginUser = async (req, res) => {
   });
 };
 
-//Get Users//
 exports.getUsers = async (req, res) => {
-  // const query = "select * from users";
-  const query =
-    "select u.user_id, u.user_name,u.phone_number,u.email, u.status, d.department_id, d.department_name,u.first_name,u.last_name,u.address,u.city,u.district from users u, departments d where u.department_id=d.department_id;";
+  let query = "select u.user_id, u.user_name,u.phone_number,u.email, u.status, d.department_id, d.department_name,u.first_name,";
+  query = query + "u.last_name,u.address,u.city,u.district, u.role from users u ";
+  query = query + "LEFT JOIN  departments d ON d.department_id=u.department_id";
   db.query(query, (err, result) => {
     if (!err) {
       if (result.length <= 0) {
@@ -91,12 +72,11 @@ exports.getUsers = async (req, res) => {
 
 exports.createUser = async (req, res) => {
   params = req.body;
-  db.query("INSERT INTO `users` SET ? ", params, (err, result, fields) => {
+  db.query("INSERT INTO `users` SET ? ", params, (err, result) => {
+    // console.log("Error:", err);
     if (!err) {
-      res
-        .status(200)
-        .json({ status: "success", message: "User added successfully" });
-    } else res.status(404).send(json({ status: "failed" }));
+      res.status(200).json({ status: "success", message: "User added successfully" });
+    } else res.status(404).json({ status: "failed" });
   });
 };
 
@@ -108,23 +88,23 @@ exports.updateUser = async (req, res) => {
       {
         first_name: data.first_name,
         last_name: data.last_name,
-        user_name: data.user_name,
+        // user_name: data.user_name,
         phone_number: data.phone_number,
-        address: data.address,
-        role_id: data.role_id,
-        status: data.status,
-        updated_date: data.updated_date,
-        updated_by: data.updated_by,
         department_id: data.department_id,
+        role: data.role,
+        status: data.status,
+        address: data.address,
+        district: data.district,
+        city: data.city,
+        updated_date: dateTime,
+        updated_by: data.updated_by
       },
       req.params.id,
     ],
-    (err, result, fiels) => {
+    (err, result) => {
       if (!err)
-        res
-          .status(200)
-          .json({ status: "success", message: "user updated successfully" });
-      else res.status(401).send(json({ status: "failed" }));
+        res.status(200).json({ status: "success", message: "User updated successfully" });
+      else res.status(401).json({ status: "failed" });
     }
   );
 };
@@ -138,23 +118,23 @@ exports.deleteUser = async (req, res) => {
         res
           .status(200)
           .json({ status: "success", message: "User deleted successfully" });
-      else res.status(401).send(json({ status: "failed" }));
+      else res.status(401).json({ status: "failed" });
     }
   );
 };
 
-exports.getUser = async (req, res) => {
-  console.log(req.params.id)
-  db.query(
-    "select * from users where user_id = ?",
-    [req.params.id],
-    (err, result, fields) => {
+exports.getUserById = async (req, res) => {
+  let query = "select u.user_id, u.user_name,u.password_md5,u.phone_number,u.email, u.status, d.department_id, d.department_name,u.first_name,";
+  query = query + "u.last_name,u.address,u.city,u.district, u.role from users u ";
+  query = query + "LEFT JOIN  departments d ON d.department_id=u.department_id where u.user_id=" + req.params.id;
+  console.log(query);
+  db.query(query,(err, result) => {
       if (!err) {
         console.log(result.length)
         if (result.length === 1)
-          res.status(401).json(result);
-        else res.status(200).json({ message: "User not found" });
-      } else res.status(401).send(json({ status: "failed" }));
+          res.status(200).json(result);
+        else res.status(401).json({ message: "User not found" });
+      } else res.status(401).json({ status: "failed" });
     }
   );
 };
@@ -168,13 +148,13 @@ exports.getUserByDepartmentId = async (req, res) => {
   id = id.toString();
   db.query(
     "select u.first_name,u.last_name,u.user_id,d.department_id,d.department_name,d.ranking from users u,departments d where d.department_id= u.department_id and d.department_id = '" +
-      id +
-      "' and d.status='active' ",
-    (err, result, fields) => {
+    id +
+    "' and d.status='active' ",
+    (err, result) => {
       if (!err) {
         if (result.length > 0) res.status(200).json(result);
-        else res.status(401).send(json({ message: "No Users found" }));
-      } else res.status(401).send(json({ status: "failed" }));
+        else res.status(401).json({ message: "No Users found" });
+      } else res.status(401).json({ status: "failed" });
     }
   );
 };
@@ -182,12 +162,12 @@ exports.getUserByDepartmentId = async (req, res) => {
 exports.getUsersByDepartment = async (req, res) => {
   db.query(
     "select u.first_name,u.last_name,u.user_id,d.department_id,d.department_name,d.ranking from users u,departments d where d.department_id= u.department_id and d.status='active' ",
-    (err, result, fields) => {
+    (err, result) => {
       if (!err) {
         console.log(result);
         if (result.length > 0) res.status(200).json(result);
-        else res.status(401).send(json({ message: "No Users found" }));
-      } else res.status(401).send(json({ status: "failed" }));
+        else res.status(401).json({ message: "No Users found" });
+      } else res.status(401).json({ status: "failed" });
     }
   );
 };

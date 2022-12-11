@@ -6,15 +6,11 @@
   <nz-breadcrumb-item>User Accounts</nz-breadcrumb-item>
 </nz-breadcrumb>
 
+<!-- Data list table Start -->
 <nz-content id="component-content">
   <div id="search-create">
     <nz-input-group [nzSuffix]="suffixIconSearch" class="searchInput">
-      <input
-        type="text"
-        nz-input
-        placeholder="Search"
-        [(ngModel)]="searchText"
-      />
+      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText" />
     </nz-input-group>
     <ng-template #suffixIconSearch>
       <span nz-icon nzType="search"></span>
@@ -23,63 +19,45 @@
       Add &nbsp; <i class="fa-solid fa-plus"></i>
     </button>
   </div>
-  <nz-table
-    #basicTable
-    [nzData]="users"
-    nzShowPagination
-    nzShowSizeChanger
-    [nzPageSizeOptions]="[5, 10, 15, 20]"
-  >
+  <nz-table #basicTable [nzData]="users" nzShowPagination nzShowSizeChanger [nzPageSizeOptions]="[5, 10, 15, 20]">
     <thead>
       <tr>
-        <th>Id</th>
+        <th>S.No</th>        
         <th>Name</th>
-        <th>Phone Number</th>
+        <th>User Name</th>
         <th>Email</th>
+        <th>Phone No</th>
         <th>Department</th>
+        <th>Role</th>
         <th>Actions</th>
       </tr>
     </thead>
-
     <tbody>
-      <tr
-        *ngFor="
-          let data of basicTable.data | globalTablesearch : searchText;
-          let i = index
-        "
-      >
+      <tr *ngFor="let data of basicTable.data | globalTablesearch : searchText; let i = index">
         <td>{{ i + 1 }}</td>
+        <td>{{ data.first_name }} {{ data.last_name }}</td>
         <td>{{ data.user_name }}</td>
-        <td>{{ data.phone_number }}</td>
         <td>{{ data.email }}</td>
+        <td>{{ data.phone_number }}</td>
         <td>{{ data.department_name }}</td>
+        <td>{{ data.role }}</td>
         <td>
           <div id="editbtn">
-            <a nz-tooltip="Edit" (click)="edit(data)"
-              ><i class="fa-regular fa-pen-to-square"></i
-            ></a>
+            <a nz-tooltip="Edit" (click)="edit(data)"><i class="fa-regular fa-pen-to-square"></i></a>
             <b> / </b>
-            <a nz-tooltip="View" (click)="edit(data)"
-              ><i class="fa-regular fa-eye"></i
-            ></a>
+            <a nz-tooltip="View" (click)="edit(data)"><i class="fa-regular fa-eye"></i></a>
           </div>
         </td>
       </tr>
     </tbody>
   </nz-table>
 </nz-content>
-<nz-drawer
-  [nzBodyStyle]="{ overflow: 'auto' }"
-  [nzMaskClosable]="false"
-  [nzWidth]="720"
-  [nzVisible]="visible"
-  [nzFooter]="footerTpl"
-  [nzTitle]="drawerTitle"
-  (nzOnClose)="close()"
-  [nzClosable]="false"
-  [nzCloseIcon]="icon"
-  [nzExtra]="icon"
->
+<!-- Data list table End -->
+
+<!-- Create/Edit Drawer Start -->
+<nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzMaskClosable]="false" [nzWidth]="720" [nzVisible]="visible"
+  [nzFooter]="footerTpl" [nzTitle]="drawerTitle" (nzOnClose)="close()" [nzClosable]="false" [nzCloseIcon]="icon"
+  [nzExtra]="icon">
   <ng-template #icon>
     <i (click)="close()" class="fa-solid fa-circle-xmark"></i>
   </ng-template>
@@ -89,223 +67,143 @@
         <div>
           <form nz-form [formGroup]="createUserForm" nz-row>
             <nz-form-item nz-col nzSpan="12">
-              <nz-form-label class="lab">First Name</nz-form-label>
+              <nz-form-label class="required">First Name</nz-form-label>
               <nz-form-control [nzErrorTip]="firstNameErrTip" class="create">
-                <input
-                  type="text"
-                  nz-input
-                  formControlName="first_name"
-                  placeholder="First Name"
-                />
+                <input type="text" nz-input formControlName="first_name" placeholder="First Name" />
                 <ng-template #firstNameErrTip let-control>
-                  <ng-container *ngIf="control.hasError('required')"
-                    >Please enter first name</ng-container
-                  >
-                  <ng-container *ngIf="control.hasError('minlength')"
-                    >Please enter atleast 3 characters<br
-                  /></ng-container>
-                  <ng-container *ngIf="control.hasError('maxlength')"
-                    >Maxlength exceeded<br
-                  /></ng-container>
-                  <ng-container *ngIf="control.hasError('pattern')"
-                    >Please enter valid input<br
-                  /></ng-container>
+                  <ng-container *ngIf="control.hasError('required')">Please enter first name</ng-container>
+                  <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 3
+                    characters<br /></ng-container>
+                  <ng-container *ngIf="control.hasError('maxlength')">Maxlength exceeded<br /></ng-container>
+                  <ng-container *ngIf="control.hasError('pattern')">Please enter valid First Name<br /></ng-container>
                 </ng-template>
               </nz-form-control>
             </nz-form-item>
 
-            <nz-form-item nz-col nzSpan="12">
-              <nz-form-label>Last Name</nz-form-label>
+            <nz-form-item nz-col nzSpan="12" *ngIf="userRole ==='vendor'"></nz-form-item>
+            <nz-form-item nz-col nzSpan="12" *ngIf="userRole !=='vendor'">
+              <nz-form-label class="required">Last Name</nz-form-label>
               <nz-form-control [nzErrorTip]="lastNameErrTip" class="create">
-                <input
-                  type="text"
-                  nz-input
-                  formControlName="last_name"
-                  placeholder="Last Name"
-                />
+                <input type="text" nz-input formControlName="last_name" placeholder="Last Name" />
                 <ng-template #lastNameErrTip let-control>
-                  <ng-container *ngIf="control.hasError('required')"
-                    >Please enter last name</ng-container
-                  >
-                  <ng-container *ngIf="control.hasError('minlength')"
-                    >Please enter atleast 3 characters<br
-                  /></ng-container>
-                  <ng-container *ngIf="control.hasError('maxlength')"
-                    >Maxlength exceeded<br
-                  /></ng-container>
-                  <ng-container *ngIf="control.hasError('pattern')"
-                    >Please enter valid input<br
-                  /></ng-container>
+                  <ng-container *ngIf="control.hasError('required')">Please enter Last Name</ng-container>
+                  <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 3 characters<br /></ng-container>
+                  <ng-container *ngIf="control.hasError('maxlength')">Maxlength exceeded<br /></ng-container>
+                  <ng-container *ngIf="control.hasError('pattern')">Please enter valid Last Name<br /></ng-container>
                 </ng-template>
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
-              <nz-form-label>Email</nz-form-label>
+              <nz-form-label class="required">Email</nz-form-label>
               <nz-form-control [nzErrorTip]="emailErrorTip" class="create">
-                <input
-                  type="text"
-                  nz-input
-                  formControlName="email"
-                  placeholder="Email"
-                />
+                <input type="text" nz-input formControlName="email" placeholder="Email" />
                 <ng-template #emailErrorTip let-control>
-                  <ng-container *ngIf="control.hasError('required')"
-                    >Please enter email</ng-container
-                  >
-                  <ng-container *ngIf="control.hasError('pattern')"
-                    >Please enter valid email<br
-                  /></ng-container>
+                  <ng-container *ngIf="control.hasError('required')">Please enter email</ng-container>
+                  <ng-container *ngIf="control.hasError('pattern')">Please enter valid email<br /></ng-container>
                 </ng-template>
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
-              <nz-form-label>User Name</nz-form-label>
+              <nz-form-label class="required">User Name</nz-form-label>
               <nz-form-control [nzErrorTip]="userNameErrorTip" class="create">
-                <input
-                  type="text"
-                  nz-input
-                  formControlName="user_name"
-                  placeholder="User name"
-                />
+                <input type="text" nz-input formControlName="user_name" placeholder="User name" />
                 <ng-template #userNameErrorTip let-control>
-                  <ng-container *ngIf="control.hasError('required')"
-                    >Please enter user name</ng-container
-                  >
-                  <ng-container *ngIf="control.hasError('minlength')"
-                    >Please enter atleast 8 characters<br
-                  /></ng-container>
-                  <ng-container *ngIf="control.hasError('maxlength')"
-                    >Maxlength exceeded<br
-                  /></ng-container>
-                  <ng-container *ngIf="control.hasError('pattern')"
-                    >Please enter valid input<br
-                  /></ng-container>
+                  <ng-container *ngIf="control.hasError('required')">Please enter user name</ng-container>
+                  <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 5 characters<br /></ng-container>
+                  <ng-container *ngIf="control.hasError('maxlength')">Maxlength exceeded<br /></ng-container>
+                  <ng-container *ngIf="control.hasError('pattern')">Please enter valid UserName<br /></ng-container>
                 </ng-template>
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
-              <nz-form-label>Password</nz-form-label>
-              <nz-form-control
-                nzErrorTip="Please input your Password!"
-                class="create"
-              >
-                <input
-                  type="password"
-                  nz-input
-                  formControlName="password_md5"
-                  placeholder="Password"
-                  autocomplete="new-password"
-                  (ngModelChange)="validateConfirmPassword()"
-                />
+              <nz-form-label class="required">Password</nz-form-label>
+              <nz-form-control nzErrorTip="Please input your Password!" class="create">
+                <input type="password" nz-input formControlName="password_md5" placeholder="Password"
+                  autocomplete="new-password" (ngModelChange)="validateConfirmPassword()" />
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
-              <nz-form-label>Confirm Password</nz-form-label>
-              <nz-form-control
-                class="create"
-                nzHasFeedback
-                [nzErrorTip]="passwordErrorTpl"
-              >
-                <input
-                  type="password"
-                  nz-input
-                  formControlName="cnfrm_password_md5"
-                  placeholder="Re-enter Password"
-                />
+              <nz-form-label class="required">Confirm Password</nz-form-label>
+              <nz-form-control class="create" nzHasFeedback [nzErrorTip]="passwordErrorTpl">
+                <input type="password" nz-input formControlName="cnfrm_password_md5" placeholder="Re-enter Password" />
                 <ng-template #passwordErrorTpl let-control>
-                  <ng-container *ngIf="control.hasError('required')"
-                    >Please confirm your new password!</ng-container
-                  >
-                  <ng-container *ngIf="control.hasError('confirm')"
-                    >Password is inconsistent!</ng-container
-                  >
+                  <ng-container *ngIf="control.hasError('required')">Please confirm your password!</ng-container>
+                  <ng-container *ngIf="control.hasError('confirm')">Password is inconsistent!</ng-container>
                 </ng-template>
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
-              <nz-form-label>Mobile Number</nz-form-label>
+              <nz-form-label class="required">Mobile Number</nz-form-label>
               <nz-form-control [nzErrorTip]="mobileErrorTip" class="create">
-                <input
-                  type="text"
-                  nz-input
-                  formControlName="phone_number"
-                  placeholder="Mobile Number"
-                />
+                <input type="text" nz-input formControlName="phone_number" placeholder="Mobile Number" />
                 <ng-template #mobileErrorTip let-control>
-                  <ng-container *ngIf="control.hasError('required')"
-                    >Please enter mobile number</ng-container
-                  >
-                  <ng-container *ngIf="control.hasError('pattern')"
-                    >Please enter valid Mobile Number<br
-                  /></ng-container>
+                  <ng-container *ngIf="control.hasError('required')">Please enter mobile number</ng-container>
+                  <ng-container *ngIf="control.hasError('pattern')">Please enter valid MobileNumber<br /></ng-container>
+                  <ng-container *ngIf="control.hasError('minlength')">Minlength is 10<br /></ng-container>
+                  <ng-container *ngIf="control.hasError('maxlength')">Maxlength is 10<br /></ng-container>
                 </ng-template>
               </nz-form-control>
             </nz-form-item>
 
-            <nz-form-item nz-col nzSpan="12">
-              <nz-form-label>Department</nz-form-label>
-              <nz-form-control
-                class="create"
-                nzErrorTip="Please Select Department"
-              >
-                <nz-select
-                  nzShowSearch
-                  nzAllowClear
-                  nzPlaceHolder="Select a Department"
-                  formControlName="department_id"
-                >
-                  <nz-option
-                    *ngFor="let d of departments"
-                    nzValue="{{ d.department_id }}"
-                    nzLabel="{{ d.department_name }}"
-                  >
+            <nz-form-item nz-col nzSpan="12" *ngIf="userRole !=='vendor'">
+              <nz-form-label class="required">Department</nz-form-label>
+              <nz-form-control class="create" nzErrorTip="Please Select Department">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a Department"
+                  formControlName="department_id">
+                  <nz-option *ngFor="let d of departments" nzValue="{{ d.department_id }}"
+                    nzLabel="{{ d.department_name }}">
                   </nz-option>
                 </nz-select>
               </nz-form-control>
             </nz-form-item>
 
+            <nz-form-item nz-col nzSpan="12">
+              <nz-form-label class="required">User Role</nz-form-label>
+              <nz-form-control class="create" nzErrorTip="Please Select Role">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a Role" formControlName="role" (ngModelChange)="onChangeRole($event)">
+                  <nz-option nzValue="admin" nzLabel="Admin"></nz-option>
+                  <nz-option nzValue="user" nzLabel="User"></nz-option>
+                  <nz-option nzValue="vendor" nzLabel="Vendor"></nz-option>
+                  <nz-option nzValue="super_admin" nzLabel="Super Admin"></nz-option>
+                  <nz-option nzValue="super_user" nzLabel="Super User"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-col nzSpan="12">
+              <nz-form-label class="required">Status</nz-form-label>
+              <nz-form-control class="create" nzErrorTip="Please Select Status">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a Status" formControlName="status">
+                  <nz-option nzValue="active" nzLabel="Active"></nz-option>
+                  <nz-option nzValue="inactive" nzLabel="InActive"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+
             <nz-form-item nz-col nzSpan="24">
-              <nz-form-label style="margin-bottom: none">Address</nz-form-label>
+              <nz-form-label style="margin-bottom: none" class="required">Address</nz-form-label>
               <nz-form-control [nzErrorTip]="addressErrorTip" class="address">
                 <nz-input-group nzPrefixIcon="home">
-                  <input
-                    type="text"
-                    nz-input
-                    formControlName="address"
-                    placeholder="Address"
-                  />
+                  <input type="text" nz-input formControlName="address" placeholder="Address" />
                   <ng-template #addressErrorTip let-control>
-                    <ng-container *ngIf="control.hasError('required')"
-                      >Please enter address</ng-container
-                    >
-                    <ng-container *ngIf="control.hasError('minlength')"
-                      >please enter atleast 15 characters<br
-                    /></ng-container>
-                    <ng-container *ngIf="control.hasError('maxlength')"
-                      >Maximum length exceeded<br
-                    /></ng-container>
-                    <ng-container *ngIf="control.hasError('pattern')"
-                      >Please enter valid input</ng-container
-                    >
+                    <ng-container *ngIf="control.hasError('required')">Please enter address</ng-container>
+                    <ng-container *ngIf="control.hasError('minlength')">please enter atleast 5 characters<br /></ng-container>
+                    <ng-container *ngIf="control.hasError('maxlength')">Maxlength exceeded<br /></ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">Please enter valid Address</ng-container>
                   </ng-template>
                 </nz-input-group>
               </nz-form-control>
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
-              <nz-form-label>City</nz-form-label>
+              <nz-form-label class="required">City</nz-form-label>
               <nz-form-control class="create" nzErrorTip="Please Select City">
-                <nz-select
-                  formControlName="city"
-                  nzShowSearch
-                  nzAllowClear
-                  nzPlaceHolder="Select a Department"
-                >
+                <nz-select formControlName="city" nzShowSearch nzAllowClear nzPlaceHolder="Select a Department">
                   <nz-option nzValue="1" nzLabel="City 1"></nz-option>
                   <nz-option nzValue="2" nzLabel="City 2"></nz-option>
                 </nz-select>
@@ -313,17 +211,9 @@
             </nz-form-item>
 
             <nz-form-item nz-col nzSpan="12">
-              <nz-form-label>District</nz-form-label>
-              <nz-form-control
-                class="create"
-                nzErrorTip="Please Select District"
-              >
-                <nz-select
-                  formControlName="district"
-                  nzShowSearch
-                  nzAllowClear
-                  nzPlaceHolder="Select a Department"
-                >
+              <nz-form-label class="required">District</nz-form-label>
+              <nz-form-control class="create" nzErrorTip="Please Select District">
+                <nz-select formControlName="district" nzShowSearch nzAllowClear nzPlaceHolder="Select a Department">
                   <nz-option nzValue="1" nzLabel="District 1"></nz-option>
                   <nz-option nzValue="2" nzLabel="District 2"></nz-option>
                 </nz-select>
@@ -340,14 +230,13 @@
       <button nz-button style="margin-right: 8px" (click)="close()">
         Cancel
       </button>
-
-      <button nz-button *ngIf="submit" nzType="primary" (click)="onSubmit()">
+      <button nz-button *ngIf="submit" nzType="primary" (click)="onCreateSubmit()">
         Create
       </button>
-
-      <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdate()">
+      <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdateSubmit()">
         Update
       </button>
     </div>
   </ng-template>
 </nz-drawer>
+<!-- Create/Edit Drawer End -->

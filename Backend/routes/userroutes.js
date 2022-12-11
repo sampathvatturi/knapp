@@ -9,7 +9,7 @@ const{
      createUser,
      updateUser,
      deleteUser,
-     getUser,
+     getUserById,
      checkToken,
      getUserByDepartmentId,
      getUsersByDepartment
@@ -20,7 +20,7 @@ router.get('/getUsers', auth.authenticateToken, roleCheck.checkRole, getUsers);
 router.post('/createUser', createUser);
 router.patch('/updateUser/:id', updateUser);
 router.delete('/deleteUser/:id', deleteUser);
-router.get('/getUser/:id', getUser);
+router.get('/getUserById/:id', getUserById);
 router.get('/checkToken', checkToken);
 router.post('/getUserByDepartmentId', getUserByDepartmentId);
 router.get('/getUsersByDepartment', getUsersByDepartment);
