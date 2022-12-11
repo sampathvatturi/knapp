@@ -11,7 +11,6 @@ import { Md5hashService } from 'src/app/services/md5hash.service';
 import { UserService } from 'src/app/services/user.service';
 import { DepartmentService } from 'src/app/services/department.service';
 import { GlobalConstants } from 'src/app/shared/global_constants';
-import { A } from 'chart.js/dist/chunks/helpers.core';
 
 @Component({
   selector: 'app-user-accounts',

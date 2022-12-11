@@ -8,8 +8,11 @@ import { ApiService } from './api.service';
 })
 export class VendorsService {
 
-  constructor(private http: HttpClient,
-    private apiService: ApiService) { }
+  constructor(
+    private http: HttpClient,
+    private apiService: ApiService
+  ) { }
+
   getVendors(): Observable<any>{
     return this.apiService.getCall('/vendor/getVendors').pipe(
       map((response: any) => {
@@ -18,11 +21,27 @@ export class VendorsService {
     );
   }
 
-  // getVendorById(id: any): Observable<any>{
-  //   return this.apiService.getCall(''+id).pipe(
-  //     map((response: any) => {
-  //       return response;
-  //     })
-  //   );
-  // }
+  createVendor(postDataObj: any): Observable<any> {
+    return this.apiService.postCall('/vendor/createVendor', postDataObj).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
+
+  updateVendor(id: any, postDataObj: any): Observable<any> {
+    return this.apiService.patchCall('/vendor/updateVendor/' + id, postDataObj).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
+
+  getVendorById(id: any): Observable<any>{
+    return this.apiService.getCall('/vendor/getVendorById'+id).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
 }

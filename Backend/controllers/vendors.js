@@ -2,7 +2,7 @@ const db = require("../config/connection");
 const currdateTime = require('../middleware/currdate');
 
 exports.getVendors = async (req, res) => {
-  db.query("select * from vendors", (err, result, fiels) => {
+  db.query("select * from vendors", (err, result) => {
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
       else res.status(404).json({ message: "Vendors not found" });
@@ -20,12 +20,17 @@ exports.createVendor = async (req, res) => {
         phone_number: data.phone_number,
         email: data.email,
         address: data.address,
+        city: data.city,
+        state: data.state,
+        district: data.district,
+        gst_num: data.gst_num,
         status: data.status,
         created_by: data.created_by,
         updated_by: data.updated_by,
       },
     ],
-    (err, result, fields) => {
+    (err, result) => {      
+      console.log("Error in Vendor Creation", err, result);
       if (!err) {
         // res.status(200).json({status: "success", message: "Vendor added successfully",});
         db.query("INSERT INTO `users` SET ? ", 
@@ -41,7 +46,8 @@ exports.createVendor = async (req, res) => {
           created_by: data.created_by,
           updated_by: data.updated_by
         }], 
-        (err, result, fields) => {
+        (err, result) => {
+          console.log(err, result);
           if (!err) {
             res.status(200).json({ status: "success", message: "Vendor added successfully and created vendor logins." });
           } else { 
@@ -62,24 +68,26 @@ exports.updateVendor = async (req, res) => {
     "update vendors set ? where vendor_id = ? ",
     [
       {
-        vendor_name: data.vendor_name,
-        phone_number: data.phone_number,
-        address: data.address,
-        status: data.status,
-        updated_date: currdateTime,
-        updated_by: data.updated_by,
+          vendor_name: data.vendor_name,
+          phone_number: data.phone_number,
+          address: data.address,
+          city: data.city,
+          state: data.state,
+          district: data.district,
+          gst_num: data.gst_num,
+          status: data.status,
+          updated_by: data.updated_by,
+          updated_date: currdateTime
       },
       req.params.id,
     ],
-    (err, result, fiels) => {
-      if (!err)
-        res
-          .status(200)
-          .json({
-            status: "success",
-            message: "Vendor updated successfully",
-          });
-      else res.status(401).json({ status: "failed" });
+    (err, result) => {
+      console.log(err, result);
+      if (!err) {        
+        res.status(200).json({ status: "success", message: "Vendor updated successfully"});
+      } else { 
+        res.status(401).json({ status: "failed" });
+      }
     }
   );
 };
@@ -88,7 +96,7 @@ exports.deleteVendor = async (req, res) => {
   db.query(
     "delete from vendors where vendor_id = ?",
     [req.params.id],
-    (err, result, fields) => {
+    (err, result) => {
       if (!err)
         res
           .status(200)
@@ -101,11 +109,11 @@ exports.deleteVendor = async (req, res) => {
   );
 };
 
-exports.getVendor = async (req, res) => {
+exports.getVendorById = async (req, res) => {
   db.query(
     "select * from vendors where vendor_id = ?",
     [req.params.id],
-    (err, result, fiels) => {
+    (err, result) => {
       if (!err) {
         if (result.length === 1) res.status(200).send(result);
         else res.status(401).json({ message: "Vendor not found" });
