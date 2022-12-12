@@ -30,7 +30,7 @@ app.use('/tickets', ticketRoutes);
 app.use('/dept', departmentRoutes);
 app.use('/vendor', vendorRoutes);
 app.use('/inventory', inventoryRoutes);
-app.use('/invoicedetails', invoiceRoutes);
+app.use('/invoice', invoiceRoutes);
 app.use('/work', workRoutes);
 app.use('/fund', fundRoutes);
 app.use('/transaction', transactionRoutes);
