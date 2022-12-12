@@ -13,25 +13,38 @@ export class InventoryItemsService {
   apiURL = environment.apiUrl;
 
 
-  constructor(private api:ApiService,private http:HttpClient) { }
+  constructor(private apiService: ApiService, private http: HttpClient) { }
 
-  getInventoryItems():Observable<any>{
+  getInventoryItems(): Observable<any> {
 
-    return this.api.getCall('/inventory/getInventory').pipe(
+    return this.apiService.getCall('/inventory/getInventory').pipe(
       map((response: any) => {
         return response;
       })
     );
-
   }
 
-  // getInventoryItemsById(id: any): Observable<any>{
-  //   return this.api.getCall('/inventory/getInventory'+id).pipe(
-  //     map((response: any) => {
-  //       return response;
-  //     })
-  //   );
-  // }
+  createInventoryItem(postDataObj: any): Observable<any> {
+    return this.apiService.postCall('/inventory/createInventory', postDataObj).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
 
+  updateInventoryItem(id: any, postDataObj: any): Observable<any> {
+    return this.apiService.patchCall('/inventory/updateInventory/' + id, postDataObj).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
 
+  getInventoryItemsById(id: any): Observable<any>{
+    return this.apiService.getCall('/inventory/getInventoryById'+id).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
 }

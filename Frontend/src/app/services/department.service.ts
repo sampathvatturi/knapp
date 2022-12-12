@@ -5,29 +5,41 @@ import { ApiService } from './api.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DepartmentService {
   apiURL = environment.apiUrl;
 
-  constructor(
-    private http: HttpClient,
-    private apiService: ApiService
-  ) { }
+  constructor(private http: HttpClient, private apiService: ApiService) { }
 
-  getDepartments(): Observable<any>{
+  getDepartments(): Observable<any> {
     return this.apiService.getCall('/dept/getDepts').pipe(
       map((response: any) => {
         return response;
       })
     );
   }
-
-  getDepartmentById(id: any): Observable<any>{
-    return this.apiService.getCall('/department/getDepartmentById/'+id).pipe(
+  createDepartment(data: any): Observable<any> {
+    return this.apiService.postCall('/dept/createDept/', data).pipe(
       map((response: any) => {
         return response;
       })
     );
   }
+
+  updateDepartment(id: any, postDataObj: any): Observable<any> {
+    return this.apiService.patchCall('/vendor/updateVendor/' + id, postDataObj).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
+  getDepartmentById(id: any): Observable<any> {
+    return this.apiService.getCall('/department/getDepartmentById/' + id).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
+
 }

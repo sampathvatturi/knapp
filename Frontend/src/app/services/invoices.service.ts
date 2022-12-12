@@ -11,25 +11,38 @@ import { Observable } from 'rxjs';
 export class InvoicesService {
   apiURL = environment.apiUrl;
 
-  constructor(private api:ApiService,private http:HttpClient) { }
+  constructor(private apiService: ApiService, private http: HttpClient) { }
 
-  getInvoices():Observable<any>{
-
-    return this.api.getCall('/invoicedetails/getInvoicelogs').pipe(
+  getInvoices(): Observable<any> {
+    return this.apiService.getCall('/invoicedetails/getInvoicelogs').pipe(
       map((response: any) => {
         return response;
       })
     );
-
   }
-  
 
-  // getInvoicesById(id: any): Observable<any>{
-  //   return this.api.getCall('//'+id).pipe(
-  //     map((response: any) => {
-  //       return response;
-  //     })
-  //   );
-  // }
+  createInvoice(postDataObj: any): Observable<any> {
+    return this.apiService.postCall('/invoicedetails/createInvoicelog', postDataObj).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
+
+  updateInvoice(id: any, postDataObj: any): Observable<any> {
+    return this.apiService.patchCall('/invoicedetails/updateInvoicelog/' + id, postDataObj).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
+
+  getInvoicesById(id: any): Observable<any> {
+    return this.apiService.getCall('/invoicedetails/getInvoicelogsById' + id).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
 
 }
