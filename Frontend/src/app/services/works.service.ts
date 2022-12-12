@@ -9,7 +9,8 @@ import { ApiService } from './api.service';
 export class WorksService {
 
   constructor(private http: HttpClient,
-    private apiService: ApiService) { }
+              private apiService: ApiService) { }
+              
   getWorks(): Observable<any>{
     return this.apiService.getCall('/work/getWorks').pipe(
       map((response: any) => {
@@ -17,12 +18,27 @@ export class WorksService {
       })
     );
   }
-
-  getWorkById(id: any): Observable<any>{
-    return this.apiService.getCall('/work/getWork/'+id).pipe(
+  createWorks(postDataObj: any): Observable<any> {
+    return this.apiService.postCall('/work/createWork', postDataObj).pipe(
       map((response: any) => {
         return response;
       })
     );
   }
+
+  updateWorks(id: any, postDataObj: any): Observable<any> {
+    return this.apiService.patchCall('/work/updateWork/' + id, postDataObj).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
+
+  // getWorkById(id: any): Observable<any>{
+  //   return this.apiService.getCall('/work/getWork/'+id).pipe(
+  //     map((response: any) => {
+  //       return response;
+  //     })
+  //   );
+  // }
 }

@@ -23,6 +23,7 @@ export class DepartmentListComponent implements OnInit {
   departmentForm!: FormGroup;
   user_data: any;
   searchText = '';
+  departmentId: any;
 
   sort = {
     compareStatus: (a: DataItem, b: DataItem) =>
@@ -35,55 +36,35 @@ export class DepartmentListComponent implements OnInit {
     private fb: UntypedFormBuilder,
     private api: ApiService,
     private notification: NotificationService,
-    private deptService: DepartmentService
-  ) {}
+    private departmentService: DepartmentService
+  ) { }
 
   ngOnInit(): void {
     this.departmentFormValidators();
-    this.deptService
-      .getDepartments()
-      .subscribe((res) => (this.departments = res));
     this.user_data = sessionStorage.getItem('user_data');
     this.user_data = JSON.parse(this.user_data);
+    this.getDepartment();
+  }
+
+  getDepartment() {
+    this.departmentService.getDepartments().subscribe((res) => {
+      this.departments = res;
+    })
   }
 
   create(): void {
     this.submit = true;
-    this.drawerTitle = 'Add Department';
+    this.drawerTitle = 'Add Department Details';
     this.visible = true;
     this.departmentFormValidators();
     this.departmentForm.get('status')?.setValue('active');
-    this.departmentForm.get('created_by')?.setValue(this.user_data.user_id);
-    this.departmentForm.get('updated_by')?.setValue(this.user_data.user_id);
-  }
-
-  onSubmit() {
-    if (this.departmentForm.valid) {
-      this.api
-        .postCall('/dept/createDept/', this.departmentForm.value)
-        .subscribe((res) => {
-          this.notification.createNotification('success', res.message);
-          if (res.status === 'success') {
-            this.visible = false;
-            this.deptService
-              .getDepartments()
-              .subscribe((res) => (this.departments = res));
-          }
-        });
-    } else {
-      Object.values(this.departmentForm.controls).forEach((control) => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
-    }
   }
 
   edit(data: any) {
     this.submit = false;
     this.drawerTitle = 'Edit Department Details';
     this.visible = true;
+    this.departmentId = data?.department_id
     this.departmentFormValidators();
     this.departmentForm.get('department_id')?.setValue(data.department_id);
     this.departmentForm.get('department_name')?.setValue(data.department_name);
@@ -93,20 +74,28 @@ export class DepartmentListComponent implements OnInit {
     this.departmentForm.get('updated_by')?.setValue(this.user_data.user_id);
   }
 
-  onUpdate() {
+  close(): void {
+    this.visible = false;
+  }
+
+  prepareDepartmentPayload(data: any) {
+    const payload = {
+      department_name: data.department_name,
+      ranking: data.ranking,
+      status: data.status,
+      created_by: this.user_data?.user_id,
+      updated_by: this.user_data?.user_id
+    }
+    return payload;
+  }
+
+  onCreateSubmit() {
     if (this.departmentForm.valid) {
-      this.api
-        .patchCall(
-          `/dept/updateDept/${this.departmentForm.value.department_id}`,
-          this.departmentForm.value
-        )
-        .subscribe((res) => {
-          this.notification.createNotification(res.status, res.message);
-          this.deptService
-            .getDepartments()
-            .subscribe((res) => (this.departments = res));
-        });
-      this.visible = false;
+      this.departmentService.createDepartment(this.prepareDepartmentPayload(this.departmentForm.value)).subscribe((res) => {
+        this.visible = false;
+        this.getDepartment();
+        this.notification.createNotification("success", res?.message);
+      });
     } else {
       Object.values(this.departmentForm.controls).forEach((control) => {
         if (control.invalid) {
@@ -117,25 +106,43 @@ export class DepartmentListComponent implements OnInit {
     }
   }
 
-  close(): void {
-    this.visible = false;
+  prepareUpdatePayload(data: any) {
+    const payload = {
+      department_name: data.department_name,
+      ranking: data.ranking,
+      status: data.status,
+      updated_by: this.user_data?.user_id
+    }
+    return payload;
+  }
+
+  onUpdateSubmit() {
+    if (this.departmentForm.valid) {
+      this.departmentService.updateDepartment(this.departmentId, this.prepareUpdatePayload(this.departmentForm.value)).subscribe((res) => {
+        this.visible = false;
+        this.notification.createNotification("success", res?.message);
+        this.getDepartment();
+      });
+    } else {
+      Object.values(this.departmentForm.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
   }
 
   departmentFormValidators() {
     this.departmentForm = this.fb.group({
-      department_id: [''],
-      department_name: ['', [ Validators.required,
-                              Validators.maxLength(50),
-                              Validators.minLength(10),
-                              Validators.pattern(GlobalConstants.nameRegex)
-                            ]
-                       ],
+      department_name: ['', [Validators.required,
+      Validators.maxLength(50),
+      Validators.minLength(10),
+      Validators.pattern(GlobalConstants.nameRegex)
+      ]
+      ],
       ranking: ['', [Validators.required]],
       status: ['', [Validators.required]],
-      created_date: [''],
-      created_by: [''],
-      updated_date: [''],
-      updated_by: [''],
       department_code: [''],
     });
   }

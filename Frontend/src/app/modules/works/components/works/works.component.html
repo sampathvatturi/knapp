@@ -9,12 +9,7 @@
 <nz-content id="component-content">
   <div id="search-create">
     <nz-input-group [nzSuffix]="suffixIconSearch">
-      <input
-        type="text"
-        nz-input
-        placeholder="Search"
-        [(ngModel)]="searchText"
-      />
+      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText" />
     </nz-input-group>
     <ng-template #suffixIconSearch>
       <span nz-icon nzType="search"></span>
@@ -23,13 +18,7 @@
       Add &nbsp; <i class="fa-solid fa-plus"></i>
     </button>
   </div>
-  <nz-table
-    #basicTable
-    [nzData]="works"
-    nzShowPagination
-    nzShowSizeChanger
-    [nzPageSizeOptions]="[5, 10, 15, 20]"
-  >
+  <nz-table #basicTable [nzData]="works_info" nzShowPagination nzShowSizeChanger [nzPageSizeOptions]="[5, 10, 15, 20]">
     <thead>
       <tr>
         <th nzWidth="100px">S.No.</th>
@@ -39,42 +28,27 @@
       </tr>
     </thead>
     <tbody>
-      <tr
-        *ngFor="
+      <tr *ngFor="
           let data of basicTable.data | globalTablesearch : searchText;
           let i = index
-        "
-      >
+        ">
         <td>{{ i + 1 }}</td>
         <td>{{ data.work_name }}</td>
         <td>{{ data.created_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
         <td>
           <div id="editbtn">
-            <a nz-tooltip="Edit" (click)="edit(data)"
-              ><i class="fa-regular fa-pen-to-square"></i
-            ></a>
+            <a nz-tooltip="Edit" (click)="edit(data)"><i class="fa-regular fa-pen-to-square"></i></a>
             <b> / </b>
-            <a nz-tooltip="View" (click)="edit(data)"
-              ><i class="fa-regular fa-eye"></i
-            ></a>
+            <a nz-tooltip="View" (click)="edit(data)"><i class="fa-regular fa-eye"></i></a>
           </div>
         </td>
       </tr>
     </tbody>
   </nz-table>
 </nz-content>
-<nz-drawer
-  [nzBodyStyle]="{ overflow: 'auto' }"
-  [nzMaskClosable]="true"
-  [nzWidth]="720"
-  [nzVisible]="visible"
-  [nzTitle]="drawerTitle"
-  [nzFooter]="footerTpl"
-  (nzOnClose)="close()"
-  [nzClosable]="false"
-  [nzCloseIcon]="icon"
-  [nzExtra]="icon"
->
+<nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzMaskClosable]="true" [nzWidth]="720" [nzVisible]="visible"
+  [nzTitle]="drawerTitle" [nzFooter]="footerTpl" (nzOnClose)="close()" [nzClosable]="false" [nzCloseIcon]="icon"
+  [nzExtra]="icon">
   <ng-template #icon>
     <i (click)="close()" class="fa-solid fa-circle-xmark"></i>
   </ng-template>
@@ -83,26 +57,12 @@
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5" class="required">Work Name</nz-form-label>
         <nz-form-control nz-col nzSpan="10" [nzErrorTip]="worksErrorTip">
-          <input
-            nz-input
-            formControlName="work_name"
-            type="text"
-            nz-input
-            placeholder="Please Enter Work Name"
-          />
+          <input nz-input formControlName="work_name" type="text" nz-input placeholder="Please Enter Work Name" />
           <ng-template #worksErrorTip let-control>
-            <ng-container *ngIf="control.hasError('required')"
-              >Please enter work name</ng-container
-            >
-            <ng-container *ngIf="control.hasError('pattern')"
-              >Please enter valid input<br
-            /></ng-container>
-            <ng-container *ngIf="control.hasError('minlength')"
-              >Please enter atleast 3 characters<br
-            /></ng-container>
-            <ng-container *ngIf="control.hasError('maxlength')"
-              >Maximum length exceeded</ng-container
-            >
+            <ng-container *ngIf="control.hasError('required')">Please enter work name</ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">Please enter valid input<br /></ng-container>
+            <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 3 characters<br /></ng-container>
+            <ng-container *ngIf="control.hasError('maxlength')">Maximum length exceeded</ng-container>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
@@ -114,10 +74,10 @@
       <button nz-button style="margin-right: 8px" (click)="close()">
         Cancel
       </button>
-      <button nz-button *ngIf="submit" nzType="primary" (click)="onSubmit()">
+      <button nz-button *ngIf="submit" nzType="primary" (click)="onCreateSubmit()">
         Submit
       </button>
-      <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdate()">
+      <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdateSubmit()">
         Update
       </button>
     </div>

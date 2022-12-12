@@ -26,7 +26,7 @@
 
   <nz-table
     #basicTable
-    [nzData]="funds"
+    [nzData]="fund_info"
     nzShowPagination
     nzShowSizeChanger
     [nzPageSizeOptions]="[5, 10, 15, 20]"
@@ -161,7 +161,7 @@
       <nz-form-item>
         <nz-form-label class = "required" nz-col nzSpan="5">Date</nz-form-label>
         <nz-form-control nz-col nzSpan="10" nzErrorTip="Enter Date">
-          <nz-date-picker type="Date" formControlName="fund_released_date"></nz-date-picker>
+          <nz-date-picker formControlName="fund_released_date"></nz-date-picker>
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -173,10 +173,10 @@
       <button nz-button style="margin-right: 8px" (click)="close()">
         Cancel
       </button>
-      <button nz-button *ngIf="submit" nzType="primary" (click)="onSubmit()">
+      <button nz-button *ngIf="submit" nzType="primary" (click)="onCreateSubmit()">
         Submit
       </button>
-      <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdate()">
+      <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdateSubmit()">
         Update
       </button>
     </div>

@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
 import { GlobalConstants } from 'src/app/shared/global_constants';
 import { formatDate } from '@angular/common';
+import { FundsService } from 'src/app/services/funds.service';
 
 @Component({
   selector: 'app-funds',
@@ -11,28 +12,35 @@ import { formatDate } from '@angular/common';
   styleUrls: ['./funds.component.css']
 })
 export class FundsComponent implements OnInit {
-  funds: any[] = [];
+  fund_info: any[] = [];
   visible = false;
   submit = true;
   drawerTitle: string = '';
   fundsForm!: FormGroup;
   searchText = '';
   user_data: any;
+  fundId: any;
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
     private fb: UntypedFormBuilder,
     private api: ApiService,
     private notification: NotificationService,
-  ) {}
+    private fundService: FundsService,
+
+  ) { }
 
   ngOnInit(): void {
     this.fundsFormValidators();
-    this.api.getCall('/fund/getFunds').subscribe((res) => {
-      this.funds = res;
-    });
     this.user_data = sessionStorage.getItem('user_data');
     this.user_data = JSON.parse(this.user_data);
+    this.getFunds();
+  }
+
+  getFunds(): void {
+    this.fundService.getFunds().subscribe((res) => {
+      this.fund_info = res;
+    })
   }
 
   create(): void {
@@ -41,16 +49,13 @@ export class FundsComponent implements OnInit {
     this.visible = true;
     this.fundsFormValidators();
     this.fundsForm.get('fund_type')?.setValue('state');
-    this.fundsForm.get('created_by')?.setValue(this.user_data.user_id);
-    this.fundsForm.get('updated_by')?.setValue(this.user_data.user_id);
   }
   edit(data: any) {
-    console.log(data);
     this.submit = false;
     this.drawerTitle = 'Edit Fund Details';
     this.visible = true;
+    this.fundId = data?.fund_id;
     this.fundsFormValidators();
-    this.fundsForm.get('fund_id')?.setValue(data.fund_id);
     this.fundsForm.get('fund_type')?.setValue(data.fund_type);
     this.fundsForm.get('fund_description')?.setValue(data.fund_description);
     this.fundsForm.get('transaction_mode')?.setValue(data.transaction_mode);
@@ -59,39 +64,32 @@ export class FundsComponent implements OnInit {
     this.fundsForm.get('created_by')?.setValue(this.user_data.user_id);
     this.fundsForm.get('updated_by')?.setValue(this.user_data.user_id);
   }
+
   close(): void {
     this.visible = false;
   }
-  onSubmit() {
-    if(this.fundsForm.valid){
-    this.fundsForm.get('fund_released_date')?.setValue(formatDate(this.fundsForm.value.fund_released_date,'yyyy-MM-dd hh:mm:ss',this.locale));
-      this.api.postCall('/fund/createFund',this.fundsForm.value).subscribe( res =>{
-        this.notification.createNotification(res.status, res.message);
-        this.api.getCall('/fund/getFunds').subscribe((res) => {
-          this.funds = res;
-        });
+
+  prepareFundPayload(data: any) {
+    const payload = {
+      fund_type: data.fund_type,
+      fund_description: data.fund_description,
+      fund_released_date: data.fund_released_date,
+      transaction_mode: data.transaction_mode,
+      fund_value: data.fund_value,
+      created_by: this.user_data?.user_id,
+      updated_by: this.user_data?.user_id
+    }
+    return payload;
+  }
+  onCreateSubmit() {
+    if (this.fundsForm.valid) {
+      this.fundsForm.value.fund_released_date = formatDate(this.fundsForm.value.fund_released_date, 'yyyy-MM-dd hh:mm:ss', this.locale);
+      this.fundService.createFund(this.prepareFundPayload(this.fundsForm.value)).subscribe((res) => {
         this.visible = false;
-      })
-    }else{
-      Object.values(this.fundsForm.controls).forEach((control) => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
+        this.getFunds();
+        this.notification.createNotification("success", res?.message);
       });
-    }
-    }
-  onUpdate() {
-    if(this.fundsForm.valid){
-    this.fundsForm.get('fund_released_date')?.setValue(formatDate(this.fundsForm.value.fund_released_date,'yyyy-MM-dd hh:mm:ss',this.locale));
-      this.api.patchCall(`/fund/updateFund/${this.fundsForm.value.fund_id}`,this.fundsForm.value).subscribe(res =>{
-        this.notification.createNotification(res.status, res.message);
-        this.api.getCall('/fund/getFunds').subscribe((res) => {
-          this.funds = res;
-        });
-        this.visible= false;
-      })
-    }else{
+    } else {
       Object.values(this.fundsForm.controls).forEach((control) => {
         if (control.invalid) {
           control.markAsDirty();
@@ -101,9 +99,38 @@ export class FundsComponent implements OnInit {
     }
   }
 
-  fundsFormValidators(){
+  prepareUpdatePayload(data:any){
+    const payload = {
+      fund_type: data.fund_type,
+      fund_description: data.fund_description,
+      fund_released_date: data.fund_released_date,
+      transaction_mode: data.transaction_mode,
+      fund_value: data.fund_value,
+      updated_by: this.user_data?.user_id
+    }
+    return payload;
+  }
+
+  onUpdateSubmit() {
+    if (this.fundsForm.valid) {
+      this.fundsForm.value.fund_released_date = formatDate(this.fundsForm.value.fund_released_date, 'yyyy-MM-dd hh:mm:ss', this.locale);
+      this.fundService.updateFund(this.fundId,this.prepareUpdatePayload(this.fundsForm.value)).subscribe((res) => {
+        this.notification.createNotification("success", res?.message);
+        this.visible = false;
+        this.getFunds();
+      });
+    } else {
+      Object.values(this.fundsForm.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+  }
+
+  fundsFormValidators() {
     this.fundsForm = this.fb.group({
-      fund_id:[''],
       fund_type: ['', [Validators.required]],
       fund_description: ['', [Validators.required,
       Validators.maxLength(50),
@@ -112,8 +139,6 @@ export class FundsComponent implements OnInit {
       fund_released_date: ['', [Validators.required]],
       transaction_mode: ['', [Validators.required]],
       fund_value: ['', [Validators.required]],
-      created_by: [''],
-      updated_by: [''],
     });
   }
 

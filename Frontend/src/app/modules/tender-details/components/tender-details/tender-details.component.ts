@@ -6,6 +6,10 @@ import { WorksService } from 'src/app/services/works.service';
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { GlobalConstants } from 'src/app/shared/global_constants';
+import { VendorsService } from 'src/app/services/vendors.service';
+import { UserService } from 'src/app/services/user.service';
+import { TenderDetailsService } from 'src/app/services/tender-details.service';
+
 
 @Component({
   selector: 'app-tender-details',
@@ -23,53 +27,67 @@ export class TenderDetailsComponent implements OnInit {
   searchText = '';
   worksDetails: any[] = [];
   worksNames: any[] = [];
-  usersSelected: any[] = [];
-  showUsers: any;
   departmentUsers: any[] = [];
+  tenderId: any;
 
   constructor(
     private fb: UntypedFormBuilder,
     private api: ApiService,
     private notification: NotificationService,
     private works: WorksService,
-    private msg: NzMessageService
-  ) {}
+    private msg: NzMessageService,
+    private vendor: VendorsService,
+    private user: UserService,
+    private tenderService: TenderDetailsService
+  ) { }
 
   ngOnInit(): void {
+    this.user_data = sessionStorage.getItem('user_data');
+    this.user_data = JSON.parse(this.user_data);
     this.tendorsFormValidators();
-    this.api.getCall('/tickets/getTickets').subscribe((res) => {
+    this.getWork();
+    this.getVendor();
+    this.getUser();
+    // this.getTendor();
+  }
+
+  /*functions for works,vendors,tendors and users*/
+
+  getTendor() {
+    this.tenderService.getTenderDetails().subscribe((res) => {
       if (res.length > 0) {
         this.tenders = res;
       } else {
         this.tenders = [];
       }
-    });
-    
-    this.api.getCall('/vendor/getVendors').subscribe((res) => {
-      this.vendors = res;
-    });
-
-    this.api.getCall('/user/getUsersByDepartment').subscribe((res) => {
-      res.forEach((data: any) => {
-        let temp = {
-          label: data.first_name + ' ' + data.last_name,
-          value: data.user_id,
-          groupLabel: data.department_name + '  -  ' + data.ranking,
-        };
-
-        this.departmentUsers.push(temp);
-      });
-    });
-
+    })
+  }
+  getWork() {
     this.works.getWorks().subscribe((res: any) => {
       this.worksDetails = res;
       res.forEach((data: any) => {
         this.worksNames[data.work_id] = data.work_name;
       });
     });
+  }
 
-    this.user_data = sessionStorage.getItem('user_data');
-    this.user_data = JSON.parse(this.user_data);
+  getVendor() {
+    this.vendor.getVendors().subscribe((res) => {
+      this.vendors = res;
+    });
+  }
+
+  getUser() {
+    this.user.getAllUsers().subscribe((res) => {
+      res.forEach((data: any) => {
+        let temp = {
+          label: data.first_name + ' ' + data.last_name,
+          value: data.user_id,
+          groupLabel: data.department_name + '  -  ' + data.ranking,
+        };
+        this.departmentUsers.push(temp);
+      });
+    })
   }
 
   create(): void {
@@ -84,54 +102,57 @@ export class TenderDetailsComponent implements OnInit {
     this.submit = false;
     this.drawerTitle = 'Edit Tender details';
     this.visible = true;
-
-    
-      this.tendorsFormValidators();
-      let selectedUsers: any[] = [];
+    this.tendorsFormValidators();
+    this.tenderId = data?.ticket_id;
+    let selectedUsers: any[] = [];
     if (data.json_status != '' && data.json_status != null) {
       JSON.parse(data.json_status).forEach((x: any) => {
         selectedUsers.push(x.user_id);
       });
-    } else selectedUsers = [];
-
+    }
+    else selectedUsers = [];
     this.tenderDetailsForm.get('ticket_id')?.setValue(data.ticket_id);
-    this.tenderDetailsForm
-      .get('vendor_id')
-      ?.setValue(data.vendor_id.toString());
-    this.tenderDetailsForm
-      .get('ticket_description')
-      ?.setValue(data.ticket_description);
-    this.tenderDetailsForm
-      .get('work_id')
-      ?.setValue(data.work_id.split(',').map(Number));
+    this.tenderDetailsForm.get('vendor_id')?.setValue(data.vendor_id.toString());
+    this.tenderDetailsForm.get('ticket_description')?.setValue(data.ticket_description);
+    this.tenderDetailsForm.get('work_id')?.setValue(data.work_id.split(',').map(Number));
     this.tenderDetailsForm.get('assign_to')?.setValue(selectedUsers);
     this.tenderDetailsForm.get('location')?.setValue(data.location);
     this.tenderDetailsForm.get('tender_cost')?.setValue(data.tender_cost);
     this.tenderDetailsForm.get('status')?.setValue(data.status);
     this.tenderDetailsForm.get('updated_by')?.setValue(this.user_data.user_id);
-    
-    
-    
   }
 
-  onSubmit() {
+  close(): void {
+    this.visible = false;
+  }
 
-    if (this.tenderDetailsForm.valid){
-      this.tenderDetailsForm.value.work_id =
-      this.tenderDetailsForm.value.work_id.toString();
-    this.api
-      .postCall('/tickets/createTicket', this.tenderDetailsForm.value)
-      .subscribe((res) => {
-        if (res.status === 'success') {
-          this.notification.createNotification(res.status, res.message);
-          this.visible = false;
-          this.api.getCall('/tickets/getTickets').subscribe((res) => {
-            this.tenders = res;
-          });
-        } else {
-          this.notification.createNotification(res.status, res.message);
-        }
-      });
+  prepareTendorPayload(data: any) {
+    const payload = {
+      ticket_description: data.ticket_description,
+      title: data.title,
+      vendor_id: data.vendor_id,
+      work_id: data.work_id,
+      location: data.location,
+      tender_cost: data.tender_cost,
+      department_id: data.department_id,
+      user_id: data.user_id,
+      assign_to: data.assign_to,
+      status: data.status,
+      start_date: data.start_date,
+      end_date: data.end_date,
+      created_by: this.user_data?.user_id,
+      updated_by: this.user_data?.user_id
+    }
+  }
+
+  onCreateSubmit() {
+    if (this.tenderDetailsForm.valid) {
+      this.tenderDetailsForm.value.work_id = this.tenderDetailsForm.value.work_id.toString();
+      this.tenderService.createTenderDetail(this.prepareTendorPayload(this.tenderDetailsForm.value)).subscribe((res) => {
+        this.visible = false;
+        this.getTendor();
+        this.notification.createNotification("success", res?.message);
+      })
     }
     else {
       Object.values(this.tenderDetailsForm.controls).forEach((control) => {
@@ -141,32 +162,44 @@ export class TenderDetailsComponent implements OnInit {
         }
       });
     }
-    console.log(this.tenderDetailsForm.value)
   }
-
-  onUpdate() {
-    this.tenderDetailsForm.value.work_id =
-      this.tenderDetailsForm.value.work_id.toString();
-    this.api
-      .patchCall(
-        `/tickets/updateTicket/${this.tenderDetailsForm.value.ticket_id}`,
-        this.tenderDetailsForm.value
-      )
-      .subscribe((res) => {
-        if (res.status === 'success') {
-          this.notification.createNotification(res.status, res.message);
-          this.visible = false;
-          this.api.getCall('/tickets/getTickets').subscribe((res) => {
-            this.tenders = res;
-          });
-        } else {
-          this.notification.createNotification(res.status, res.message);
+  prepareUpdatePayload(data: any) {
+    const payload = {
+      ticket_description: data.ticket_description,
+      title: data.title,
+      vendor_id: data.vendor_id,
+      work_id: data.work_id,
+      location: data.location,
+      tender_cost: data.tender_cost,
+      department_id: data.department_id,
+      user_id: data.user_id,
+      assign_to: data.assign_to,
+      status: data.status,
+      start_date: data.start_date,
+      end_date: data.end_date,
+      updated_by: this.user_data?.user_id
+    }
+  }
+  onUpdateSubmit() {
+    if (this.tenderDetailsForm.valid) {
+      this.tenderDetailsForm.value.work_id = this.tenderDetailsForm.value.work_id.toString();
+      this.tenderService.updateTenderDetail(this.tenderId, this.prepareUpdatePayload(this.tenderDetailsForm.value)).subscribe((res) => {
+        this.notification.createNotification("success", res?.message);
+        this.visible = false;
+        this.getTendor();
+      })
+    }
+    else {
+      console.log('invalid')
+      Object.values(this.tenderDetailsForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
         }
       });
+    }
   }
-  close(): void {
-    this.visible = false;
-  }
+
 
   getWorknames(id: any) {
     var workNames = '';
@@ -195,23 +228,19 @@ export class TenderDetailsComponent implements OnInit {
   }
   tendorsFormValidators() {
     this.tenderDetailsForm = this.fb.group({
-      ticket_id: [null],
-      title:[null,[Validators.required,Validators.pattern(GlobalConstants.firstLastNameRegex)]],
-      ticket_description: [null, [Validators.required,Validators.pattern(GlobalConstants.addressRegex)]],
+      ticket_description: [null, [Validators.required, Validators.pattern(GlobalConstants.addressRegex)]],
+      title: [null, [Validators.required, Validators.pattern(GlobalConstants.firstLastNameRegex)]],
       vendor_id: [null, [Validators.required]],
       work_id: [[], [Validators.required]],
-      location: [null, [Validators.required,Validators.pattern(GlobalConstants.addressRegex)]],
+      location: [null, [Validators.required, Validators.pattern(GlobalConstants.addressRegex)]],
       tender_cost: [null, [Validators.required]],
       department_id: [null],
       user_id: [null],
       assign_to: [[], [Validators.required]],
       status: [null],
       created_date: [null],
-      start_date:[null],
-      end_date:[null],
-      created_by: [null],
-      updated_date: [null],
-      updated_by: [null],
+      start_date: [null],
+      end_date: [null],
     });
   }
 }

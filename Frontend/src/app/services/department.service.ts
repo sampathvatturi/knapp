@@ -28,7 +28,7 @@ export class DepartmentService {
   }
 
   updateDepartment(id: any, postDataObj: any): Observable<any> {
-    return this.apiService.patchCall('/vendor/updateVendor/' + id, postDataObj).pipe(
+    return this.apiService.patchCall('/dept/updateDept/' + id, postDataObj).pipe(
       map((response: any) => {
         return response;
       })
