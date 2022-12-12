@@ -51,7 +51,7 @@ exports.createVendor = async (req, res) => {
           if (!err) {
             res.status(200).json({ status: "success", message: "Vendor added successfully and created vendor logins." });
           } else { 
-            res.status(404).send(json({ status: "failed" })); 
+            res.status(404).json({ status: "failed" }); 
           }
         });
 

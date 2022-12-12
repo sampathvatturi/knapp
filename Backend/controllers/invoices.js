@@ -1,9 +1,8 @@
 const db = require("../config/connection");
 const currdateTime = require('../middleware/currdate');
 
-//departments
 exports.getInvoicelogs = async (req, res) => {
-  db.query("select * from invoice", (err, result, fiels) => {
+  db.query("select * from invoices", (err, result, fiels) => {
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
       else res.status(404).json({ message: "Invoice details not found" });
@@ -14,7 +13,7 @@ exports.getInvoicelogs = async (req, res) => {
 exports.createInvoicelog = async (req, res) => {
   data = req.body;
   db.query(
-    "INSERT INTO `invoice` SET ? ",
+    "INSERT INTO `invoices` SET ? ",
     [
       {
         vendor_id: data.vendor_id,
@@ -45,7 +44,7 @@ exports.createInvoicelog = async (req, res) => {
 exports.updateInvoicelog = async (req, res) => {
   data = req.body;
   db.query(
-    "update invoice set ? where invoice_id = ? ",
+    "update invoices set ? where invoice_id = ? ",
     [
       {
         vendor_id: data.vendor_id,
