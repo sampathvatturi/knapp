@@ -33,9 +33,9 @@
     <thead>
       <tr>
         <th>S.No.</th>
-        <th>Description</th>
+        <th>Title</th>
+        <th>Remarks</th>
         <th>Vendor</th>
-        <th>Quantity</th>
         <th>Amount</th>
         <th>Transaction Type</th>
         <th>Tax</th>
@@ -53,9 +53,9 @@
         "
       >
         <td>{{ i + 1 }}</td>
-        <td>{{ data.invoice_item }}</td>
+        <td>{{ data.title }}</td>
+        <td>{{ data.remarks }}</td>
         <td>{{ v_name[data.vendor_id] }}</td>
-        <td>{{ data.quantity }}</td>
         <td>{{ data.amount }}</td>
         <td>{{ data.trnsx_type }}</td>
         <td>{{ data.tax }}</td>
@@ -114,12 +114,12 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Description</nz-form-label>
+        <nz-form-label nz-col nzSpan="5">Remarks</nz-form-label>
         <nz-form-control nz-col nzSpan="10" [nzErrorTip]="invoiceErrorTip1">
           <input
             nz-input
-            formControlName="invoice_item"
-            placeholder="Enter Invoice Item"
+            formControlName="remarks"
+            placeholder="Enter Remarks"
           />
           <ng-template #invoiceErrorTip1 let-control>
             <ng-container *ngIf="control.hasError('required')"
@@ -259,6 +259,82 @@
               nzLabel="{{ d.department_name }}"
             ></nz-option>
           </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <!-- dynaminc form fields -->
+    <nz-divider nzText="Inventory Details" nzOrientation="left"></nz-divider>
+    <div>
+      <nz-form-item *ngFor="let control of listOfControl; let i = index">
+        <nz-form-label  [nzFor]="control.controlInstance1">
+          Inverntory Item
+        </nz-form-label>
+        <nz-form-control
+          nzErrorTip="Please input passenger's name or delete this field."
+        >
+          <input
+            class="passenger-input"
+            nz-input
+            placeholder="placeholder"
+            [attr.id]="control.id"
+            [formControlName]="control.controlInstance1"
+          />
+        </nz-form-control>
+        <nz-form-label [nzFor]="control.controlInstance2">
+          Quantity
+        </nz-form-label>
+        <nz-form-control
+          nzErrorTip="Please input passenger's name or delete this field."
+        >
+          <input
+            class="passenger-input"
+            nz-input
+            placeholder="placeholder"
+            [attr.id]="control.id"
+            [formControlName]="control.controlInstance2"
+          />
+        </nz-form-control>
+        <nz-form-label [nzFor]="control.controlInstance3">
+          Price
+        </nz-form-label>
+        <nz-form-control
+          nzErrorTip="Please input passenger's name or delete this field."
+        >
+          <input
+            class="passenger-input"
+            nz-input
+            placeholder="placeholder"
+            [attr.id]="control.id"
+            [formControlName]="control.controlInstance3"
+          />
+        </nz-form-control>
+        <nz-form-label [nzFor]="control.controlInstance4">
+          Tax
+        </nz-form-label>
+        <nz-form-control
+          nzErrorTip="Please input passenger's name or delete this field."
+        >
+          <input
+            class="passenger-input"
+            nz-input
+            placeholder="placeholder"
+            [attr.id]="control.id"
+            [formControlName]="control.controlInstance4"
+          />
+          <span
+            nz-icon
+            nzType="minus-circle-o"
+            class="dynamic-delete-button"
+            (click)="removeField(control, $event)"
+          ></span>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <button nz-button nzType="dashed" class="add-button" (click)="addField($event)">
+            <span nz-icon nzType="plus"></span>
+            Add field
+          </button>
         </nz-form-control>
       </nz-form-item>
     </div>

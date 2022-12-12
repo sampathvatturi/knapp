@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { DepartmentService } from 'src/app/services/department.service';
 import { InvoicesService } from 'src/app/services/invoices.service';
@@ -17,6 +17,7 @@ export class InvoicesComponent implements OnInit {
   submit = true;
   drawerTitle: string = '';
   invoiceForm!: FormGroup;
+  invoiceForm1!: UntypedFormGroup;
   invoice_info: any = [];
   vendor_array: any = [];
   v_name: any = {};
@@ -29,6 +30,7 @@ export class InvoicesComponent implements OnInit {
   tot: any;
   tx: any;
   globalConstants = GlobalConstants;
+  inventoryDetailsArray: any = [];
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -37,10 +39,11 @@ export class InvoicesComponent implements OnInit {
     private invoice: InvoicesService,
     private departments: DepartmentService,
     private vendors: VendorsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.invoiceFormValidators();
+    this.invoiceForm1 = this.fb.group({});
 
     this.departments.getDepartments().subscribe((res) => {
       this.depts = res;
@@ -71,7 +74,7 @@ export class InvoicesComponent implements OnInit {
       .get('invoice_details_id')
       ?.setValue(data.invoice_details_id);
     this.invoiceForm.get('vendor_id')?.setValue(data.vendor_id.toString());
-    this.invoiceForm.get('invoice_item')?.setValue(data.invoice_item);
+    this.invoiceForm.get('remarks')?.setValue(data.remarks);
     this.invoiceForm.get('quantity')?.setValue(data.quantity);
     this.invoiceForm.get('amount')?.setValue(data.amount);
     this.invoiceForm.get('trnsx_type')?.setValue(data.trnsx_type);
@@ -99,7 +102,7 @@ export class InvoicesComponent implements OnInit {
       (this.invoiceForm.value.tax *
         this.invoiceForm.value.quantity *
         this.invoiceForm.value.amount) /
-        100;
+      100;
 
     this.invoiceForm
       .get('invoice_details_id')
@@ -108,8 +111,8 @@ export class InvoicesComponent implements OnInit {
       .get('vendor_id')
       ?.setValue(this.invoiceForm.value.vendor_id);
     this.invoiceForm
-      .get('invoice_item')
-      ?.setValue(this.invoiceForm.value.invoice_item);
+      .get('remarks')
+      ?.setValue(this.invoiceForm.value.remarks);
     this.invoiceForm.get('quantity')?.setValue(this.invoiceForm.value.quantity);
     this.invoiceForm.get('amount')?.setValue(this.invoiceForm.value.amount);
     this.invoiceForm
@@ -128,6 +131,9 @@ export class InvoicesComponent implements OnInit {
     this.visible = false;
   }
   onSubmit() {
+    this.inventoryDetailsArray.shift();
+    this.invoiceForm.value.inventory_details = this.inventoryDetailsArray;
+    console.log(this.invoiceForm.value);
     if (this.invoiceForm.valid) {
       this.api
         .postCall('/invoicedetails/createInvoicelog', this.invoiceForm.value)
@@ -153,27 +159,27 @@ export class InvoicesComponent implements OnInit {
   }
   onUpdate() {
     this.invoiceForm.value.department_id = this.invoiceForm.value.department_id.toString();
-    if (this.invoiceForm.valid){
+    if (this.invoiceForm.valid) {
       this.api
-      .patchCall(
-        `/invoicedetails/updateInvoicelog/${this.invoiceForm.value.invoice_details_id}`,
-        this.invoiceForm.value
-      )
-      .subscribe((res) => {
-        this.notification.createNotification(res.status, res.message);
-        if (res.status === 'success') {
-          this.visible = false;
-
-          this.invoice
-            .getInvoices()
-            .subscribe((res) => (this.invoice_info = res));
-        } else {
+        .patchCall(
+          `/invoicedetails/updateInvoicelog/${this.invoiceForm.value.invoice_details_id}`,
+          this.invoiceForm.value
+        )
+        .subscribe((res) => {
           this.notification.createNotification(res.status, res.message);
-        }
-      });
+          if (res.status === 'success') {
+            this.visible = false;
+
+            this.invoice
+              .getInvoices()
+              .subscribe((res) => (this.invoice_info = res));
+          } else {
+            this.notification.createNotification(res.status, res.message);
+          }
+        });
     }
     else {
-      
+
       Object.values(this.invoiceForm.controls).forEach(control => {
         if (control.invalid) {
           control.markAsDirty();
@@ -186,17 +192,71 @@ export class InvoicesComponent implements OnInit {
     this.invoiceForm = this.fb.group({
       invoice_details_id: [''],
       vendor_id: ['', [Validators.required]],
-      invoice_item: ['', [Validators.required,Validators.minLength(10),Validators.maxLength(200),Validators.pattern(GlobalConstants.nameRegex)]],
-      quantity: ['', [Validators.required,Validators.pattern(GlobalConstants.numberRegex)]],
+      remarks: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200), Validators.pattern(GlobalConstants.nameRegex)]],
+      quantity: ['', [Validators.required, Validators.pattern(GlobalConstants.numberRegex)]],
       amount: ['', [Validators.required, Validators.pattern(GlobalConstants.amountRegex)]],
       trnsx_type: ['', [Validators.required]],
-      tax: ['', [Validators.required,Validators.pattern(GlobalConstants.numberRegex)]],
+      inventory_details: [null, [Validators.required]],
+      tax: ['', [Validators.required, Validators.pattern(GlobalConstants.numberRegex)]],
       total: ['', [Validators.required]],
-      created_date: [''],
-      created_by: [''],
-      updated_date: [''],
-      updated_by: [''],
       department_id: ['', [Validators.required]],
     });
+  }
+
+  // dynamic form fields
+  listOfControl: Array<{ id: number; controlInstance1: string; controlInstance2: string; controlInstance3: string; controlInstance4: string; }> = [];
+
+  addField(e?: MouseEvent): void {
+    if (e) {
+      e.preventDefault();
+    }
+    const id = this.listOfControl.length > 0 ? this.listOfControl[this.listOfControl.length - 1].id + 1 : 0;
+    const control = {
+      id,
+      controlInstance1: `item${id}`,
+      controlInstance2: `quantity${id}`,
+      controlInstance3: `price${id}`,
+      controlInstance4: `tax${id}`
+    };
+    let instance = {
+      item: "",
+      quantity: "",
+      price: "",
+      tax: ""
+    };
+
+    instance.item = this.invoiceForm.value[`item${id - 1}`];
+    instance.quantity = this.invoiceForm.value[`quantity${id - 1}`];
+    instance.price = this.invoiceForm.value[`price${id - 1}`];
+    instance.tax = this.invoiceForm.value[`tax${id - 1}`];
+    this.inventoryDetailsArray.push(instance);
+
+    const index = this.listOfControl.push(control);
+    // console.log(this.listOfControl[this.listOfControl.length - 1]);
+    this.invoiceForm.addControl(
+      this.listOfControl[index - 1].controlInstance1, new UntypedFormControl(null)
+    );
+    this.invoiceForm.addControl(
+      this.listOfControl[index - 1].controlInstance2, new UntypedFormControl(null)
+    );
+    this.invoiceForm.addControl(
+      this.listOfControl[index - 1].controlInstance3, new UntypedFormControl(null)
+    );
+    this.invoiceForm.addControl(
+      this.listOfControl[index - 1].controlInstance4, new UntypedFormControl(null)
+    );
+  }
+
+  removeField(i: { id: number; controlInstance1: string; controlInstance2: string; controlInstance3: string; controlInstance4: string; }, e: MouseEvent): void {
+    e.preventDefault();
+    if (this.listOfControl.length > 1) {
+      const index = this.listOfControl.indexOf(i);
+      this.listOfControl.splice(index, 1);
+      console.log(this.listOfControl);
+      this.invoiceForm.removeControl(i.controlInstance1);
+      this.invoiceForm.removeControl(i.controlInstance2);
+      this.invoiceForm.removeControl(i.controlInstance3);
+      this.invoiceForm.removeControl(i.controlInstance4);
+    }
   }
 }

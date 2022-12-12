@@ -14,7 +14,7 @@ export class InvoicesService {
   constructor(private apiService: ApiService, private http: HttpClient) { }
 
   getInvoices(): Observable<any> {
-    return this.apiService.getCall('/invoicedetails/getInvoicelogs').pipe(
+    return this.apiService.getCall('/invoice/getInvoices').pipe(
       map((response: any) => {
         return response;
       })
@@ -22,7 +22,7 @@ export class InvoicesService {
   }
 
   createInvoice(postDataObj: any): Observable<any> {
-    return this.apiService.postCall('/invoicedetails/createInvoicelog', postDataObj).pipe(
+    return this.apiService.postCall('/invoice/createInvoice', postDataObj).pipe(
       map((response: any) => {
         return response;
       })
@@ -30,7 +30,7 @@ export class InvoicesService {
   }
 
   updateInvoice(id: any, postDataObj: any): Observable<any> {
-    return this.apiService.patchCall('/invoicedetails/updateInvoicelog/' + id, postDataObj).pipe(
+    return this.apiService.patchCall('/invoice/updateInvoice/' + id, postDataObj).pipe(
       map((response: any) => {
         return response;
       })
@@ -38,7 +38,7 @@ export class InvoicesService {
   }
 
   getInvoicesById(id: any): Observable<any> {
-    return this.apiService.getCall('/invoicedetails/getInvoicelogsById' + id).pipe(
+    return this.apiService.getCall('/invoice/getInvoicesById' + id).pipe(
       map((response: any) => {
         return response;
       })
