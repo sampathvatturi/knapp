@@ -2,19 +2,19 @@ const db = require("../config/connection");
 const currdateTime = require("../middleware/currdate");
 
 //tickets
-exports.getTendors = async (req, res) => {
+exports.getTenders = async (req, res) => {
   db.query(
     "select * from tendors",
     (err, result, fields) => {
       if (!err) {
         if (result.length > 0) res.status(200).send(result);
-        else res.status(200).json({ message: "Tendors Not found" });
+        else res.status(200).json({ message: "Tenders Not found" });
       } else res.status(404).json({ status: "failed" });
     }
   );
 };
 
-exports.createTendor = async (req, res) => {
+exports.createTender = async (req, res) => {
   data = req.body;
   work_id = data.work_id.toString();
   json_data=[];
@@ -52,7 +52,7 @@ exports.createTendor = async (req, res) => {
   );
 };
 
-exports.updateTendor = async (req, res) => {
+exports.updateTender = async (req, res) => {
   data = req.body;
   work_id = data.work_id.toString();
   json_data=[];
@@ -91,7 +91,7 @@ exports.updateTendor = async (req, res) => {
   );
 };
 
-exports.deleteTendor = async (req, res) => {
+exports.deleteTender = async (req, res) => {
   db.query(
     "delete from tickets where ticket_id = ?",
     [req.params.id],
@@ -105,7 +105,7 @@ exports.deleteTendor = async (req, res) => {
   );
 };
 
-exports.getTendor= async (req, res) => {
+exports.getTender= async (req, res) => {
   db.query(
     "select * from ticketswhere ticket_id = ?",
     [req.params.id],

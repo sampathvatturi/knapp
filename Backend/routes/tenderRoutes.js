@@ -2,18 +2,18 @@ const express = require('express');
 const router = express.Router();
 
 const{ 
-    getTendors,
-    createTendor,
-    updateTendor,
-    deleteTendor,
-    getTendor
-} = require('../controllers/Tendors');
+    getTenders,
+    createTender,
+    updateTender,
+    deleteTender,
+    getTender
+} = require('../controllers/Tenders');
 
-router.get('/getTendors',getTendors);
-router.post('/createTendor',createTendor);
-router.patch('/updateTendor/:id',updateTendor);
-router.delete('/deleteTendor/:id',deleteTendor);
-router.get('/getTendor/:id',getTendor);
+router.get('/getTenders',getTenders);
+router.post('/createTender',createTender);
+router.patch('/updateTender/:id',updateTender);
+router.delete('/deleteTender/:id',deleteTender);
+router.get('/getTender/:id',getTender);
 
 
 module.exports = router ;
