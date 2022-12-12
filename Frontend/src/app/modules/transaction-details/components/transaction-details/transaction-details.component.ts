@@ -15,42 +15,59 @@ export class TransactionDetailsComponent implements OnInit {
   visible = false;
   submit = true;
   drawerTitle: string = '';
-  departmentForm!: FormGroup;
+  transationForm!: FormGroup;
   user_data: any;
   searchText = '';
-  constructor(private fb: UntypedFormBuilder,
-    private api: ApiService,
+  transId: any;
+
+  constructor(
+    private fb: UntypedFormBuilder,
     private notification: NotificationService,
-    private transService: TransactionDetailsService) { }
+    private transactionDetailsService: TransactionDetailsService
+  ) { }
 
   ngOnInit(): void {
     this.transactionsFormValidators();
-    this.transService.getTransactions().subscribe( res =>{
+    this.getTransactions();
+  }
+
+  getTransactions(): void {    
+    this.transactionDetailsService.getTransactions().subscribe( res =>{
       this.transactions = res;
     })
   }
+
   create(): void {
     this.submit = true;
     this.drawerTitle = 'Add Transaction';
     this.visible = true;
     this.transactionsFormValidators();
   }
+  
+  prepareCreatePayload(data: any) {
+    const payload = {
+      trsxcn_from: data.trsxcn_from,
+      trsxcn_to: data.trsxcn_to,
+      category: data.category,
+      type: data.type,
+      remarks: data.remarks,
+      mode: data.mode,
+      amount: data.amount,
+      created_by: this.user_data?.user_id,
+      updated_by: this.user_data?.user_id
+    }
+    return payload;
+  }
 
-  onSubmit() {
-    if (this.departmentForm.valid) {
-      // this.api
-      //   .postCall('/dept/createDept/', this.departmentForm.value)
-      //   .subscribe((res) => {
-      //     this.notification.createNotification('success', res.message);
-      //     if (res.status === 'success') {
-      //       this.visible = false;
-      //       this.deptService
-      //         .getDepartments()
-      //         .subscribe((res) => (this.transactions = res));
-      //     }
-      //   });
+  onCreateSubmit() {
+    if (this.transationForm.valid) {
+      this.transactionDetailsService.createTransaction(this.prepareCreatePayload(this.transationForm.value)).subscribe((res) => {
+        this.visible = false;
+        this.getTransactions();
+        this.notification.createNotification("success", res?.message);
+      });
     } else {
-      Object.values(this.departmentForm.controls).forEach((control) => {
+      Object.values(this.transationForm.controls).forEach((control) => {
         if (control.invalid) {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });
@@ -59,35 +76,45 @@ export class TransactionDetailsComponent implements OnInit {
     }
   }
 
+  prepareUpdatePayload(data:any){
+    const payload = {
+      trsxcn_from: data.trsxcn_from,
+      trsxcn_to: data.trsxcn_to,
+      category: data.category,
+      type: data.type,
+      remarks: data.remarks,
+      mode: data.mode,
+      amount: data.amount,
+      updated_by: this.user_data?.user_id
+    }
+    return payload;
+  }
+
+
   edit(data: any) {
+    this.transId = data?.trsxcn_id
     this.submit = false;
     this.drawerTitle = 'Edit Transaction Details';
     this.visible = true;
     this.transactionsFormValidators();
-    // this.departmentForm.get('department_id')?.setValue(data.department_id);
-    // this.departmentForm.get('department_name')?.setValue(data.department_name);
-    // this.departmentForm.get('ranking')?.setValue(data.ranking);
-    // this.departmentForm.get('status')?.setValue(data.status);
-    // this.departmentForm.get('created_by')?.setValue(data.created_by);
-    // this.departmentForm.get('updated_by')?.setValue(this.user_data.user_id);
+    this.transationForm.get('trsxcn_from')?.setValue(data.trsxcn_from);
+    this.transationForm.get('trsxcn_to')?.setValue(data.trsxcn_to);
+    this.transationForm.get('category')?.setValue(data.category);
+    this.transationForm.get('type')?.setValue(data.type);
+    this.transationForm.get('remarks')?.setValue(data.remarks);
+    this.transationForm.get('mode')?.setValue(data.mode);
+    this.transationForm.get('amount')?.setValue(data.amount);
   }
 
-  onUpdate() {
-    if (this.departmentForm.valid) {
-      // this.api
-      //   .patchCall(
-      //     `/dept/updateDept/${this.departmentForm.value.department_id}`,
-      //     this.departmentForm.value
-      //   )
-      //   .subscribe((res) => {
-      //     this.notification.createNotification(res.status, res.message);
-      //     this.deptService
-      //       .getDepartments()
-      //       .subscribe((res) => (this.transactions = res));
-      //   });
-      this.visible = false;
+  onUpdateSubmit() {
+    if (this.transationForm.valid) {
+        this.transactionDetailsService.updateTransaction(this.transId,this.prepareUpdatePayload(this.transationForm.value)).subscribe((res) => {
+        this.notification.createNotification("success", res?.message);
+        this.visible = false;
+        this.getTransactions();
+      });
     } else {
-      Object.values(this.departmentForm.controls).forEach((control) => {
+      Object.values(this.transationForm.controls).forEach((control) => {
         if (control.invalid) {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });
@@ -101,17 +128,14 @@ export class TransactionDetailsComponent implements OnInit {
   }
 
   transactionsFormValidators() {
-    this.departmentForm = this.fb.group({
+    this.transationForm = this.fb.group({
       trsxcn_from: ['', [Validators.required]],
       trsxcn_to: ['', [Validators.required]],
-      category: ['' , [Validators.required] ],
+      category: ['electricity' , [Validators.required] ],
       amount: ['', [Validators.required]],
-      mode: ['', [Validators.required]],
-      trsxcn_date: ['', [Validators.required]],
-      title: ['', [Validators.required]],
-      remarks: [''],
-      created_by: [''],
-      updated_by: [''],
+      mode: ['banking', [Validators.required]],
+      type: ['debit', [Validators.required]],
+      remarks: ['']
     });
   }
 

@@ -90,7 +90,7 @@
   <form
     nz-form
     *nzDrawerContent
-    [formGroup]="departmentForm"
+    [formGroup]="transationForm"
     class="drawer-form"
   >
     <div>
@@ -164,7 +164,7 @@
       </nz-form-item>
     </div>
 
-    <div>
+    <!-- <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="10" class="required"
           >Title</nz-form-label
@@ -198,7 +198,7 @@
           </ng-template>
         </nz-form-control>
       </nz-form-item>
-    </div>
+    </div> -->
 
     <div>
       <nz-form-item>
@@ -209,13 +209,14 @@
           <nz-select
           formControlName="category"
           nzPlaceHolder="Category"
-          nzShowSearch
-        >
-          <nz-option nzValue="electricity" nzLabel="electricity"></nz-option>
-          <nz-option nzValue="salary" nzLabel="salary"></nz-option>
+          nzShowSearch>
+          <nz-option nzValue="electricity" nzLabel="Electricity"></nz-option>
+          <nz-option nzValue="salaries" nzLabel="Salaries"></nz-option>
+          <nz-option nzValue="expenses" nzLabel="Expenses"></nz-option>
+          <nz-option nzValue="funds" nzLabel="Funds"></nz-option>
+          <nz-option nzValue="vendor invoice" nzLabel="Vendor Invoice"></nz-option>
         </nz-select>
         </nz-form-control>
-
       </nz-form-item>
     </div>
     <div>
@@ -234,22 +235,39 @@
         </nz-form-control>
       </nz-form-item>
     </div>
+
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="10" class="required">Transaction Mode</nz-form-label>
+        <nz-form-control nz-col nzSpan="12" nzErrorTip="Please Select Transaction Mode">
+          <nz-select
+            formControlName="mode"
+            nzPlaceHolder="Transaction Mode"
+            nzShowSearch>
+            <nz-option nzValue="banking" nzLabel="Banking"></nz-option>
+            <nz-option nzValue="cash" nzLabel="Cash"></nz-option>
+            <nz-option nzValue="cheque" nzLabel="Cheque"></nz-option>
+            <nz-option nzValue="card" nzLabel="Card"></nz-option>
+            <nz-option nzValue="upi" nzLabel="UPI"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="10" class="required">Transaction Type</nz-form-label>
         <nz-form-control nz-col nzSpan="12" nzErrorTip="Please Select Transaction Type">
           <nz-select
-          formControlName="mode"
+          formControlName="type"
           nz-col
-          nzPlaceHolder="Transaction Mode"
-          nzShowSearch
-        >
+          nzPlaceHolder="Transaction Type"
+          nzShowSearch>
           <nz-option nzValue="debit" nzLabel="Debit"></nz-option>
           <nz-option nzValue="credit" nzLabel="Credit"></nz-option>
-          <nz-option nzValue="refund" nzLabel="Refund"></nz-option>
+          <!-- <nz-option nzValue="refund" nzLabel="Refund"></nz-option> -->
         </nz-select>
         </nz-form-control>
-
       </nz-form-item>
     </div>
 
@@ -264,20 +282,6 @@
             placeholder="Remarks if any"
           ></textarea>
         </nz-form-control>
-        <!-- <ng-template #vendorErrorTip3 let-control>
-          <ng-container *ngIf="control.hasError('required')"
-            >Please enter address</ng-container
-          >
-          <ng-container *ngIf="control.hasError('minlength')"
-            >Please enter atleast 15 characters<br
-          /></ng-container>
-          <ng-container *ngIf="control.hasError('maxlength')"
-            >maximum length exceeded<br
-          /></ng-container>
-          <ng-container *ngIf="control.hasError('pattern')"
-            >Please enter valid input</ng-container
-          >
-        </ng-template> -->
       </nz-form-item>
     </div>
   </form>
@@ -287,10 +291,10 @@
       <button nz-button style="margin-right: 8px" (click)="close()">
         Cancel
       </button>
-      <button nz-button *ngIf="submit" nzType="primary" (click)="onSubmit()">
+      <button nz-button *ngIf="submit" nzType="primary" (click)="onCreateSubmit()">
         Submit
       </button>
-      <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdate()">
+      <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdateSubmit()">
         Update
       </button>
     </div>

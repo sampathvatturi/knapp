@@ -18,9 +18,7 @@ exports.loginUser = async (req, res) => {
     if (!err) {
       if (result.length === 1) {
         if (result[0].status == "inactive") {
-          res
-            .status(401)
-            .json({ message: "User is in-active, Please contact admin" });
+          res.status(401).json({ message: "User is in-active, Please contact admin" });
         } else if (result[0].password_md5 == password) {
           const response = {
             user_name: result[0].user_name,

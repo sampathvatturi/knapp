@@ -18,6 +18,7 @@ export class TransactionDetailsService {
       })
     );
   }
+  
   createTransaction(postDataObj: any): Observable<any> {
     return this.apiService.postCall('/transaction/createTransaction', postDataObj).pipe(
       map((response: any) => {

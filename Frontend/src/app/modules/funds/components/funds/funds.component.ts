@@ -20,6 +20,8 @@ export class FundsComponent implements OnInit {
   searchText = '';
   user_data: any;
   fundId: any;
+  dateFormat = 'dd/MM/yyyy';
+  currentDate = new Date();
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
@@ -35,6 +37,7 @@ export class FundsComponent implements OnInit {
     this.user_data = sessionStorage.getItem('user_data');
     this.user_data = JSON.parse(this.user_data);
     this.getFunds();
+    console.log(this.currentDate);
   }
 
   getFunds(): void {
@@ -50,6 +53,7 @@ export class FundsComponent implements OnInit {
     this.fundsFormValidators();
     this.fundsForm.get('fund_type')?.setValue('state');
   }
+
   edit(data: any) {
     this.submit = false;
     this.drawerTitle = 'Edit Fund Details';
@@ -81,6 +85,7 @@ export class FundsComponent implements OnInit {
     }
     return payload;
   }
+  
   onCreateSubmit() {
     if (this.fundsForm.valid) {
       this.fundsForm.value.fund_released_date = formatDate(this.fundsForm.value.fund_released_date, 'yyyy-MM-dd hh:mm:ss', this.locale);
@@ -136,8 +141,8 @@ export class FundsComponent implements OnInit {
       Validators.maxLength(50),
       Validators.minLength(10),
       Validators.pattern(GlobalConstants.nameRegex)]],
-      fund_released_date: ['', [Validators.required]],
-      transaction_mode: ['', [Validators.required]],
+      fund_released_date: [this.currentDate, [Validators.required]],
+      transaction_mode: ['banking', [Validators.required]],
       fund_value: ['', [Validators.required]],
     });
   }
