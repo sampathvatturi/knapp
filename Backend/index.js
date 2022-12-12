@@ -34,6 +34,7 @@ app.use('/invoicedetails', invoiceRoutes);
 app.use('/work', workRoutes);
 app.use('/fund', fundRoutes);
 app.use('/transaction', transactionRoutes);
+app.use('/tendor', tendorRoutes);
 
 module.exports = app;
 
