@@ -1,7 +1,7 @@
 const db = require("../config/connection");
 const currdateTime = require('../middleware/currdate');
 
-exports.getInvoicelogs = async (req, res) => {
+exports.getInvoices = async (req, res) => {
   db.query("select * from invoices", (err, result, fiels) => {
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
@@ -10,7 +10,7 @@ exports.getInvoicelogs = async (req, res) => {
   });
 };
 
-exports.createInvoicelog = async (req, res) => {
+exports.createInvoice = async (req, res) => {
   data = req.body;
   db.query(
     "INSERT INTO `invoices` SET ? ",
@@ -41,7 +41,7 @@ exports.createInvoicelog = async (req, res) => {
   );
 };
 
-exports.updateInvoicelog = async (req, res) => {
+exports.updateInvoice = async (req, res) => {
   data = req.body;
   db.query(
     "update invoices set ? where invoice_id = ? ",
@@ -72,7 +72,7 @@ exports.updateInvoicelog = async (req, res) => {
   );
 };
 
-exports.deleteInvoicelog = async (req, res) => {
+exports.deleteInvoice = async (req, res) => {
   db.query(
     "delete from invoice where invoice_id = ?",
     [req.params.id],
@@ -89,7 +89,7 @@ exports.deleteInvoicelog = async (req, res) => {
   );
 };
 
-exports.getInvoicelog = async (req, res) => {
+exports.getInvoice = async (req, res) => {
   db.query(
     "select * from invoice where invoice_id = ?",
     [req.params.id],

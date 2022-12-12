@@ -2,17 +2,17 @@ const express = require('express');
 const router = express.Router();
 
 const{ 
-     getInvoicelogs,
-     createInvoicelog,
-     updateInvoicelog,
-     deleteInvoicelog,
-     getInvoicelog
+     getInvoices,
+     createInvoice,
+     updateInvoice,
+     deleteInvoice,
+     getInvoice
 } = require('../controllers/invoices');
 
-router.get('/getInvoicelogs', getInvoicelogs);
-router.post('/createInvoicelog', createInvoicelog);
-router.patch('/updateInvoicelog/:id', updateInvoicelog);
-router.delete('/deleteInvoicelog/:id', deleteInvoicelog);
-router.get('/getInvoicelog/:id', getInvoicelog);
+router.get('/getInvoices', getInvoices);
+router.post('/createInvoice', createInvoice);
+router.patch('/updateInvoice/:id', updateInvoice);
+router.delete('/deleteInvoice/:id', deleteInvoice);
+router.get('/getInvoice/:id', getInvoice);
 
 module.exports = router ;

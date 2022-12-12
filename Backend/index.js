@@ -12,6 +12,7 @@ const invoiceRoutes = require('./routes/invoiceRoutes');
 const workRoutes = require('./routes/workRoutes');
 const fundRoutes = require('./routes/fundRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
+const tendorRoutes = require('./routes/tendorRoutes');
 
 const app = express();
 
