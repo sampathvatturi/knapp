@@ -35,7 +35,7 @@ export class TokenInterceptorInterceptor implements HttpInterceptor {
       catchError((error) => {  
         if(error instanceof HttpErrorResponse){
           console.log("Interceptor Error: ", error.url);
-          if(error.status === 401 || error.status === 402){
+          if(error.status === 401 || error.status === 402 || error.status === 403){
             if(this.router.url === '/'){}
             else{
               localStorage.clear();

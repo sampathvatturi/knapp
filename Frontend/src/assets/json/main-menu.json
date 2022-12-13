@@ -21,16 +21,6 @@
       "icon": "fa-solid fa-folder-open"
     },
     {
-      "title": "Inventory Items",
-      "route": "modules/inventory-items",
-      "icon": "fa-solid fa-warehouse"
-    },
-    {
-      "title": "Funds",
-      "route": "modules/funds",
-      "icon": "fa-solid fa-dollar-sign"
-    },
-    {
       "title": "Expenditure",
       "route": "modules/expenditure",
       "icon": "fa-solid fa-hand-holding-dollar"
@@ -58,7 +48,12 @@
     {
       "title": "Accouting",
       "icon": "fa-solid fa-building-columns",
-      "children": [
+      "children": [        
+        {
+          "title": "Funds",
+          "route": "modules/funds",
+          "icon": "fa-solid fa-dollar-sign"
+        },
         {
           "title": "Accouting Details",
           "route": "modules/accounting-details",
@@ -76,12 +71,6 @@
       "route": "modules/user-accounts",
       "icon": "fa-solid fa-users"
     },
-    {
-      "title": "Payment Proceedings",
-      "route": "modules/payment-proceedings",
-      "icon": "fa-solid fa-money-check-dollar"
-    },
-
     {
       "title": "Approvals",
       "route": "modules/approvals",
