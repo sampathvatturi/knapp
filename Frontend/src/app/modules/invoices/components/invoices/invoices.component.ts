@@ -6,6 +6,7 @@ import { InvoicesService } from 'src/app/services/invoices.service';
 import { VendorsService } from 'src/app/services/vendors.service';
 import { NotificationService } from './../../../../services/auth/notification.service';
 import { GlobalConstants } from 'src/app/shared/global_constants';
+import { TenderDetailsService } from 'src/app/services/tender-details.service';
 
 @Component({
   selector: 'app-invoices',
@@ -20,7 +21,9 @@ export class InvoicesComponent implements OnInit {
   invoiceForm1!: UntypedFormGroup;
   invoice_info: any = [];
   vendor_array: any = [];
+  tender_array: any = [];
   v_name: any = {};
+  t_name: any = {};
   depts: any = [];
   user_data: any = [];
   searchText = '';
@@ -37,6 +40,7 @@ export class InvoicesComponent implements OnInit {
     private api: ApiService,
     private notification: NotificationService,
     private invoice: InvoicesService,
+    private tenders:TenderDetailsService,
     private departments: DepartmentService,
     private vendors: VendorsService
   ) { }
@@ -53,6 +57,13 @@ export class InvoicesComponent implements OnInit {
     });
 
     this.invoice.getInvoices().subscribe((res) => (this.invoice_info = res));
+    this.tenders.getTenderDetails().subscribe(res=> {
+      this.tender_array = res;
+      for(let x of this.tender_array){
+        this.t_name[x.id] = x.title;
+      }
+      console.log(this.t_name);
+    });
 
     this.vendors.getVendors().subscribe((res) => {
       this.vendor_array = res;
@@ -77,9 +88,8 @@ export class InvoicesComponent implements OnInit {
     this.invoiceForm.get('remarks')?.setValue(data.remarks);
     this.invoiceForm.get('quantity')?.setValue(data.quantity);
     this.invoiceForm.get('amount')?.setValue(data.amount);
-    this.invoiceForm.get('trnsx_type')?.setValue(data.trnsx_type);
     this.invoiceForm.get('tax')?.setValue(data.tax);
-    this.invoiceForm.get('total')?.setValue(data.total);
+    this.invoiceForm.get('grand_total')?.setValue(data.total);
     this.invoiceForm.get('updated_by')?.setValue(this.user_data.user_id);
     this.invoiceForm
       .get('department_id')
@@ -93,61 +103,41 @@ export class InvoicesComponent implements OnInit {
     this.invoiceFormValidators();
     this.invoiceForm.get('created_by')?.setValue(this.user_data.user_id);
     this.invoiceForm.get('updated_by')?.setValue(this.user_data.user_id);
-    this.invoiceForm.get('total')?.setValue(0);
+    this.invoiceForm.get('grand_total')?.setValue(0);
   }
 
   change() {
-    this.tot =
-      this.invoiceForm.value.quantity * this.invoiceForm.value.amount +
-      (this.invoiceForm.value.tax *
-        this.invoiceForm.value.quantity *
-        this.invoiceForm.value.amount) /
-      100;
+    this.tot = Number(this.invoiceForm.value.amount) + Number(this.invoiceForm.value.tax);
 
-    this.invoiceForm
-      .get('invoice_details_id')
-      ?.setValue(this.invoiceForm.value.invoice_details_id);
-    this.invoiceForm
-      .get('vendor_id')
-      ?.setValue(this.invoiceForm.value.vendor_id);
-    this.invoiceForm
-      .get('remarks')
-      ?.setValue(this.invoiceForm.value.remarks);
-    this.invoiceForm.get('quantity')?.setValue(this.invoiceForm.value.quantity);
-    this.invoiceForm.get('amount')?.setValue(this.invoiceForm.value.amount);
-    this.invoiceForm
-      .get('trnsx_type')
-      ?.setValue(this.invoiceForm.value.trnsx_type);
-    this.invoiceForm.get('tax')?.setValue(this.invoiceForm.value.tax);
-    this.invoiceForm.get('total')?.setValue(this.tot);
-    this.invoiceForm.get('updated_by')?.setValue(this.user_data.user_id);
-    this.invoiceForm.get('created_by')?.setValue(this.user_data.user_id);
-    this.invoiceForm
-      .get('department_id')
-      ?.setValue(this.invoiceForm.value.department_id);
+    // this.invoiceForm.get('invoice_details_id')?.setValue(this.invoiceForm.value.invoice_details_id);
+    // this.invoiceForm.get('vendor_id')?.setValue(this.invoiceForm.value.vendor_id);
+    // this.invoiceForm.get('remarks')?.setValue(this.invoiceForm.value.remarks);
+    // this.invoiceForm.get('quantity')?.setValue(this.invoiceForm.value.quantity);
+    // this.invoiceForm.get('amount')?.setValue(this.invoiceForm.value.amount);
+    // this.invoiceForm.get('tax')?.setValue(this.invoiceForm.value.tax);
+    this.invoiceForm.get('grand_total')?.setValue(this.tot);
+    // this.invoiceForm.get('updated_by')?.setValue(this.user_data.user_id);
+    // this.invoiceForm.get('created_by')?.setValue(this.user_data.user_id);
   }
 
   close(): void {
     this.visible = false;
   }
   onSubmit() {
+    this.addField();
     this.inventoryDetailsArray.shift();
     this.invoiceForm.value.inventory_details = this.inventoryDetailsArray;
     console.log(this.invoiceForm.value);
     if (this.invoiceForm.valid) {
-      this.api
-        .postCall('/invoicedetails/createInvoicelog', this.invoiceForm.value)
-        .subscribe((res) => {
-          this.notification.createNotification(res.status, res.message);
+      this.invoice.createInvoice(this.invoiceForm.value).subscribe(res =>{
+        this.notification.createNotification(res.status, res.message);
           if (res.status === 'success') {
             this.visible = false;
             this.invoice
               .getInvoices()
               .subscribe((res) => (this.invoice_info = res));
-          } else {
-            this.notification.createNotification(res.status, res.message);
           }
-        });
+      });
     } else {
       Object.values(this.invoiceForm.controls).forEach((control) => {
         if (control.invalid) {
@@ -190,16 +180,15 @@ export class InvoicesComponent implements OnInit {
   }
   invoiceFormValidators() {
     this.invoiceForm = this.fb.group({
-      invoice_details_id: [''],
+      invoice_id: [''],
       vendor_id: ['', [Validators.required]],
+      tendor_id: ['', [Validators.required]],
+      title: ['', [Validators.required]],
       remarks: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200), Validators.pattern(GlobalConstants.nameRegex)]],
-      quantity: ['', [Validators.required, Validators.pattern(GlobalConstants.numberRegex)]],
       amount: ['', [Validators.required, Validators.pattern(GlobalConstants.amountRegex)]],
-      trnsx_type: ['', [Validators.required]],
-      inventory_details: [null, [Validators.required]],
+      inventory_details: [null],
       tax: ['', [Validators.required, Validators.pattern(GlobalConstants.numberRegex)]],
-      total: ['', [Validators.required]],
-      department_id: ['', [Validators.required]],
+      grand_total: ['', [Validators.required]],
     });
   }
 
@@ -252,7 +241,9 @@ export class InvoicesComponent implements OnInit {
     if (this.listOfControl.length > 1) {
       const index = this.listOfControl.indexOf(i);
       this.listOfControl.splice(index, 1);
+      this.inventoryDetailsArray.splice(index+1, 1);
       console.log(this.listOfControl);
+      console.log(this.inventoryDetailsArray);
       this.invoiceForm.removeControl(i.controlInstance1);
       this.invoiceForm.removeControl(i.controlInstance2);
       this.invoiceForm.removeControl(i.controlInstance3);

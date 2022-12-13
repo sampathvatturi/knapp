@@ -12,7 +12,7 @@ export class TenderDetailsService {
     private apiService: ApiService) { }
 
   getTenderDetails(): Observable<any>{
-    return this.apiService.getCall('/tendor/getTendors').pipe(
+    return this.apiService.getCall('/tender/getTenders').pipe(
       map((response: any) => {
         return response;
       })
@@ -20,7 +20,7 @@ export class TenderDetailsService {
   }
 
   createTenderDetail(postDataObj: any): Observable<any> {
-    return this.apiService.postCall('/tendor/createTendor', postDataObj).pipe(
+    return this.apiService.postCall('/tender/createTender', postDataObj).pipe(
       map((response: any) => {
         return response;
       })
@@ -28,7 +28,7 @@ export class TenderDetailsService {
   }
 
   updateTenderDetail(id: any, postDataObj: any): Observable<any> {
-    return this.apiService.patchCall('/tendor/updateTendor' + id, postDataObj).pipe(
+    return this.apiService.patchCall('/tender/updateTender' + id, postDataObj).pipe(
       map((response: any) => {
         return response;
       })
@@ -36,7 +36,7 @@ export class TenderDetailsService {
   }
 
   getTenderDetailById(id: any): Observable<any>{
-    return this.apiService.getCall('/tendor/getTendor/:id'+id).pipe(
+    return this.apiService.getCall('/tender/getTender/:id'+id).pipe(
       map((response: any) => {
         return response;
       })

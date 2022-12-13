@@ -36,11 +36,12 @@
         <th>Title</th>
         <th>Remarks</th>
         <th>Vendor</th>
-        <th>Amount</th>
-        <th>Transaction Type</th>
-        <th>Tax</th>
-        <th>Total</th>
-        <th>Department</th>
+        <th>Tender</th>
+        <th>Total Amount</th>
+        <!-- <th>Transaction Type</th> -->
+        <th>Total Tax</th>
+        <th>Grand Total</th>
+        <!-- <th>Department</th> -->
         <th>Created Date</th>
         <th>Actions</th>
       </tr>
@@ -56,11 +57,12 @@
         <td>{{ data.title }}</td>
         <td>{{ data.remarks }}</td>
         <td>{{ v_name[data.vendor_id] }}</td>
+        <td>{{ t_name[data.tender_id] }}</td>
         <td>{{ data.amount }}</td>
-        <td>{{ data.trnsx_type }}</td>
+        <!-- <td>{{ data.trnsx_type }}</td> -->
         <td>{{ data.tax }}</td>
         <td>{{ data.total | currencyIn }}</td>
-        <td>{{ d_name[data.department_id] }}</td>
+        <!-- <td>{{ d_name[data.department_id] }}</td> -->
         <td>{{ data.created_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
         <td>
           <div id="editbtn">
@@ -111,19 +113,37 @@
         </nz-form-control>
       </nz-form-item>
     </div>
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="5">Tender</nz-form-label>
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Select Tender">
+          <nz-select
+            formControlName="tendor_id"
+            nzPlaceHolder="Tender"
+            nzShowSearch
+          >
+            <nz-option
+              *ngFor="let t of tender_array"
+              nzValue="{{ t.id }}"
+              nzLabel="{{ t.title}}"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Remarks</nz-form-label>
+        <nz-form-label nz-col nzSpan="5">Title</nz-form-label>
         <nz-form-control nz-col nzSpan="10" [nzErrorTip]="invoiceErrorTip1">
           <input
             nz-input
-            formControlName="remarks"
-            placeholder="Enter Remarks"
+            formControlName="title"
+            placeholder="Enter Title"
           />
           <ng-template #invoiceErrorTip1 let-control>
             <ng-container *ngIf="control.hasError('required')"
-              >Please enter invoice item</ng-container
+              >Please enter invoice Title</ng-container
             >
             <ng-container *ngIf="control.hasError('maxlength')"
               >Maxlength exceeded<br
@@ -140,29 +160,35 @@
     </div>
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Quantity</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="invoiceErrorTip2">
+        <nz-form-label nz-col nzSpan="5">Remarks</nz-form-label>
+        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="invoiceErrorTip1">
           <input
             nz-input
-            formControlName="quantity"
-            placeholder="Enter Quantity"
-            (keyup)="change()"
+            formControlName="remarks"
+            placeholder="Enter Remarks"
           />
-          <ng-template #invoiceErrorTip2 let-control>
+          <ng-template #invoiceErrorTip1 let-control>
             <ng-container *ngIf="control.hasError('required')"
-              >Please enter quantity</ng-container
+              >Please enter Remarks</ng-container
             >
+            <ng-container *ngIf="control.hasError('maxlength')"
+              >Maxlength exceeded<br
+            /></ng-container>
+            <ng-container *ngIf="control.hasError('minlength')"
+              >Please enter atleast 10 characters<br
+            /></ng-container>
             <ng-container *ngIf="control.hasError('pattern')"
-              >Invalid - Numbers Only</ng-container
+              >Please enter valid input</ng-container
             >
           </ng-template>
         </nz-form-control>
       </nz-form-item>
     </div>
 
+
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Amount</nz-form-label>
+        <nz-form-label nz-col nzSpan="5">Total Amount</nz-form-label>
         <nz-form-control nz-col nzSpan="10" [nzErrorTip]="invoiceErrorTip3">
           <input
             nz-input
@@ -182,7 +208,7 @@
       </nz-form-item>
     </div>
 
-    <div>
+    <!-- <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Transaction Type</nz-form-label>
         <nz-form-control
@@ -202,11 +228,11 @@
           </nz-select>
         </nz-form-control>
       </nz-form-item>
-    </div>
+    </div> -->
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Tax</nz-form-label>
+        <nz-form-label nz-col nzSpan="5">Total Tax Amount</nz-form-label>
         <nz-form-control nz-col nzSpan="10" [nzErrorTip]="invoiceErrorTip4">
           <input
             nz-input
@@ -228,11 +254,11 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Total</nz-form-label>
+        <nz-form-label nz-col nzSpan="5">Grand Total</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <input
             nz-input
-            formControlName="total"
+            formControlName="grand_total"
             placeholder="Enter Total"
             (keyup)="change()"
           />
@@ -240,28 +266,6 @@
       </nz-form-item>
     </div>
 
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Department</nz-form-label>
-        <nz-form-control
-          nz-col
-          nzSpan="10"
-          nzErrorTip="Please Select Department"
-        >
-          <nz-select
-            formControlName="department_id"
-            nzPlaceHolder="Department"
-            nzShowSearch
-          >
-            <nz-option
-              *ngFor="let d of depts"
-              nzValue="{{ d.department_id }}"
-              nzLabel="{{ d.department_name }}"
-            ></nz-option>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
     <!-- dynaminc form fields -->
     <nz-divider nzText="Inventory Details" nzOrientation="left"></nz-divider>
     <div>
