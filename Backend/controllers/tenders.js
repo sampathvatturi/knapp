@@ -4,7 +4,7 @@ const currdateTime = require("../middleware/currdate");
 //tickets
 exports.getTenders = async (req, res) => {
   db.query(
-    "select * from tendors",
+    "select * from tenders",
     (err, result, fields) => {
       if (!err) {
         if (result.length > 0) res.status(200).send(result);
@@ -17,36 +17,36 @@ exports.getTenders = async (req, res) => {
 exports.createTender = async (req, res) => {
   data = req.body;
   work_id = data.work_id.toString();
-  json_data=[];
+  tender_user_status=[];
   data.assign_to.forEach(element => {
     let temp = {
       "user_id" : element,
       "status" : false
     };
-    json_data.push(temp)
+    tender_user_status.push(temp)
   });
-  
   db.query(
-    "INSERT INTO `tickets` SET ? ",
+    "INSERT INTO `tenders` SET ? ",
     [
       {
-        ticket_description: data.ticket_description,
+        title: data.title,
+        description: data.description,
         vendor_id: data.vendor_id,
         work_id: work_id,
         location: data.location,
         tender_cost: data.tender_cost,
         status: data.status,
-        json_status: JSON.stringify(json_data),
-        department_id: data.department_id,
+        tender_user_status: JSON.stringify(tender_user_status),
+        attachments: data.attachments,
         created_by: data.created_by,
-        updated_by: data.updated_by,
+        updated_by: data.updated_by
       },
     ],
     (err, result, fields) => {
       if (!err) {
         res
           .status(200)
-          .json({ status: "success", message: "Ticket added successfully" });
+          .json({ status: "success", message: "Tendor added successfully" });
       } else res.status(404).json({ status: "failed" });
     }
   );
@@ -55,28 +55,29 @@ exports.createTender = async (req, res) => {
 exports.updateTender = async (req, res) => {
   data = req.body;
   work_id = data.work_id.toString();
-  json_data=[];
+  tender_user_status=[];
   data.assign_to.forEach(element => {
     let temp = {
       "user_id" : element,
       "status" : false
     };
-    json_data.push(temp)
+    tender_user_status.push(temp)
   });
   db.query(
-    "update tickets set ? where ticket_id = ? ",
+    "update tenders set ? where id = ? ",
     [
       {
-        ticket_description: data.ticket_description,
+        title: data.title,
+        description: data.description,
         vendor_id: data.vendor_id,
         work_id: work_id,
         location: data.location,
         tender_cost: data.tender_cost,
         status: data.status,
-        json_status: JSON.stringify(json_data),
-        department_id: data.department_id,
+        tender_user_status: JSON.stringify(tender_user_status),
+        attachments: data.attachments,
         updated_date: currdateTime,
-        updated_by: data.updated_by,
+        updated_by: data.updated_by
       },
       req.params.id,
     ],
@@ -93,7 +94,7 @@ exports.updateTender = async (req, res) => {
 
 exports.deleteTender = async (req, res) => {
   db.query(
-    "delete from tickets where ticket_id = ?",
+    "delete from tenders where id = ?",
     [req.params.id],
     (err, result, fields) => {
       if (!err)
@@ -107,7 +108,7 @@ exports.deleteTender = async (req, res) => {
 
 exports.getTender= async (req, res) => {
   db.query(
-    "select * from ticketswhere ticket_id = ?",
+    "select * from tenders where id = ?",
     [req.params.id],
     (err, result, fields) => {
       if (!err) {

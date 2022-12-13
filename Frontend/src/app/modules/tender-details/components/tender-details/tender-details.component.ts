@@ -48,7 +48,7 @@ export class TenderDetailsComponent implements OnInit {
     this.getWork();
     this.getVendor();
     this.getUser();
-    // this.getTendor();
+    this.getTendor();
   }
 
   /*functions for works,vendors,tendors and users*/
@@ -115,7 +115,7 @@ export class TenderDetailsComponent implements OnInit {
     this.tenderDetailsForm.get('vendor_id')?.setValue(data.vendor_id.toString());
     this.tenderDetailsForm.get('ticket_description')?.setValue(data.ticket_description);
     this.tenderDetailsForm.get('work_id')?.setValue(data.work_id.split(',').map(Number));
-    this.tenderDetailsForm.get('assign_to')?.setValue(selectedUsers);
+    this.tenderDetailsForm.get('tender_user_status')?.setValue(selectedUsers);
     this.tenderDetailsForm.get('location')?.setValue(data.location);
     this.tenderDetailsForm.get('tender_cost')?.setValue(data.tender_cost);
     this.tenderDetailsForm.get('status')?.setValue(data.status);
@@ -135,14 +135,14 @@ export class TenderDetailsComponent implements OnInit {
       location: data.location,
       tender_cost: data.tender_cost,
       department_id: data.department_id,
-      user_id: data.user_id,
-      assign_to: data.assign_to,
+      tender_user_status: data.tender_user_status,
       status: data.status,
       start_date: data.start_date,
       end_date: data.end_date,
       created_by: this.user_data?.user_id,
       updated_by: this.user_data?.user_id
     }
+    return payload;
   }
 
   onCreateSubmit() {
@@ -172,13 +172,13 @@ export class TenderDetailsComponent implements OnInit {
       location: data.location,
       tender_cost: data.tender_cost,
       department_id: data.department_id,
-      user_id: data.user_id,
-      assign_to: data.assign_to,
+      tender_user_status: data.tender_user_status,
       status: data.status,
       start_date: data.start_date,
       end_date: data.end_date,
       updated_by: this.user_data?.user_id
     }
+    return payload;
   }
   onUpdateSubmit() {
     if (this.tenderDetailsForm.valid) {
@@ -235,8 +235,7 @@ export class TenderDetailsComponent implements OnInit {
       location: [null, [Validators.required, Validators.pattern(GlobalConstants.addressRegex)]],
       tender_cost: [null, [Validators.required]],
       department_id: [null],
-      user_id: [null],
-      assign_to: [[], [Validators.required]],
+      tender_user_status: [[], [Validators.required]],
       status: [null],
       created_date: [null],
       start_date: [null],

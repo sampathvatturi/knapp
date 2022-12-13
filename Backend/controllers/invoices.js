@@ -2,7 +2,7 @@ const db = require("../config/connection");
 const currdateTime = require('../middleware/currdate');
 
 exports.getInvoices = async (req, res) => {
-  db.query("select * from invoices", (err, result, fiels) => {
+  db.query("select * from invoices", (err, result) => {
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
       else res.status(404).json({ message: "Invoice details not found" });
@@ -12,23 +12,26 @@ exports.getInvoices = async (req, res) => {
 
 exports.createInvoice = async (req, res) => {
   data = req.body;
+  inventory_details = JSON.stringify(data.inventory_details);
   db.query(
     "INSERT INTO `invoices` SET ? ",
     [
       {
         vendor_id: data.vendor_id,
-        invoice_item: data.invoice_item,
-        quantity: data.quantity,
+        tender_id: data.vendor_id,
+        title: data.title,
+        remarks: data.remarks,
+        invoice_number: data.invoice_number,
+        inventory_details: inventory_details,
+        status: data.status,
         amount: data.amount,
-        trnsx_type: data.trnsx_type,
         tax: data.tax,
-        total: data.total,
+        grand_total: data.grand_total,
         created_by: data.created_by,
-        updated_by: data.updated_by,
-        department_id: data.department_id
+        updated_by: data.updated_by
       },
     ],
-    (err, result, fields) => {
+    (err, result) => {
       if (!err) {
         res
           .status(200)
@@ -48,18 +51,21 @@ exports.updateInvoice = async (req, res) => {
     [
       {
         vendor_id: data.vendor_id,
-        invoice_item: data.invoice_item,
-        quantity: data.quantity,
+        tender_id: data.vendor_id,
+        title: data.title,
+        remarks: data.remarks,
+        invoice_number: data.invoice_number,
+        inventory_details: data.inventory_details,
+        status: data.status,
         amount: data.amount,
-        trnsx_type: data.trnsx_type,
         tax: data.tax,
-        total: data.total,
+        grand_total: data.grand_total,
         updated_date: currdateTime,
         updated_by: data.updated_by,
       },
       req.params.id,
     ],
-    (err, result, fiels) => {
+    (err, result) => {
       if (!err)
         res
           .status(200)
@@ -76,7 +82,7 @@ exports.deleteInvoice = async (req, res) => {
   db.query(
     "delete from invoice where invoice_id = ?",
     [req.params.id],
-    (err, result, fields) => {
+    (err, result) => {
       if (!err)
         res
           .status(200)
@@ -93,7 +99,7 @@ exports.getInvoice = async (req, res) => {
   db.query(
     "select * from invoice where invoice_id = ?",
     [req.params.id],
-    (err, result, fiels) => {
+    (err, result) => {
       if (!err) {
         if (result.length === 1) res.status(200).send(result);
         else res.status(401).json({ message: "Invoice details not found" });
