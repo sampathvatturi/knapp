@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../services/authentication');
 
 const{ 
     getTenders,
@@ -9,11 +10,11 @@ const{
     getTender
 } = require('../controllers/tenders');
 
-router.get('/getTenders',getTenders);
-router.post('/createTender',createTender);
-router.patch('/updateTender/:id',updateTender);
-router.delete('/deleteTender/:id',deleteTender);
-router.get('/getTender/:id',getTender);
+router.get('/getTenders', auth.authenticateToken,getTenders);
+router.post('/createTender', auth.authenticateToken,createTender);
+router.patch('/updateTender/:id', auth.authenticateToken,updateTender);
+router.delete('/deleteTender/:id', auth.authenticateToken,deleteTender);
+router.get('/getTender/:id', auth.authenticateToken,getTender);
 
 
 module.exports = router ;

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../services/authentication');
 
 const{ 
      getInvoices,
@@ -9,10 +10,10 @@ const{
      getInvoice
 } = require('../controllers/invoices');
 
-router.get('/getInvoices', getInvoices);
-router.post('/createInvoice', createInvoice);
-router.patch('/updateInvoice/:id', updateInvoice);
-router.delete('/deleteInvoice/:id', deleteInvoice);
-router.get('/getInvoice/:id', getInvoice);
+router.get('/getInvoices', auth.authenticateToken, getInvoices);
+router.post('/createInvoice', auth.authenticateToken, createInvoice);
+router.patch('/updateInvoice/:id', auth.authenticateToken, updateInvoice);
+router.delete('/deleteInvoice/:id', auth.authenticateToken, deleteInvoice);
+router.get('/getInvoice/:id', auth.authenticateToken, getInvoice);
 
 module.exports = router ;

@@ -17,12 +17,12 @@ const{
 
 router.post('/login', loginUser);
 router.get('/getUsers', auth.authenticateToken, roleCheck.checkRole, getUsers);
-router.post('/createUser', createUser);
-router.patch('/updateUser/:id', updateUser);
-router.delete('/deleteUser/:id', deleteUser);
-router.get('/getUserById/:id', getUserById);
+router.post('/createUser', auth.authenticateToken, createUser);
+router.patch('/updateUser/:id', auth.authenticateToken, updateUser);
+router.delete('/deleteUser/:id', auth.authenticateToken, deleteUser);
+router.get('/getUserById/:id', auth.authenticateToken, getUserById);
 router.get('/checkToken', checkToken);
-router.post('/getUserByDepartmentId', getUserByDepartmentId);
-router.get('/getUsersByDepartment', getUsersByDepartment);
+router.post('/getUserByDepartmentId', auth.authenticateToken, getUserByDepartmentId);
+router.get('/getUsersByDepartment', auth.authenticateToken, getUsersByDepartment);
 
 module.exports = router ;

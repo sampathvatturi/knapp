@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../services/authentication');
 
 const{ 
     getFunds,
@@ -8,9 +9,9 @@ const{
     getFund
 } = require('../controllers/funds');
 
-router.get('/getFunds', getFunds);
-router.post('/createFund', createFund);
-router.patch('/updateFund/:id', updateFund);
-router.get('/getFund/:id', getFund);
+router.get('/getFunds', auth.authenticateToken, getFunds);
+router.post('/createFund', auth.authenticateToken, createFund);
+router.patch('/updateFund/:id', auth.authenticateToken, updateFund);
+router.get('/getFund/:id', auth.authenticateToken, getFund);
 
 module.exports = router ;
