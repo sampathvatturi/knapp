@@ -9,12 +9,7 @@
 <nz-content id="component-content">
   <div id="search-create">
     <nz-input-group [nzSuffix]="suffixIconSearch" class="searchInput">
-      <input
-        type="text"
-        nz-input
-        placeholder="Search"
-        [(ngModel)]="searchText"
-      />
+      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText" />
     </nz-input-group>
     <ng-template #suffixIconSearch>
       <span nz-icon nzType="search"></span>
@@ -23,13 +18,8 @@
       Add &nbsp; <i class="fa-solid fa-plus"></i>
     </button>
   </div>
-  <nz-table
-    #basicTable
-    [nzData]="invoice_info"
-    nzShowPagination
-    nzShowSizeChanger
-    [nzPageSizeOptions]="[5, 10, 15, 20]"
-  >
+  <nz-table #basicTable [nzData]="invoice_info" nzShowPagination nzShowSizeChanger
+    [nzPageSizeOptions]="[5, 10, 15, 20]">
     <thead>
       <tr>
         <th>S.No.</th>
@@ -47,12 +37,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr
-        *ngFor="
+      <tr *ngFor="
           let data of basicTable.data | globalTablesearch : searchText;
           let i = index
-        "
-      >
+        ">
         <td>{{ i + 1 }}</td>
         <td>{{ data.title }}</td>
         <td>{{ data.remarks }}</td>
@@ -66,31 +54,18 @@
         <td>{{ data.created_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
         <td>
           <div id="editbtn">
-            <a nz-tooltip="Edit" (click)="edit(data)"
-              ><i class="fa-regular fa-pen-to-square"></i
-            ></a>
+            <a nz-tooltip="Edit" (click)="edit(data)"><i class="fa-regular fa-pen-to-square"></i></a>
             <b> / </b>
-            <a nz-tooltip="View" (click)="edit(data)"
-              ><i class="fa-regular fa-eye"></i
-            ></a>
+            <a nz-tooltip="View" (click)="edit(data)"><i class="fa-regular fa-eye"></i></a>
           </div>
         </td>
       </tr>
     </tbody>
   </nz-table>
 </nz-content>
-<nz-drawer
-  [nzBodyStyle]="{ overflow: 'auto' }"
-  [nzMaskClosable]="false"
-  [nzWidth]="720"
-  [nzVisible]="visible"
-  [nzTitle]="drawerTitle"
-  [nzFooter]="footerTpl"
-  (nzOnClose)="close()"
-  [nzClosable]="false"
-  [nzCloseIcon]="icon"
-  [nzExtra]="icon"
->
+<nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzMaskClosable]="false" [nzWidth]="720" [nzVisible]="visible"
+  [nzTitle]="drawerTitle" [nzFooter]="footerTpl" (nzOnClose)="close()" [nzClosable]="false" [nzCloseIcon]="icon"
+  [nzExtra]="icon">
   <ng-template #icon>
     <i (click)="close()" class="fa-solid fa-circle-xmark"></i>
   </ng-template>
@@ -99,16 +74,9 @@
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Vendor</nz-form-label>
         <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Select Vendor">
-          <nz-select
-            formControlName="vendor_id"
-            nzPlaceHolder="Vendor"
-            nzShowSearch
-          >
-            <nz-option
-              *ngFor="let v of vendor_array"
-              nzValue="{{ v.vendor_id }}"
-              nzLabel="{{ v.vendor_name }}"
-            ></nz-option>
+          <nz-select formControlName="vendor_id" nzPlaceHolder="Vendor" nzShowSearch>
+            <nz-option *ngFor="let v of vendor_array" nzValue="{{ v.vendor_id }}"
+              nzLabel="{{ v.vendor_name }}"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
@@ -117,16 +85,8 @@
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Tender</nz-form-label>
         <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Select Tender">
-          <nz-select
-            formControlName="tendor_id"
-            nzPlaceHolder="Tender"
-            nzShowSearch
-          >
-            <nz-option
-              *ngFor="let t of tender_array"
-              nzValue="{{ t.id }}"
-              nzLabel="{{ t.title}}"
-            ></nz-option>
+          <nz-select formControlName="tender_id" nzPlaceHolder="Tender" nzShowSearch>
+            <nz-option *ngFor="let t of tender_array" nzValue="{{ t.id }}" nzLabel="{{ t.title}}"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
@@ -136,24 +96,12 @@
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Title</nz-form-label>
         <nz-form-control nz-col nzSpan="10" [nzErrorTip]="invoiceErrorTip1">
-          <input
-            nz-input
-            formControlName="title"
-            placeholder="Enter Title"
-          />
+          <input nz-input formControlName="title" placeholder="Enter Title" />
           <ng-template #invoiceErrorTip1 let-control>
-            <ng-container *ngIf="control.hasError('required')"
-              >Please enter invoice Title</ng-container
-            >
-            <ng-container *ngIf="control.hasError('maxlength')"
-              >Maxlength exceeded<br
-            /></ng-container>
-            <ng-container *ngIf="control.hasError('minlength')"
-              >Please enter atleast 10 characters<br
-            /></ng-container>
-            <ng-container *ngIf="control.hasError('pattern')"
-              >Please enter valid input</ng-container
-            >
+            <ng-container *ngIf="control.hasError('required')">Please enter invoice Title</ng-container>
+            <ng-container *ngIf="control.hasError('maxlength')">Maxlength exceeded<br /></ng-container>
+            <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 10 characters<br /></ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">Please enter valid input</ng-container>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
@@ -162,92 +110,138 @@
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Remarks</nz-form-label>
         <nz-form-control nz-col nzSpan="10" [nzErrorTip]="invoiceErrorTip1">
-          <input
-            nz-input
-            formControlName="remarks"
-            placeholder="Enter Remarks"
-          />
+          <input nz-input formControlName="remarks" placeholder="Enter Remarks" />
           <ng-template #invoiceErrorTip1 let-control>
-            <ng-container *ngIf="control.hasError('required')"
-              >Please enter Remarks</ng-container
-            >
-            <ng-container *ngIf="control.hasError('maxlength')"
-              >Maxlength exceeded<br
-            /></ng-container>
-            <ng-container *ngIf="control.hasError('minlength')"
-              >Please enter atleast 10 characters<br
-            /></ng-container>
-            <ng-container *ngIf="control.hasError('pattern')"
-              >Please enter valid input</ng-container
-            >
+            <ng-container *ngIf="control.hasError('required')">Please enter Remarks</ng-container>
+            <ng-container *ngIf="control.hasError('maxlength')">Maxlength exceeded<br /></ng-container>
+            <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 10 characters<br /></ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">Please enter valid input</ng-container>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
     </div>
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="5">Invoice Number</nz-form-label>
+        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="invoiceErrorTip3">
+          <input nz-input formControlName="invoice_number" placeholder="Enter Invoice Number" />
+          <ng-template #invoiceErrorTip3 let-control>
+            <ng-container *ngIf="control.hasError('required')">Please Invoice Number</ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">{{
+              globalConstants.amountError
+              }}</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="5" class="required">Status</nz-form-label>
+        <nz-select formControlName="status" nz-col nzSpan="10" nzPlaceHolder="Status" nzShowSearch>
+          <nz-option nzValue="open" nzLabel="Open"></nz-option>
+          <nz-option nzValue="cancel" nzLabel="Cancel"></nz-option>
+          <nz-option nzValue="paid" nzLabel="Paid"></nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
 
+    <div>
+      <nz-form-item>
+        <nz-form-label class="required" nz-col nzSpan="5">Attachments</nz-form-label>
+        <nz-form-control nz-col nzSpan="10">
+          <!-- <nz-upload nzAction="../components/files"
+            (nzChange)="handleChange($event)" nzMultiple="true">
+            <button nz-button>
+              <span nz-icon nzType="upload"></span>
+              Upload
+            </button>
+          </nz-upload> -->
+          <input type="file" (change)="getFile($event)" multiple>
+          <input type="button" (click)="sumitdata()" value="Upload" />
+        </nz-form-control>
+        <!-- <div class="file-upload">
+
+          {{fileName || "No file uploaded yet."}}
+       
+           <button mat-mini-fab color="primary" class="upload-btn"
+             (click)="fileUpload.click()">
+               upload
+           </button>
+       </div> -->
+      </nz-form-item>
+    </div>
+
+    <!-- dynaminc form fields -->
+    <nz-divider nzText="Inventory Details" nzOrientation="left"></nz-divider>
+    <div formArrayName="inventory_details" class="dynamicForm">
+      <div *ngFor="let x of inventory_details.controls; let i = index" formGroupName="{{i}}" class="mb-1" nz-row
+        nzJustify="space-between" nzAlign="bottom">
+        <button nz-col [nzSpan]="1" type="button" nz-button nzType="default" (click)="removeInventory(i)">X</button>
+        <nz-form-item nz-col [nzSpan]="5">
+          <nz-form-label *ngIf="i === 0">Item</nz-form-label>
+          <nz-form-control nzErrorTip="Enter Item name">
+            <input nz-input formControlName="item" placeholder="Enter Item" type="text" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item nz-col [nzSpan]="2">
+          <nz-form-label *ngIf="i === 0">Qty</nz-form-label>
+          <nz-form-control nzErrorTip="Enter Item name">
+            <input nz-input formControlName="quantity" placeholder="Quantity" (keyup)="change(i)" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item nz-col [nzSpan]="3">
+          <nz-form-label *ngIf="i === 0">Price</nz-form-label>
+          <nz-form-control nzErrorTip="Enter price">
+            <input nz-input formControlName="price" placeholder="Price" (keyup)="change(i)" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item nz-col [nzSpan]="2">
+          <nz-form-label *ngIf="i === 0">Tax</nz-form-label>
+          <nz-form-control nzErrorTip="Enter tax">
+            <input nz-input formControlName="taxPercent" placeholder="Tax" (keyup)="change(i)" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-col [nzSpan]="3">
+          <nz-form-label *ngIf="i === 0">Amt</nz-form-label>
+          <nz-form-control nzErrorTip="Enter tax">
+            <input nz-input formControlName="amt" placeholder="Amount" (keyup)="change(i)" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-col [nzSpan]="3">
+          <nz-form-label *ngIf="i === 0">Tax Amount</nz-form-label>
+          <nz-form-control nzErrorTip="Enter tax">
+            <input nz-input formControlName="taxAmt" placeholder="Tax amount" (keyup)="change(i)" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-col [nzSpan]="3">
+          <nz-form-label *ngIf="i === 0">Total</nz-form-label>
+          <nz-form-control nzErrorTip="Enter tax">
+            <input nz-input formControlName="total" placeholder="Total" (keyup)="change(i)" />
+          </nz-form-control>
+        </nz-form-item>
+
+      </div>
+      <button type="button" nz-button nzType="default" (click)="addInvertory()" class="mt-2">Add Item</button>
+    </div>
+    <nz-divider></nz-divider>
 
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Total Amount</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="invoiceErrorTip3">
-          <input
-            nz-input
-            formControlName="amount"
-            placeholder="Enter Amount"
-            (keyup)="change()"
-          />
-          <ng-template #invoiceErrorTip3 let-control>
-            <ng-container *ngIf="control.hasError('required')"
-              >Please enter amount</ng-container
-            >
-            <ng-container *ngIf="control.hasError('pattern')">{{
-              globalConstants.amountError
-            }}</ng-container>
-          </ng-template>
+        <nz-form-control nz-col nzSpan="10">
+          <input nz-input formControlName="amount" placeholder="Enter Amount" (keyup)="stable()" />
         </nz-form-control>
       </nz-form-item>
     </div>
 
-    <!-- <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Transaction Type</nz-form-label>
-        <nz-form-control
-          nz-col
-          nzSpan="10"
-          nzErrorTip="Please Select Transaction Type"
-        >
-          <nz-select
-            formControlName="trnsx_type"
-            nz-col
-            nzPlaceHolder="Transaction Type"
-            nzShowSearch
-          >
-            <nz-option nzValue="debit" nzLabel="Debit"></nz-option>
-            <nz-option nzValue="credit" nzLabel="Credit"></nz-option>
-            <nz-option nzValue="refund" nzLabel="Refund"></nz-option>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
-    </div> -->
-
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Total Tax Amount</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="invoiceErrorTip4">
-          <input
-            nz-input
-            formControlName="tax"
-            placeholder="Enter Tax"
-            (keyup)="change()"
-          />
-          <ng-template #invoiceErrorTip4 let-control>
-            <ng-container *ngIf="control.hasError('required')"
-              >Please enter Tax</ng-container
-            >
-            <ng-container *ngIf="control.hasError('pattern')"
-              >Invalid - Numbers Only</ng-container
-            >
-          </ng-template>
+        <nz-form-control nz-col nzSpan="10">
+          <input nz-input formControlName="tax" placeholder="Enter Tax" (keyup)="stable()" />
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -256,89 +250,7 @@
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Grand Total</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
-          <input
-            nz-input
-            formControlName="grand_total"
-            placeholder="Enter Total"
-            (keyup)="change()"
-          />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-
-    <!-- dynaminc form fields -->
-    <nz-divider nzText="Inventory Details" nzOrientation="left"></nz-divider>
-    <div>
-      <nz-form-item *ngFor="let control of listOfControl; let i = index">
-        <nz-form-label  [nzFor]="control.controlInstance1">
-          Inverntory Item
-        </nz-form-label>
-        <nz-form-control
-          nzErrorTip="Please input passenger's name or delete this field."
-        >
-          <input
-            class="passenger-input"
-            nz-input
-            placeholder="placeholder"
-            [attr.id]="control.id"
-            [formControlName]="control.controlInstance1"
-          />
-        </nz-form-control>
-        <nz-form-label [nzFor]="control.controlInstance2">
-          Quantity
-        </nz-form-label>
-        <nz-form-control
-          nzErrorTip="Please input passenger's name or delete this field."
-        >
-          <input
-            class="passenger-input"
-            nz-input
-            placeholder="placeholder"
-            [attr.id]="control.id"
-            [formControlName]="control.controlInstance2"
-          />
-        </nz-form-control>
-        <nz-form-label [nzFor]="control.controlInstance3">
-          Price
-        </nz-form-label>
-        <nz-form-control
-          nzErrorTip="Please input passenger's name or delete this field."
-        >
-          <input
-            class="passenger-input"
-            nz-input
-            placeholder="placeholder"
-            [attr.id]="control.id"
-            [formControlName]="control.controlInstance3"
-          />
-        </nz-form-control>
-        <nz-form-label [nzFor]="control.controlInstance4">
-          Tax
-        </nz-form-label>
-        <nz-form-control
-          nzErrorTip="Please input passenger's name or delete this field."
-        >
-          <input
-            class="passenger-input"
-            nz-input
-            placeholder="placeholder"
-            [attr.id]="control.id"
-            [formControlName]="control.controlInstance4"
-          />
-          <span
-            nz-icon
-            nzType="minus-circle-o"
-            class="dynamic-delete-button"
-            (click)="removeField(control, $event)"
-          ></span>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-control>
-          <button nz-button nzType="dashed" class="add-button" (click)="addField($event)">
-            <span nz-icon nzType="plus"></span>
-            Add field
-          </button>
+          <input nz-input formControlName="grand_total" placeholder="Enter Total" (keyup)="stable()" />
         </nz-form-control>
       </nz-form-item>
     </div>

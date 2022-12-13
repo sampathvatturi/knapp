@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { DepartmentService } from 'src/app/services/department.service';
 import { InvoicesService } from 'src/app/services/invoices.service';
@@ -7,6 +7,9 @@ import { VendorsService } from 'src/app/services/vendors.service';
 import { NotificationService } from './../../../../services/auth/notification.service';
 import { GlobalConstants } from 'src/app/shared/global_constants';
 import { TenderDetailsService } from 'src/app/services/tender-details.service';
+import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-invoices',
@@ -18,7 +21,7 @@ export class InvoicesComponent implements OnInit {
   submit = true;
   drawerTitle: string = '';
   invoiceForm!: FormGroup;
-  invoiceForm1!: UntypedFormGroup;
+
   invoice_info: any = [];
   vendor_array: any = [];
   tender_array: any = [];
@@ -27,9 +30,6 @@ export class InvoicesComponent implements OnInit {
   depts: any = [];
   user_data: any = [];
   searchText = '';
-  d_name: any = {};
-  quant: any;
-  amt: any;
   tot: any;
   tx: any;
   globalConstants = GlobalConstants;
@@ -40,29 +40,28 @@ export class InvoicesComponent implements OnInit {
     private api: ApiService,
     private notification: NotificationService,
     private invoice: InvoicesService,
-    private tenders:TenderDetailsService,
+    private tenders: TenderDetailsService,
     private departments: DepartmentService,
-    private vendors: VendorsService
+    private vendors: VendorsService,
+    private msg: NzMessageService,
+    private http:HttpClient
   ) { }
 
   ngOnInit(): void {
     this.invoiceFormValidators();
-    this.invoiceForm1 = this.fb.group({});
-
-    this.departments.getDepartments().subscribe((res) => {
-      this.depts = res;
-      for (let x of this.depts) {
-        this.d_name[x.department_id] = x.department_name;
-      }
-    });
+    // this.departments.getDepartments().subscribe((res) => {
+    //   this.depts = res;
+    //   for (let x of this.depts) {
+    //     this.d_name[x.department_id] = x.department_name;
+    //   }
+    // });
 
     this.invoice.getInvoices().subscribe((res) => (this.invoice_info = res));
-    this.tenders.getTenderDetails().subscribe(res=> {
+    this.tenders.getTenderDetails().subscribe(res => {
       this.tender_array = res;
-      for(let x of this.tender_array){
+      for (let x of this.tender_array) {
         this.t_name[x.id] = x.title;
       }
-      console.log(this.t_name);
     });
 
     this.vendors.getVendors().subscribe((res) => {
@@ -101,42 +100,30 @@ export class InvoicesComponent implements OnInit {
     this.drawerTitle = 'Add New Invoice';
     this.visible = true;
     this.invoiceFormValidators();
+    this.invoiceForm.get('status')?.setValue('open');
     this.invoiceForm.get('created_by')?.setValue(this.user_data.user_id);
     this.invoiceForm.get('updated_by')?.setValue(this.user_data.user_id);
     this.invoiceForm.get('grand_total')?.setValue(0);
+    this.invoiceForm.get('amount')?.setValue(0);
+    this.invoiceForm.get('tax')?.setValue(0);
   }
 
-  change() {
-    this.tot = Number(this.invoiceForm.value.amount) + Number(this.invoiceForm.value.tax);
 
-    // this.invoiceForm.get('invoice_details_id')?.setValue(this.invoiceForm.value.invoice_details_id);
-    // this.invoiceForm.get('vendor_id')?.setValue(this.invoiceForm.value.vendor_id);
-    // this.invoiceForm.get('remarks')?.setValue(this.invoiceForm.value.remarks);
-    // this.invoiceForm.get('quantity')?.setValue(this.invoiceForm.value.quantity);
-    // this.invoiceForm.get('amount')?.setValue(this.invoiceForm.value.amount);
-    // this.invoiceForm.get('tax')?.setValue(this.invoiceForm.value.tax);
-    this.invoiceForm.get('grand_total')?.setValue(this.tot);
-    // this.invoiceForm.get('updated_by')?.setValue(this.user_data.user_id);
-    // this.invoiceForm.get('created_by')?.setValue(this.user_data.user_id);
-  }
 
   close(): void {
     this.visible = false;
   }
   onSubmit() {
-    this.addField();
-    this.inventoryDetailsArray.shift();
-    this.invoiceForm.value.inventory_details = this.inventoryDetailsArray;
     console.log(this.invoiceForm.value);
     if (this.invoiceForm.valid) {
-      this.invoice.createInvoice(this.invoiceForm.value).subscribe(res =>{
+      this.invoice.createInvoice(this.invoiceForm.value).subscribe(res => {
         this.notification.createNotification(res.status, res.message);
-          if (res.status === 'success') {
-            this.visible = false;
-            this.invoice
-              .getInvoices()
-              .subscribe((res) => (this.invoice_info = res));
-          }
+        if (res.status === 'success') {
+          this.visible = false;
+          this.invoice
+            .getInvoices()
+            .subscribe((res) => (this.invoice_info = res));
+        }
       });
     } else {
       Object.values(this.invoiceForm.controls).forEach((control) => {
@@ -182,72 +169,114 @@ export class InvoicesComponent implements OnInit {
     this.invoiceForm = this.fb.group({
       invoice_id: [''],
       vendor_id: ['', [Validators.required]],
-      tendor_id: ['', [Validators.required]],
+      tender_id: ['', [Validators.required]],
+      invoice_number: ['', [Validators.required]],
+      status: ['', [Validators.required]],
       title: ['', [Validators.required]],
-      remarks: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200), Validators.pattern(GlobalConstants.nameRegex)]],
-      amount: ['', [Validators.required, Validators.pattern(GlobalConstants.amountRegex)]],
-      inventory_details: [null],
-      tax: ['', [Validators.required, Validators.pattern(GlobalConstants.numberRegex)]],
+      remarks: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(200), Validators.pattern(GlobalConstants.nameRegex)]],
+      amount: ['', [Validators.required]],
+      inventory_details: this.fb.array([
+        this.fb.group({
+          item: [''],
+          quantity: [null],
+          price: [null],
+          taxPercent: [null],
+          amt: [0],
+          taxAmt: [0],
+          total: [0],
+        })
+      ]),
+      tax: ['', [Validators.required]],
       grand_total: ['', [Validators.required]],
+      attachments: [''],
     });
   }
-
-  // dynamic form fields
-  listOfControl: Array<{ id: number; controlInstance1: string; controlInstance2: string; controlInstance3: string; controlInstance4: string; }> = [];
-
-  addField(e?: MouseEvent): void {
-    if (e) {
-      e.preventDefault();
+  handleChange(info: NzUploadChangeParam): void {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
     }
-    const id = this.listOfControl.length > 0 ? this.listOfControl[this.listOfControl.length - 1].id + 1 : 0;
-    const control = {
-      id,
-      controlInstance1: `item${id}`,
-      controlInstance2: `quantity${id}`,
-      controlInstance3: `price${id}`,
-      controlInstance4: `tax${id}`
-    };
-    let instance = {
-      item: "",
-      quantity: "",
-      price: "",
-      tax: ""
-    };
-
-    instance.item = this.invoiceForm.value[`item${id - 1}`];
-    instance.quantity = this.invoiceForm.value[`quantity${id - 1}`];
-    instance.price = this.invoiceForm.value[`price${id - 1}`];
-    instance.tax = this.invoiceForm.value[`tax${id - 1}`];
-    this.inventoryDetailsArray.push(instance);
-
-    const index = this.listOfControl.push(control);
-    // console.log(this.listOfControl[this.listOfControl.length - 1]);
-    this.invoiceForm.addControl(
-      this.listOfControl[index - 1].controlInstance1, new UntypedFormControl(null)
-    );
-    this.invoiceForm.addControl(
-      this.listOfControl[index - 1].controlInstance2, new UntypedFormControl(null)
-    );
-    this.invoiceForm.addControl(
-      this.listOfControl[index - 1].controlInstance3, new UntypedFormControl(null)
-    );
-    this.invoiceForm.addControl(
-      this.listOfControl[index - 1].controlInstance4, new UntypedFormControl(null)
-    );
+    if (info.file.status === 'done') {
+      this.msg.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === 'error') {
+      this.msg.error(`${info.file.name} file upload failed.`);
+    }
   }
-
-  removeField(i: { id: number; controlInstance1: string; controlInstance2: string; controlInstance3: string; controlInstance4: string; }, e: MouseEvent): void {
-    e.preventDefault();
-    if (this.listOfControl.length > 1) {
-      const index = this.listOfControl.indexOf(i);
-      this.listOfControl.splice(index, 1);
-      this.inventoryDetailsArray.splice(index+1, 1);
-      console.log(this.listOfControl);
-      console.log(this.inventoryDetailsArray);
-      this.invoiceForm.removeControl(i.controlInstance1);
-      this.invoiceForm.removeControl(i.controlInstance2);
-      this.invoiceForm.removeControl(i.controlInstance3);
-      this.invoiceForm.removeControl(i.controlInstance4);
+  //dynamic form fields
+  get inventory_details() {
+    return this.invoiceForm.get("inventory_details") as FormArray
+  }
+  addInvertory() {
+    console.log(this.inventory_details.value);
+    this.inventory_details.push(this.fb.group({
+      item: [''],
+      quantity: [null],
+      price: [null],
+      taxPercent: [null],
+      amt: [0],
+      taxAmt: [0],
+      total: [0],
+    }));
+  }
+  removeInventory(i: any) {
+    this.inventory_details.removeAt(i);
+    let totalTax = 0;
+    let totalAmt = 0;
+    for (let i of this.invoiceForm.value.inventory_details) {
+      totalTax += i.taxAmt;
+      totalAmt += i.amt
     }
+    this.invoiceForm.get('tax')?.setValue(totalTax);
+    this.invoiceForm.get('amount')?.setValue(totalAmt);
+    this.tot = Number(this.invoiceForm.value.amount) + Number(this.invoiceForm.value.tax);
+    this.invoiceForm.get('grand_total')?.setValue(this.tot);
+  }
+  change(i: any) {
+    this.inventory_details.value[i].amt = this.inventory_details.value[i].quantity * this.inventory_details.value[i].price;
+    this.inventory_details.patchValue(this.setindex(i, { amt: this.inventory_details.value[i].amt }));
+
+    this.inventory_details.value[i].taxAmt = this.inventory_details.value[i].amt * this.inventory_details.value[i].taxPercent / 100;
+    this.inventory_details.patchValue(this.setindex(i, { taxAmt: this.inventory_details.value[i].taxAmt }));
+
+    this.inventory_details.value[i].total = this.inventory_details.value[i].amt + this.inventory_details.value[i].taxAmt;
+    this.inventory_details.patchValue(this.setindex(i, { total: this.inventory_details.value[i].total }));
+    let totalTax = 0;
+    let totalAmt = 0;
+    for (let i of this.invoiceForm.value.inventory_details) {
+      totalTax += i.taxAmt;
+      totalAmt += i.amt
+    }
+    this.invoiceForm.get('tax')?.setValue(totalTax);
+    this.invoiceForm.get('amount')?.setValue(totalAmt);
+    this.tot = Number(this.invoiceForm.value.amount) + Number(this.invoiceForm.value.tax);
+    this.invoiceForm.get('grand_total')?.setValue(this.tot);
+  }
+  setindex(i: any, data: any) {
+    let arr = [];
+    arr[i] = data;
+    return arr
+  }
+  stable() {
+    let totalTax = 0;
+    let totalAmt = 0;
+    for (let i of this.invoiceForm.value.inventory_details) {
+      totalTax += i.taxAmt;
+      totalAmt += i.amt
+    }
+    this.invoiceForm.get('tax')?.setValue(totalTax);
+    this.invoiceForm.get('amount')?.setValue(totalAmt);
+    this.tot = Number(this.invoiceForm.value.amount) + Number(this.invoiceForm.value.tax);
+    this.invoiceForm.get('grand_total')?.setValue(this.tot);
+  }
+  //file upload
+  file:any;
+  
+  getFile(event:any){
+    this.file = event.target.files[0];
+  }
+  sumitdata(){
+    let formData = new FormData();
+    formData.set('file', this.file);
+
+    this.http.post('http://localhost:4200/files',formData).subscribe();
   }
 }

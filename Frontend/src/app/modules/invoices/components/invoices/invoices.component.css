@@ -1,0 +1,11 @@
+/* nz-form-control{
+    margin-right: 10px;
+} */
+
+.dynamicForm nz-form-item{
+    margin-bottom: 0px;
+}
+
+.dynamicForm nz-form-label {
+    margin-bottom: -10px;
+  }
