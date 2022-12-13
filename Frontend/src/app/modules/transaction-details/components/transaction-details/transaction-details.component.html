@@ -39,6 +39,7 @@
         <th>Category</th>
         <th>Amount</th>
         <th>Mode</th>
+        <th>Type</th>
         <th>Date</th>
         <th>Actions</th>
       </tr>
@@ -54,8 +55,11 @@
         <td>{{ data.trsxcn_from }}</td>
         <td>{{ data.trsxcn_to }}</td>
         <td>{{ data.category }}</td>
-        <td>{{ data.amount }}</td>
+        <td [ngClass]="data.type === 'credit' ? 'creditColor' : 'debitColor'">
+          {{ data.amount  | currencyIn  }}
+        </td>
         <td>{{ data.mode }}</td>
+        <td>{{ data.type }}</td>
         <td>{{ data.trsxcn_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
         <td>
           <div id="editbtn">
@@ -294,7 +298,7 @@
       <button nz-button *ngIf="submit" nzType="primary" (click)="onCreateSubmit()">
         Submit
       </button>
-      <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdateSubmit()">
+      <button nz-button *ngIf="!submit && updateBtnDisable && (this.transationForm.get('category')?.value != 'Funds')" nzType="primary" (click)="onUpdateSubmit()">
         Update
       </button>
     </div>

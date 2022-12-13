@@ -22,6 +22,7 @@ export class FundsComponent implements OnInit {
   fundId: any;
   dateFormat = 'dd/MM/yyyy';
   currentDate = new Date();
+  editAmount: any;
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
@@ -59,6 +60,7 @@ export class FundsComponent implements OnInit {
     this.drawerTitle = 'Edit Fund Details';
     this.visible = true;
     this.fundId = data?.fund_id;
+    this.editAmount = data?.fund_value;
     this.fundsFormValidators();
     this.fundsForm.get('fund_type')?.setValue(data.fund_type);
     this.fundsForm.get('fund_description')?.setValue(data.fund_description);
@@ -111,7 +113,8 @@ export class FundsComponent implements OnInit {
       fund_released_date: data.fund_released_date,
       transaction_mode: data.transaction_mode,
       fund_value: data.fund_value,
-      updated_by: this.user_data?.user_id
+      updated_by: this.user_data?.user_id,
+      diffAmount: data.fund_value - this.editAmount
     }
     return payload;
   }

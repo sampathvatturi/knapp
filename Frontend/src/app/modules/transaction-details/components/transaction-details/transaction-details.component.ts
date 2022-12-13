@@ -19,6 +19,8 @@ export class TransactionDetailsComponent implements OnInit {
   user_data: any;
   searchText = '';
   transId: any;
+  updateBtnDisable: boolean = false;
+  editAmount: any;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -27,6 +29,8 @@ export class TransactionDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.user_data = sessionStorage.getItem('user_data');
+    this.user_data = JSON.parse(this.user_data);
     this.transactionsFormValidators();
     this.getTransactions();
   }
@@ -85,14 +89,16 @@ export class TransactionDetailsComponent implements OnInit {
       remarks: data.remarks,
       mode: data.mode,
       amount: data.amount,
-      updated_by: this.user_data?.user_id
+      updated_by: this.user_data?.user_id,
+      diffAmount: data.amount - this.editAmount
     }
     return payload;
   }
 
 
   edit(data: any) {
-    this.transId = data?.trsxcn_id
+    this.transId = data?.trsxcn_id;
+    this.editAmount = data?.amount;
     this.submit = false;
     this.drawerTitle = 'Edit Transaction Details';
     this.visible = true;
