@@ -7,7 +7,7 @@ const{
     updateTender,
     deleteTender,
     getTender
-} = require('../controllers/');
+} = require('../controllers/tenders');
 
 router.get('/getTenders',getTenders);
 router.post('/createTender',createTender);
