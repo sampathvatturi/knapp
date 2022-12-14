@@ -38,6 +38,7 @@ export class InvoicesComponent implements OnInit {
     name : '',
     url:''
   }
+  baseUrl = 'http://ec2-34-211-130-130.us-west-2.compute.amazonaws.com:8080/';
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -101,7 +102,8 @@ export class InvoicesComponent implements OnInit {
     if(fileNamesArray.length > 0){
       fileNamesArray.forEach((element:any) => {
         this.filesDetails.name=element;
-        this.filesDetails.url='http://localhost:8080/upload/getUploadedFiles/'+element;
+        this.filesDetails.url=this.baseUrl+'upload/getUploadedFiles/'+element;
+        // this.filesDetails.url='http://localhost:8080/upload/getUploadedFiles/'+element;
         this.files.push(this.filesDetails);
       });
     }
@@ -297,7 +299,8 @@ export class InvoicesComponent implements OnInit {
     if (info.file.status === 'done') {
       this.msg.success(`${info.file.name} file uploaded successfully`);
       this.filesDetails.name = info.file.response.fileName;
-      this.filesDetails.url = 'http://localhost:8080/upload/getUploadedFiles/'+info.file.response.fileName;
+      this.filesDetails.url = this.baseUrl+'upload/getUploadedFiles/'+info.file.response.fileName;
+      // this.filesDetails.url = 'http://localhost:8080/upload/getUploadedFiles/'+info.file.response.fileName;
       this.files.push(this.filesDetails);
     } else if (info.file.status === 'error') {
       this.msg.error(`${info.file.name} file upload failed.`);
