@@ -11,7 +11,7 @@ export class TransactionDetailsService {
 
   constructor(private apiService:ApiService) { }
 
-  getTransactions(): Observable<any>{
+  getTransactions(): Observable<any> {
     return this.apiService.getCall('/transaction/getTransactions').pipe(
       map((response: any) => {
         return response;
@@ -37,6 +37,14 @@ export class TransactionDetailsService {
 
   getTransactionById(id: any): Observable<any>{
     return this.apiService.getCall('/transaction/getTransactionById'+id).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
+
+  getAcctDetails(): Observable<any>{
+    return this.apiService.getCall('/transaction/getAcctDetails').pipe(
       map((response: any) => {
         return response;
       })

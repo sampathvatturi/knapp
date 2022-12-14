@@ -40,19 +40,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          *ngFor="
-            let data of basicTable.data | globalTablesearch : searchText;
-            let i = index
-          "
-        >
+        <tr *ngFor="let acct of acctDetails | globalTablesearch : searchText;  let i = index">
           <td>{{ i + 1 }}</td>
-          <td>{{ data }}</td>
-          <td>{{ data }}</td>
-          <td>{{ data }}</td>
-          <td>{{ data }}</td>
-          <td>{{ data }}</td>
-          
+          <td>{{ acct?.banking  | currencyIn }}</td>
+          <td>{{ acct?.cheque  | currencyIn }}</td>
+          <td>{{ acct?.cash  | currencyIn }}</td>
+          <td>{{ acct?.card  | currencyIn }}</td>
+          <td>{{ acct?.upi  | currencyIn }}</td>
+          <td [ngClass]="acct?.total >= 0 ? 'creditColor' : 'debitColor'">
+            {{ acct?.total  | currencyIn }}
+          </td>          
         </tr>
       </tbody>
     </nz-table>

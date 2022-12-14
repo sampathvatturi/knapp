@@ -1,0 +1,8 @@
+.creditColor {
+    color: rgb(107, 221, 107);
+    font-weight: 500;
+}
+.debitColor {
+    color: red;
+    font-weight: 500;
+}

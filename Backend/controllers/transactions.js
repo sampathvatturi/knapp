@@ -1,7 +1,6 @@
 const db = require("../config/connection");
 const currdateTime = require('../middleware/currdate');
 
-//transactions
 exports.getTransactions = async (req, res) => {
   db.query("select * from transactions", (err, result) => {
     if (!err) {
@@ -139,4 +138,13 @@ exports.getTransaction = async (req, res) => {
       } else res.status(401).json({ status: "failed" });
     }
   );
+};
+
+exports.getAcctDetails = async (req, res) => {
+  db.query("select * from account_details", (err, result) => {
+    if (!err) {
+      if (result.length > 0) res.status(200).send(result);
+      else res.status(404).json({ message: "Data not found" });
+    } else res.status(401).json({ status: "failed" });
+  });
 };
