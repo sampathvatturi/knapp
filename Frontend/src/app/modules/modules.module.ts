@@ -21,6 +21,7 @@ import { SURVEY_REPORT_COMPONENTS } from './survey-report';
 import { WORK_ORDERS_COMPONENTS } from './work-orders';
 import { ACCOUNTING_DETAILS_COMPONENTS } from './accounting-details';
 import { TRANSACTION_DETAILS_COMPONENTS } from './transaction-details';
+import { UOM_COMPONENTS } from './masters';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { TRANSACTION_DETAILS_COMPONENTS } from './transaction-details';
     ...WORK_ORDERS_COMPONENTS,
     ...ACCOUNTING_DETAILS_COMPONENTS,
     ...TRANSACTION_DETAILS_COMPONENTS,
+    ...UOM_COMPONENTS
   ],
   imports: [
     ModulesRoutingModule,

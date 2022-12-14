@@ -1,0 +1,99 @@
+<nz-breadcrumb id="breadcrumb">
+    <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+      <a routerLink="/app/modules">Dashboard</a>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>Uom</nz-breadcrumb-item>
+  </nz-breadcrumb>
+
+  <nz-content id="component-content">
+    <div id="search-create">
+      <nz-input-group [nzSuffix]="suffixIconSearch">
+        <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText" />
+      </nz-input-group>
+      <ng-template #suffixIconSearch>
+        <span nz-icon nzType="search"></span>
+      </ng-template>
+      <button nz-button nzType="default" (click)="create()">
+        Add &nbsp; <i class="fa-solid fa-plus"></i>
+      </button>
+    </div>
+    <nz-table #basicTable [nzData]="uom_info" nzShowPagination nzShowSizeChanger [nzPageSizeOptions]="[5, 10, 15, 20]">
+      <thead>
+        <tr>
+          <th nzWidth="100px">S.No.</th>
+          <th>Uom Code</th>
+          <th>Uom Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="
+            let data of basicTable.data | globalTablesearch : searchText;
+            let i = index
+          ">
+          <td>{{ i + 1 }}</td>
+          <td>{{ data.uom_code}}</td>
+          <td>{{ data.uom_name}}</td>
+          <td>
+            <div id="editbtn">
+              <a nz-tooltip="Edit" (click)="edit(data)"><i class="fa-regular fa-pen-to-square"></i></a>
+              <b> / </b>
+              <a nz-tooltip="View" (click)="edit(data)"><i class="fa-regular fa-eye"></i></a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-content>
+  <nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzMaskClosable]="true" [nzWidth]="720" [nzVisible]="visible"
+  [nzTitle]="drawerTitle" [nzFooter]="footerTpl" (nzOnClose)="close()" [nzClosable]="false" [nzCloseIcon]="icon"
+  [nzExtra]="icon">
+  <ng-template #icon>
+    <i (click)="close()" class="fa-solid fa-circle-xmark"></i>
+  </ng-template>
+  <form nz-form *nzDrawerContent [formGroup]="uomForm" class="drawer-form">
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="5" class="required">Uom Code</nz-form-label>
+        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="worksErrorTip1">
+          <input nz-input formControlName="uom_code" type="text" nz-input placeholder="Please Enter Uom Code" />
+          <ng-template #worksErrorTip1 let-control>
+            <ng-container *ngIf="control.hasError('required')">Please enter uom name</ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">Please enter valid input<br /></ng-container>
+            <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 2 characters<br /></ng-container>
+            <ng-container *ngIf="control.hasError('maxlength')">Maximum length exceeded</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div>
+        <nz-form-item>
+          <nz-form-label nz-col nzSpan="5" class="required">Uom Name</nz-form-label>
+          <nz-form-control nz-col nzSpan="10" [nzErrorTip]="worksErrorTip2">
+            <input nz-input formControlName="uom_name" type="text" nz-input placeholder="Please Enter Uom Name" />
+            <ng-template #worksErrorTip2 let-control>
+                <ng-container *ngIf="control.hasError('required')">Please enter uom name</ng-container>
+                <ng-container *ngIf="control.hasError('pattern')">Please enter valid input<br /></ng-container>
+                <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 3 characters<br /></ng-container>
+                <ng-container *ngIf="control.hasError('maxlength')">Maximum length exceeded</ng-container>
+              </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+  </form>
+
+  <ng-template #footerTpl>
+    <div style="float: right">
+      <button nz-button style="margin-right: 8px" (click)="close()">
+        Cancel
+      </button>
+      <button nz-button *ngIf="submit" nzType="primary" (click)="onCreateSubmit()">
+        Submit
+      </button>
+      <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdateSubmit()">
+        Update
+      </button>
+    </div>
+  </ng-template>
+</nz-drawer>

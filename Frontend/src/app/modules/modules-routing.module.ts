@@ -17,6 +17,8 @@ import { SURVEY_REPORT_ROUTES } from './survey-report';
 import { WORK_ORDERS_ROUTES } from './work-orders';
 import { ACCOUNTING_DETAILS_ROUTES } from './accounting-details';
 import { TRANSACTION_DETAILS_ROUTES } from './transaction-details';
+import { UOM_ROUTES } from './masters';
+
 
 const routes: Routes = [
   {
@@ -41,6 +43,7 @@ const routes: Routes = [
   ...WORK_ORDERS_ROUTES,
   ...ACCOUNTING_DETAILS_ROUTES,
   ...TRANSACTION_DETAILS_ROUTES,
+  ...UOM_ROUTES,
   { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];
 
