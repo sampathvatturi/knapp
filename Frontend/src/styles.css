@@ -72,10 +72,17 @@
   text-align: center;
 }
 .i1{
-  height:500px;
-  width:500px;
+  height:300px;
+  width:300px;
 }
-.n1{
-  text-align: center;
-  margin-top:10px;
+#n1{
+  background: #fff;
+  padding: 24px;
+  padding-top: 12px;
+  height:500px;
+  margin-top:15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
