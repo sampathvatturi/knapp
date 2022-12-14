@@ -31,19 +31,9 @@
       "icon": "fa-solid fa-file-invoice-dollar"
     },
     {
-      "title": "Department",
-      "route": "modules/department",
-      "icon": "fa-solid fa-building"
-    },
-    {
       "title": "Vendors",
       "route": "modules/vendors",
       "icon": "fa-solid fa-user-tie"
-    },
-    {
-      "title": "Works",
-      "route": "modules/works",
-      "icon": "fa-solid fa-person-digging"
     },
     {
       "title": "Accouting",
@@ -75,6 +65,27 @@
       "title": "Approvals",
       "route": "modules/approvals",
       "icon": "fa-solid fa-thumbs-up"
+    },
+    {
+      "title": "Masters",
+      "icon": "fa-solid fa fa-cogs",
+      "children": [        
+        {
+          "title": "Department",
+          "route": "modules/department",
+          "icon": "fa-solid fa-building"
+        }, 
+        {
+          "title": "Works",
+          "route": "modules/works",
+          "icon": "fa-solid fa-person-digging"
+        },      
+        {
+          "title": "UOM",
+          "route": "modules/uom",
+          "icon": "fa-solid fa-flask"
+        }
+      ]
     }
   ]
 }
