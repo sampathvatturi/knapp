@@ -24,6 +24,7 @@ export class DepartmentListComponent implements OnInit {
   user_data: any;
   searchText = '';
   departmentId: any;
+  updateBtnDisable:boolean = true;
 
   sort = {
     compareStatus: (a: DataItem, b: DataItem) =>
@@ -60,7 +61,7 @@ export class DepartmentListComponent implements OnInit {
     this.departmentForm.get('status')?.setValue('active');
   }
 
-  edit(data: any) {
+  edit(type:any,data: any) {
     this.submit = false;
     this.drawerTitle = 'Edit Department Details';
     this.visible = true;
@@ -72,6 +73,10 @@ export class DepartmentListComponent implements OnInit {
     this.departmentForm.get('status')?.setValue(data.status);
     this.departmentForm.get('created_by')?.setValue(data.created_by);
     this.departmentForm.get('updated_by')?.setValue(this.user_data.user_id);
+    this.updateBtnDisable = true;
+    if (type === 'view'){
+      this.updateBtnDisable = false;
+    }
   }
 
   close(): void {

@@ -23,6 +23,7 @@ export class FundsComponent implements OnInit {
   dateFormat = 'dd/MM/yyyy';
   currentDate = new Date();
   editAmount: any;
+  updateBtnDisable:boolean = true;
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
@@ -55,7 +56,7 @@ export class FundsComponent implements OnInit {
     this.fundsForm.get('fund_type')?.setValue('state');
   }
 
-  edit(data: any) {
+  edit(type:any,data: any) {
     this.submit = false;
     this.drawerTitle = 'Edit Fund Details';
     this.visible = true;
@@ -69,6 +70,10 @@ export class FundsComponent implements OnInit {
     this.fundsForm.get('fund_released_date')?.setValue(data.fund_released_date);
     this.fundsForm.get('created_by')?.setValue(this.user_data.user_id);
     this.fundsForm.get('updated_by')?.setValue(this.user_data.user_id);
+    this.updateBtnDisable = true;
+    if (type === 'view'){
+      this.updateBtnDisable = false;
+    }
   }
 
   close(): void {

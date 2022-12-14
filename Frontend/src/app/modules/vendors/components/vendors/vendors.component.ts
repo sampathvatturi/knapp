@@ -23,6 +23,7 @@ export class VendorsComponent implements OnInit {
   searchText = '';
   mode:any = '';
   vendorId: any;
+  updateBtnDisable:boolean = true;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -45,7 +46,7 @@ export class VendorsComponent implements OnInit {
     });
   }
 
-  edit(data: any) {
+  edit(type:any,data: any) {
     this.submit = false;
     this.drawerTitle = 'Edit Vendor Details';
     this.visible = true;
@@ -64,6 +65,10 @@ export class VendorsComponent implements OnInit {
     this.vendorForm.get('password_md5')?.disable();
     this.vendorForm.get('email')?.disable();
     this.vendorForm.get('confirm')?.disable();
+    this.updateBtnDisable = true;
+    if (type === 'view'){
+      this.updateBtnDisable = false;
+    }
   }
   create(): void {
     this.submit = true;
