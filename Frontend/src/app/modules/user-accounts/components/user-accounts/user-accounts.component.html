@@ -57,7 +57,7 @@
 <!-- Create/Edit Drawer Start -->
 <nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzMaskClosable]="false" [nzWidth]="720" [nzVisible]="visible"
   [nzFooter]="footerTpl" [nzTitle]="drawerTitle" (nzOnClose)="close()" [nzClosable]="false" [nzCloseIcon]="icon"
-  [nzExtra]="icon">
+  [nzExtra]="icon" [nzMaskClosable]="true">
   <ng-template #icon>
     <i (click)="close()" class="fa-solid fa-circle-xmark"></i>
   </ng-template>
