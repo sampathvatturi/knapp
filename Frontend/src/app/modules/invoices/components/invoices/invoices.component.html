@@ -149,20 +149,23 @@
       <nz-form-item>
         <nz-form-label class="required" nz-col nzSpan="5">Attachments</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
-          <!-- <nz-upload nzAction="../components/files"
+          <nz-upload
+          nzAction="http://localhost:8080/upload/uploadFiles"
+          [nzRemove]="handleRemove"
+          [nzFileList]="files"
             (nzChange)="handleChange($event)" nzMultiple="true">
             <button nz-button>
               <span nz-icon nzType="upload"></span>
               Upload
             </button>
-          </nz-upload> -->
-          <input type="file" (change)="getFile($event)" multiple>
-          <input type="button" (click)="sumitdata()" value="Upload" />
+          </nz-upload>
+          <!-- <input type="file" (change)="getFile($event)" multiple>
+          <input type="button" (click)="sumitdata()" value="Upload" /> -->
         </nz-form-control>
         <!-- <div class="file-upload">
 
           {{fileName || "No file uploaded yet."}}
-       
+
            <button mat-mini-fab color="primary" class="upload-btn"
              (click)="fileUpload.click()">
                upload

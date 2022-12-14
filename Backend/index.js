@@ -14,6 +14,7 @@ const fundRoutes = require('./routes/fundRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
 const tenderRoutes = require('./routes/tenderRoutes');
 const uomRoutes = require('./routes/uomRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use('/fund', fundRoutes);
 app.use('/transaction', transactionRoutes);
 app.use('/tender', tenderRoutes);
 app.use('/uom', uomRoutes);
+app.use('/upload', uploadRoutes);
 
 module.exports = app;
 

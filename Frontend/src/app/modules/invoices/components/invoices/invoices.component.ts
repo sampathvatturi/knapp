@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
-import { DepartmentService } from 'src/app/services/department.service';
 import { InvoicesService } from 'src/app/services/invoices.service';
 import { VendorsService } from 'src/app/services/vendors.service';
 import { NotificationService } from './../../../../services/auth/notification.service';
 import { GlobalConstants } from 'src/app/shared/global_constants';
 import { TenderDetailsService } from 'src/app/services/tender-details.service';
-import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
+import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-invoices',
@@ -34,6 +33,11 @@ export class InvoicesComponent implements OnInit {
   tx: any;
   globalConstants = GlobalConstants;
   inventoryDetailsArray: any = [];
+  files:any[]=[];
+  filesDetails = {
+    name : '',
+    url:''
+  }
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -41,10 +45,8 @@ export class InvoicesComponent implements OnInit {
     private notification: NotificationService,
     private invoice: InvoicesService,
     private tenders: TenderDetailsService,
-    private departments: DepartmentService,
     private vendors: VendorsService,
-    private msg: NzMessageService,
-    private http:HttpClient
+    private msg: NzMessageService
   ) { }
 
   ngOnInit(): void {
@@ -79,26 +81,39 @@ export class InvoicesComponent implements OnInit {
     this.submit = false;
     this.drawerTitle = 'Edit Invoice details';
     this.visible = true;
+    this.filesDetails.name='';
+    this.filesDetails.url='';
+    this.files=[];
     this.invoiceFormValidators();
-    this.invoiceForm
-      .get('invoice_details_id')
-      ?.setValue(data.invoice_details_id);
-    this.invoiceForm.get('vendor_id')?.setValue(data.vendor_id.toString());
+    this.invoiceForm.get('vendor_id')?.setValue(data.vendor_id);
+    this.invoiceForm.get('tender_id')?.setValue(data.tender_id);
+    this.invoiceForm.get('title')?.setValue(data.title);
     this.invoiceForm.get('remarks')?.setValue(data.remarks);
+    this.invoiceForm.get('invoice_number')?.setValue(data.invoice_number);
     this.invoiceForm.get('quantity')?.setValue(data.quantity);
+    this.invoiceForm.get('status')?.setValue(data.status);
     this.invoiceForm.get('amount')?.setValue(data.amount);
     this.invoiceForm.get('tax')?.setValue(data.tax);
     this.invoiceForm.get('grand_total')?.setValue(data.total);
     this.invoiceForm.get('updated_by')?.setValue(this.user_data.user_id);
-    this.invoiceForm
-      .get('department_id')
-      ?.setValue(data.department_id.toString());
+    this.invoiceForm.get('inventory_details')?.patchValue(JSON.parse(data.inventory_details));
+    var fileNamesArray = data.attachments.split(',');
+    if(fileNamesArray.length > 0){
+      fileNamesArray.forEach((element:any) => {
+        this.filesDetails.name=element;
+        this.filesDetails.url='http://localhost:8080/upload/getUploadedFiles/'+element;
+        this.files.push(this.filesDetails);
+      });
+    }
   }
 
   create(): void {
     this.submit = true;
     this.drawerTitle = 'Add New Invoice';
     this.visible = true;
+    this.filesDetails.name='';
+    this.filesDetails.url='';
+    this.files=[];
     this.invoiceFormValidators();
     this.invoiceForm.get('status')?.setValue('open');
     this.invoiceForm.get('created_by')?.setValue(this.user_data.user_id);
@@ -114,8 +129,13 @@ export class InvoicesComponent implements OnInit {
     this.visible = false;
   }
   onSubmit() {
-    console.log(this.invoiceForm.value);
+
     if (this.invoiceForm.valid) {
+      var fileNames:any[] = [];
+      this.files.forEach(element => {
+        fileNames.push(element.name);
+      });
+      this.invoiceForm.value.attachments = fileNames.toString();
       this.invoice.createInvoice(this.invoiceForm.value).subscribe(res => {
         this.notification.createNotification(res.status, res.message);
         if (res.status === 'success') {
@@ -167,7 +187,6 @@ export class InvoicesComponent implements OnInit {
   }
   invoiceFormValidators() {
     this.invoiceForm = this.fb.group({
-      invoice_id: [''],
       vendor_id: ['', [Validators.required]],
       tender_id: ['', [Validators.required]],
       invoice_number: ['', [Validators.required]],
@@ -189,18 +208,11 @@ export class InvoicesComponent implements OnInit {
       tax: ['', [Validators.required]],
       grand_total: ['', [Validators.required]],
       attachments: [''],
+      created_by: [''],
+      updated_by: [''],
     });
   }
-  handleChange(info: NzUploadChangeParam): void {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === 'done') {
-      this.msg.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
-      this.msg.error(`${info.file.name} file upload failed.`);
-    }
-  }
+
   //dynamic form fields
   get inventory_details() {
     return this.invoiceForm.get("inventory_details") as FormArray
@@ -268,15 +280,43 @@ export class InvoicesComponent implements OnInit {
     this.invoiceForm.get('grand_total')?.setValue(this.tot);
   }
   //file upload
-  file:any;
-  
-  getFile(event:any){
-    this.file = event.target.files[0];
-  }
-  sumitdata(){
-    let formData = new FormData();
-    formData.set('file', this.file);
+  // file:any;
 
-    this.http.post('http://localhost:4200/files',formData).subscribe();
+  // getFile(event:any){
+  //   this.file = event.target.files[0];
+  // }
+  // sumitdata(){
+  //   let formData = new FormData();
+  //   formData.set('file', this.file);
+
+  //   this.http.post('http://localhost:4200/uploads',formData).subscribe();
+  // }
+
+
+  handleChange(info: NzUploadChangeParam): void {
+    if (info.file.status === 'done') {
+      this.msg.success(`${info.file.name} file uploaded successfully`);
+      this.filesDetails.name = info.file.response.fileName;
+      this.filesDetails.url = 'http://localhost:8080/upload/getUploadedFiles/'+info.file.response.fileName;
+      this.files.push(this.filesDetails);
+    } else if (info.file.status === 'error') {
+      this.msg.error(`${info.file.name} file upload failed.`);
+    } else if(info.file.status !== 'uploading'){
+      console.log(info.file, info.fileList);
+    }
   }
+
+  previewImage = '';
+  previewVisible = false;
+
+
+
+
+  handleRemove= (file: NzUploadFile) => new Observable<boolean>((obs) => {
+   // console.log(file);
+    // console.log('this.handleRemove instanceof Observable', this.handleRemove instanceof Observable)
+    console.log(obs)
+    obs.next(false)
+    // this.http.post('http://localhost:8080/upload/deleteFile')
+  });
 }
