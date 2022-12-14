@@ -1,9 +1,8 @@
 const db = require("../config/connection");
 const currdateTime = require('../middleware/currdate');
 
-//departments
 exports.getInventory = async (req, res) => {
-  db.query("select * from inventory", (err, result, fiels) => {
+  db.query("select i.*,u.uom_code,u.uom_name from inventory i, uom u where i.uom_id=u.uom_id", (err, result) => {
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
       else res.status(404).json({ message: "Inventory data not found" });
@@ -18,7 +17,7 @@ exports.createInventory = async (req, res) => {
     [
       {
         item_name: data.item_name,
-        quantity: data.quantity,
+        uom_id: data.uom_id,
         price: data.price,
         tax: data.tax,
         created_by: data.created_by,
@@ -27,13 +26,11 @@ exports.createInventory = async (req, res) => {
     ],
     (err, result, fields) => {
       if (!err) {
-        res
-          .status(200)
-          .json({
+        res.status(200).json({
             status: "success",
             message: data.item_name+" added successfully",
           });
-      } else res.status(401).json({ status: "failed" });
+      } else res.status(404).json({ status: "failed" });
     }
   );
 };
@@ -45,7 +42,7 @@ exports.updateInventory = async (req, res) => {
     [
       {
         item_name: data.item_name,
-        quantity: data.quantity,
+        uom_id: data.uom_id,
         price: data.price,
         tax: data.tax,
         updated_date: currdateTime,
@@ -53,15 +50,13 @@ exports.updateInventory = async (req, res) => {
       },
       req.params.id,
     ],
-    (err, result, fiels) => {
+    (err, result) => {
       if (!err)
-        res
-          .status(200)
-          .json({
+        res.status(200).json({
             status: "success",
             message: data.item_name+" updated successfully",
-          });
-      else res.status(401).json({ status: "failed" });
+        });
+      else res.status(404).json({ status: "failed" });
     }
   );
 };
@@ -84,14 +79,13 @@ exports.deleteInventory = async (req, res) => {
 };
 
 exports.getInventoryitem = async (req, res) => {
-  db.query(
-    "select * from inventory where item_id = ?",
-    [req.params.id],
-    (err, result, fiels) => {
+  db.query("select * from inventory where item_id = ?",
+    [req.params.id], (err, result) => {
       if (!err) {
-        if (result.length === 1) res.status(200).send(result);
-        else res.status(401).json({ message: "Invoice details not found" });
-      } else res.status(401).json({ status: "failed" });
+        if (result.length === 1) 
+          res.status(200).send(result);
+        else res.status(404).json({ message: "Invoice details not found" });
+      } else res.status(404).json({ status: "failed" });
     }
   );
 };

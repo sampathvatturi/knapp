@@ -79,6 +79,11 @@
           "title": "Works",
           "route": "modules/works",
           "icon": "fa-solid fa-person-digging"
+        },
+        {
+          "title": "Inventory",
+          "route": "modules/inventory-items",
+          "icon": "fa-solid fa-warehouse"
         },      
         {
           "title": "UOM",

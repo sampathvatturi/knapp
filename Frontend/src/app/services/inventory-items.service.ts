@@ -9,14 +9,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class InventoryItemsService {
-
-  apiURL = environment.apiUrl;
-
-
-  constructor(private apiService: ApiService, private http: HttpClient) { }
+  
+  constructor( 
+    private apiService: ApiService, 
+    private http: HttpClient
+  ) { }
 
   getInventoryItems(): Observable<any> {
-
     return this.apiService.getCall('/inventory/getInventory').pipe(
       map((response: any) => {
         return response;

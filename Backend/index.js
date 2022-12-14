@@ -13,6 +13,7 @@ const workRoutes = require('./routes/workRoutes');
 const fundRoutes = require('./routes/fundRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
 const tenderRoutes = require('./routes/tenderRoutes');
+const uomRoutes = require('./routes/uomRoutes');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use('/work', workRoutes);
 app.use('/fund', fundRoutes);
 app.use('/transaction', transactionRoutes);
 app.use('/tender', tenderRoutes);
+app.use('/uom', uomRoutes);
 
 module.exports = app;
 

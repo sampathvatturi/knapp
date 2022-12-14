@@ -3,6 +3,8 @@ import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { InventoryItemsService } from './../../../../services/inventory-items.service';
 import { GlobalConstants } from 'src/app/shared/global_constants';
+import { NotificationService } from 'src/app/services/auth/notification.service';
+import { UomService } from 'src/app/services/uom.service';
 
 @Component({
   selector: 'app-inventory-items',
@@ -17,20 +19,35 @@ export class InventoryItemsComponent implements OnInit {
   inventory_info: any = [];
   user_data: any = [];
   searchText = '';
-
+  updateId: any;
+  uomData: any [] = [];
+  
   constructor(
     private fb: UntypedFormBuilder,
-    private api: ApiService,
-    private inventoryService: InventoryItemsService
+    private inventoryService: InventoryItemsService,
+    private notificationService: NotificationService,
+    private uomService: UomService,
+
   ) {}
 
   ngOnInit(): void {
-    this.inventoryFormValidators();
-    this.inventoryService
-      .getInventoryItems()
-      .subscribe((res) => (this.inventory_info = res));
+    this.inventoryFormValidators();    
     this.user_data = sessionStorage.getItem('user_data');
     this.user_data = JSON.parse(this.user_data);
+    this.getInventoryItems();
+    this.getUoms();
+  }
+
+  getInventoryItems(): void {
+    this.inventoryService.getInventoryItems().subscribe((res) => {
+       this.inventory_info = res;
+    });
+  }
+
+  getUoms(): void {
+    this.uomService.getUoms().subscribe((res) => {
+      this.uomData = res;
+   });
   }
 
   create(): void {
@@ -38,62 +55,72 @@ export class InventoryItemsComponent implements OnInit {
     this.drawerTitle = 'Add Inventory Item';
     this.visible = true;
     this.inventoryFormValidators();
-    this.inventoryForm.get('crated_by')?.setValue(this.user_data.user_id);
-    this.inventoryForm.get('updated_by')?.setValue(this.user_data.user_id);
+  }
+
+  prepareCreatePayload(data: any) {
+    const payload = {
+      item_name: data.item_name,
+      uom_id: data.uom_id,
+      price: data.price,
+      tax: data.tax,
+      created_by: this.user_data?.user_id,
+      updated_by: this.user_data?.user_id
+    }
+    return payload;
   }
 
   onSubmit() {
-    if (this.inventoryForm.valid){
-      this.api
-      .postCall('/inventory/createInventory', this.inventoryForm.value)
-      .subscribe();
-    this.visible = false;
-    this.inventoryService
-      .getInventoryItems()
-      .subscribe((res) => (this.inventory_info = res));
+    if (this.inventoryForm.valid){      
+      this.inventoryService.createInventoryItem(this.prepareCreatePayload(this.inventoryForm.value)).subscribe((res) => {
+        this.visible = false;
+        this.getInventoryItems();
+        this.notificationService.createNotification('success', res?.message);
+      });
     }
-
-    else {
-      
+    else {      
       Object.values(this.inventoryForm.controls).forEach(control => {
         if (control.invalid) {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });
         }
       });
-    }
-    
+    }    
   }
 
   edit(data: any) {
     this.submit = false;
-    this.drawerTitle = 'Edit Invetory Items Details';
+    this.drawerTitle = 'Edit Invetory Details';
     this.visible = true;
+    this.updateId = data?.item_id;
     this.inventoryFormValidators();
     this.inventoryForm.get('item_id')?.setValue(data.item_id);
     this.inventoryForm.get('item_name')?.setValue(data.item_name);
-    this.inventoryForm.get('quantity')?.setValue(data.quantity);
+    this.inventoryForm.get('uom_id')?.setValue(data.uom_id);
     this.inventoryForm.get('price')?.setValue(data.price);
     this.inventoryForm.get('tax')?.setValue(data.tax);
-    this.inventoryForm.get('updated_by')?.setValue(data.updated_by);
+  }
+
+  prepareUpdatePayload(data: any) {
+    const payload = {
+      item_name: data.item_name,
+      uom_id: data.uom_id,
+      price: data.price,
+      tax: data.tax,
+      updated_by: this.user_data?.user_id
+    }
+    return payload;
   }
 
   onUpdate() {
     if (this.inventoryForm.valid){
-      this.api
-      .patchCall(
-        `/inventory/updateInventory/${this.inventoryForm.value.item_id}`,
-        this.inventoryForm.value
+      this.inventoryService.updateInventoryItem(this.updateId,this.prepareUpdatePayload(this.inventoryForm.value)).subscribe(
+        (res) => {
+          this.visible = false;
+          this.getInventoryItems();
+          this.notificationService.createNotification('success', res?.message);
+        }
       )
-      .subscribe();
-    this.inventoryService
-      .getInventoryItems()
-      .subscribe((res) => (this.inventory_info = res));
-    this.visible = false;
-    }
-
-    else {
-      
+    } else {      
       Object.values(this.inventoryForm.controls).forEach(control => {
         if (control.invalid) {
           control.markAsDirty();
@@ -111,13 +138,9 @@ export class InventoryItemsComponent implements OnInit {
     this.inventoryForm = this.fb.group({
       item_id: [''],
       item_name: ['', [Validators.required,Validators.pattern(GlobalConstants.nameRegex),Validators.minLength(3),Validators.maxLength(50)]],
-      quantity: ['', [Validators.required]],
+      uom_id: ['', [Validators.required]],
       price: ['', [Validators.required]],
-      tax: ['', [Validators.required]],
-      created_date: [''],
-      crated_by: [''],
-      updated_date: [''],
-      updated_by: [''],
+      tax: ['', [Validators.required]]
     });
   }
 }

@@ -1,7 +1,6 @@
 const db = require("../config/connection");
 const currdateTime = require('../middleware/currdate');
 
-//departments
 exports.getDepartments = async (req, res) => {
   db.query("select * from departments", (err, result, fiels) => {
     if (!err) {

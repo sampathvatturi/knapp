@@ -34,10 +34,9 @@
       <tr>
         <th nzWidth="100px">S.No.</th>
         <th>Item Name</th>
-        <th>Quantity</th>
+        <th>UOM</th>
         <th>Price</th>
         <th>Tax</th>
-        <th>Created Date</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -50,11 +49,9 @@
       >
         <td>{{ i + 1 }}</td>
         <td>{{ data.item_name }}</td>
-        <td>{{ data.quantity }}</td>
+        <td>{{ data.uom_name }}</td>
         <td>{{ data.price }}</td>
         <td>{{ data.tax }}</td>
-        <td>{{ data.created_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
-
         <td>
           <div id="editbtn">
             <a nz-tooltip="Edit" (click)="edit(data)"
@@ -120,7 +117,7 @@
       </nz-form-item>
     </div>
 
-    <div>
+    <!-- <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5" class="required">Quantity</nz-form-label>
         <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Enter Quantity">
@@ -131,6 +128,18 @@
             nz-input
             placeholder="please enter Quantity"
           />
+        </nz-form-control>
+      </nz-form-item>
+    </div> -->
+
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="5" class="required">UOM</nz-form-label>
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Select UOM">
+          <nz-select formControlName="uom_id" nzPlaceHolder="UOM" nzShowSearch>
+            <nz-option *ngFor="let u of uomData" nzValue="{{ u.uom_id}}"
+              nzLabel="{{ u.uom_name }}"></nz-option>
+          </nz-select>
         </nz-form-control>
       </nz-form-item>
     </div>
