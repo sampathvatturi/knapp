@@ -37,9 +37,9 @@
           <td>{{ data.uom_name}}</td>
           <td>
             <div id="editbtn">
-              <a nz-tooltip="Edit" (click)="edit(data)"><i class="fa-regular fa-pen-to-square"></i></a>
+              <a nz-tooltip="Edit" (click)="edit('edit',data)"><i class="fa-regular fa-pen-to-square"></i></a>
               <b> / </b>
-              <a nz-tooltip="View" (click)="edit(data)"><i class="fa-regular fa-eye"></i></a>
+              <a nz-tooltip="View" (click)="edit('view',data)"><i class="fa-regular fa-eye"></i></a>
             </div>
           </td>
         </tr>
@@ -59,7 +59,7 @@
         <nz-form-control nz-col nzSpan="10" [nzErrorTip]="worksErrorTip1">
           <input nz-input formControlName="uom_code" type="text" nz-input placeholder="Please Enter Uom Code" />
           <ng-template #worksErrorTip1 let-control>
-            <ng-container *ngIf="control.hasError('required')">Please enter uom name</ng-container>
+            <ng-container *ngIf="control.hasError('required')">Please enter uom code</ng-container>
             <ng-container *ngIf="control.hasError('pattern')">Please enter valid input<br /></ng-container>
             <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 2 characters<br /></ng-container>
             <ng-container *ngIf="control.hasError('maxlength')">Maximum length exceeded</ng-container>
@@ -91,7 +91,7 @@
       <button nz-button *ngIf="submit" nzType="primary" (click)="onCreateSubmit()">
         Submit
       </button>
-      <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdateSubmit()">
+      <button nz-button *ngIf="!submit && updateBtnDisable" nzType="primary" (click)="onUpdateSubmit()">
         Update
       </button>
     </div>

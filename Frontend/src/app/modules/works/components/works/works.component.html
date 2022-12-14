@@ -35,9 +35,9 @@
         <td>{{ data.work_name }}</td>
         <td>
           <div id="editbtn">
-            <a nz-tooltip="Edit" (click)="edit(data)"><i class="fa-regular fa-pen-to-square"></i></a>
+            <a nz-tooltip="Edit" (click)="edit('edit',data)"><i class="fa-regular fa-pen-to-square"></i></a>
             <b> / </b>
-            <a nz-tooltip="View" (click)="edit(data)"><i class="fa-regular fa-eye"></i></a>
+            <a nz-tooltip="View" (click)="edit('view',data)"><i class="fa-regular fa-eye"></i></a>
           </div>
         </td>
       </tr>
@@ -75,7 +75,7 @@
       <button nz-button *ngIf="submit" nzType="primary" (click)="onCreateSubmit()">
         Submit
       </button>
-      <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdateSubmit()">
+      <button nz-button *ngIf="!submit && updateBtnDisable" nzType="primary" (click)="onUpdateSubmit()">
         Update
       </button>
     </div>

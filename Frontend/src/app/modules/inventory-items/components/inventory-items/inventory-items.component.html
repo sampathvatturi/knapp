@@ -54,11 +54,11 @@
         <td>{{ data.tax | currencyIn}}</td>
         <td>
           <div id="editbtn">
-            <a nz-tooltip="Edit" (click)="edit(data)"
+            <a nz-tooltip="Edit" (click)="edit('edit',data)"
               ><i class="fa-regular fa-pen-to-square"></i
             ></a>
             <b> / </b>
-            <a nz-tooltip="View" (click)="edit(data)"
+            <a nz-tooltip="View" (click)="edit('view',data)"
               ><i class="fa-regular fa-eye"></i
             ></a>
           </div>
@@ -184,7 +184,7 @@
       <button nz-button *ngIf="submit" nzType="primary" (click)="onSubmit()">
         Submit
       </button>
-      <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdate()">
+      <button nz-button *ngIf="!submit && updateBtnDisable" nzType="primary" (click)="onUpdate()">
         Update
       </button>
     </div>

@@ -21,6 +21,8 @@ export class InventoryItemsComponent implements OnInit {
   searchText = '';
   updateId: any;
   uomData: any [] = [];
+  updateBtnDisable:boolean = true;
+
   
   constructor(
     private fb: UntypedFormBuilder,
@@ -87,7 +89,7 @@ export class InventoryItemsComponent implements OnInit {
     }    
   }
 
-  edit(data: any) {
+  edit(type:any,data: any) {
     this.submit = false;
     this.drawerTitle = 'Edit Invetory Details';
     this.visible = true;
@@ -98,6 +100,10 @@ export class InventoryItemsComponent implements OnInit {
     this.inventoryForm.get('uom_id')?.setValue(data.uom_id);
     this.inventoryForm.get('price')?.setValue(data.price);
     this.inventoryForm.get('tax')?.setValue(data.tax);
+    this.updateBtnDisable = true;
+    if (type === 'view'){
+      this.updateBtnDisable = false;
+    }
   }
 
   prepareUpdatePayload(data: any) {

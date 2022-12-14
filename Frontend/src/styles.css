@@ -71,3 +71,11 @@
 #component-content td {
   text-align: center;
 }
+.i1{
+  height:500px;
+  width:500px;
+}
+.n1{
+  text-align: center;
+  margin-top:10px;
+}

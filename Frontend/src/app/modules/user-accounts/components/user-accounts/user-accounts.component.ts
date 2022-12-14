@@ -30,6 +30,7 @@ export class UserAccountsComponent implements OnInit {
   updateUserData: any;
   updateUserId: any;
   userRole: any;
+  updateBtnDisable:boolean = true;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -125,7 +126,7 @@ export class UserAccountsComponent implements OnInit {
     return userPayload;
   }
 
-  edit(data: any) { 
+  edit(type:any,data: any) { 
     this.updateUserId = data?.user_id;
     this.userRole = data?.role;    
     this.userFormFieldsConfig();  
@@ -149,6 +150,10 @@ export class UserAccountsComponent implements OnInit {
     if(this.userRole === 'vendor') {      
       this.createUserForm.get('last_name')?.disable();
       this.createUserForm.get('department_id')?.disable();
+    }
+    this.updateBtnDisable = true;
+    if (type === 'view'){
+      this.updateBtnDisable = false;
     }
   }
 

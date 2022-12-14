@@ -20,6 +20,7 @@ export class UomComponent implements OnInit {
   user_data: any = [];
   searchText = '';
   uomId: any;
+  updateBtnDisable:boolean = true;
   
 
   constructor(private fb: UntypedFormBuilder, private notification: NotificationService,private uomService:UomService) { }
@@ -42,7 +43,7 @@ export class UomComponent implements OnInit {
     this.uomFormValidators();
   }
 
-  edit(data: any) {
+  edit(type: any, data: any) {
     this.submit = false;
     this.drawerTitle = 'Edit Uom Details';
     this.visible = true;
@@ -50,6 +51,11 @@ export class UomComponent implements OnInit {
     this.uomFormValidators();
     this.uomForm.get('uom_code')?.setValue(data?.uom_code);
     this.uomForm.get('uom_name')?.setValue(data?.uom_name);
+    this.updateBtnDisable = true;
+    if(type === "view") {
+      this.updateBtnDisable = false;
+    }
+    
   }
 
   close(): void {

@@ -19,6 +19,7 @@ export class WorksComponent implements OnInit {
   searchText = '';
   errTip = '';
   workId:any;
+  updateBtnDisable:boolean = true;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -46,13 +47,17 @@ export class WorksComponent implements OnInit {
       this.worksFormValidators();
     }
 
-    edit(data: any) {
+    edit(type:any,data: any) {
       this.submit = false;
       this.drawerTitle = 'Edit Work Details';
       this.visible = true;
       this.workId = data?.work_id;
       this.worksFormValidators();
       this.workForm.get('work_name')?.setValue(data.work_name);
+      this.updateBtnDisable = true;
+      if (type === 'view'){
+        this.updateBtnDisable = false;
+      }
     }
 
     close(): void {
