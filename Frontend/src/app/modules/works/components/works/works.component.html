@@ -23,7 +23,6 @@
       <tr>
         <th nzWidth="100px">S.No.</th>
         <th>Works Name</th>
-        <th>Created Date</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -34,7 +33,6 @@
         ">
         <td>{{ i + 1 }}</td>
         <td>{{ data.work_name }}</td>
-        <td>{{ data.created_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
         <td>
           <div id="editbtn">
             <a nz-tooltip="Edit" (click)="edit(data)"><i class="fa-regular fa-pen-to-square"></i></a>

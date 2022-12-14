@@ -50,8 +50,8 @@
         <td>{{ i + 1 }}</td>
         <td>{{ data.item_name }}</td>
         <td>{{ data.uom_name }}</td>
-        <td>{{ data.price }}</td>
-        <td>{{ data.tax }}</td>
+        <td>{{ data.price | currencyIn}}</td>
+        <td>{{ data.tax | currencyIn}}</td>
         <td>
           <div id="editbtn">
             <a nz-tooltip="Edit" (click)="edit(data)"

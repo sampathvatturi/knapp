@@ -40,7 +40,7 @@
         <td>{{ data.email }}</td>
         <td>{{ data.phone_number }}</td>
         <td>{{ data.department_name }}</td>
-        <td>{{ data.role }}</td>
+        <td>{{ data.role | titlecase}}</td>
         <td>
           <div id="editbtn">
             <a nz-tooltip="Edit" (click)="edit(data)"><i class="fa-regular fa-pen-to-square"></i></a>

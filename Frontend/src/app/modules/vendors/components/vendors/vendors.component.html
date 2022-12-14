@@ -50,7 +50,7 @@
         <td>{{ data?.email }}</td>
         <td>{{ data?.city}}</td>
         <td>{{ data?.gst_num }}</td>
-        <td>{{ data?.status }}</td>
+        <td>{{ data?.status |titlecase }}</td>
         <td>
           <div id="editbtn">
             <a nz-tooltip="Edit" (click)="edit(data)"

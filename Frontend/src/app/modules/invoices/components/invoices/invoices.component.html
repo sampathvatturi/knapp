@@ -32,7 +32,7 @@
         <th>Total Tax</th>
         <th>Grand Total</th>
         <!-- <th>Department</th> -->
-        <th>Created Date</th>
+        <th>Date</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -46,12 +46,12 @@
         <td>{{ data.remarks }}</td>
         <td>{{ v_name[data.vendor_id] }}</td>
         <td>{{ t_name[data.tender_id] }}</td>
-        <td>{{ data.amount }}</td>
+        <td>{{ data.amount | currencyIn}}</td>
         <!-- <td>{{ data.trnsx_type }}</td> -->
-        <td>{{ data.tax }}</td>
+        <td>{{ data.tax | currencyIn}}</td>
         <td>{{ data.total | currencyIn }}</td>
         <!-- <td>{{ d_name[data.department_id] }}</td> -->
-        <td>{{ data.created_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
+        <td>{{ data.created_date | date : "dd-MM-YYYY" }}</td>
         <td>
           <div id="editbtn">
             <a nz-tooltip="Edit" (click)="edit(data)"><i class="fa-regular fa-pen-to-square"></i></a>

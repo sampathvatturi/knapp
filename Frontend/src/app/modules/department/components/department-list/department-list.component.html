@@ -26,7 +26,6 @@
         <th>Department Name</th>
         <th [nzSortFn]="sort.compareRank" nzWidth="100px">Ranking</th>
         <th [nzSortFn]="sort.compareStatus" nzWidth="100px">Status</th>
-        <th [nzSortFn]="sort.compareDate">Created Date</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -38,8 +37,7 @@
         <td>{{ i + 1 }}</td>
         <td>{{ data.department_name }}</td>
         <td>{{ data.ranking }}</td>
-        <td>{{ data.status }}</td>
-        <td>{{ data.created_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
+        <td>{{ data.status | titlecase}}</td>
         <td>
           <div id="editbtn">
             <a nz-tooltip="Edit" (click)="edit(data)"><i class="fa-regular fa-pen-to-square"></i></a>
