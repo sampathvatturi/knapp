@@ -150,7 +150,7 @@
         <nz-form-label class="required" nz-col nzSpan="5">Attachments</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
           <nz-upload
-          nzAction="http://localhost:8080/upload/uploadFiles"
+          [nzAction] = uploadUrl
           [nzRemove]="handleRemove"
           [nzFileList]="files"
             (nzChange)="handleChange($event)" nzMultiple="true">

@@ -9,6 +9,7 @@ import { TenderDetailsService } from 'src/app/services/tender-details.service';
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-invoices',
@@ -38,7 +39,9 @@ export class InvoicesComponent implements OnInit {
     name : '',
     url:''
   }
-  baseUrl = 'http://ec2-34-211-130-130.us-west-2.compute.amazonaws.com:8080/';
+  baseUrl = environment.apiUrl;
+  uploadUrl = this.baseUrl+'/upload/uploadFiles';
+  getUploadedFIlesUrl = this.baseUrl+'/upload/getUploadedFiles/';
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -102,8 +105,7 @@ export class InvoicesComponent implements OnInit {
     if(fileNamesArray.length > 0){
       fileNamesArray.forEach((element:any) => {
         this.filesDetails.name=element;
-        this.filesDetails.url=this.baseUrl+'upload/getUploadedFiles/'+element;
-        // this.filesDetails.url='http://localhost:8080/upload/getUploadedFiles/'+element;
+        this.filesDetails.url=this.getUploadedFIlesUrl+element;
         this.files.push(this.filesDetails);
       });
     }
@@ -137,7 +139,11 @@ export class InvoicesComponent implements OnInit {
       this.files.forEach(element => {
         fileNames.push(element.name);
       });
+      console.log(
+        this.files
+      )
       this.invoiceForm.value.attachments = fileNames.toString();
+      console.log(this.invoiceForm.value.attachments)
       this.invoice.createInvoice(this.invoiceForm.value).subscribe(res => {
         this.notification.createNotification(res.status, res.message);
         if (res.status === 'success') {
@@ -299,8 +305,7 @@ export class InvoicesComponent implements OnInit {
     if (info.file.status === 'done') {
       this.msg.success(`${info.file.name} file uploaded successfully`);
       this.filesDetails.name = info.file.response.fileName;
-      this.filesDetails.url = this.baseUrl+'upload/getUploadedFiles/'+info.file.response.fileName;
-      // this.filesDetails.url = 'http://localhost:8080/upload/getUploadedFiles/'+info.file.response.fileName;
+      this.filesDetails.url = this.getUploadedFIlesUrl+'/'+info.file.response.fileName;
       this.files.push(this.filesDetails);
     } else if (info.file.status === 'error') {
       this.msg.error(`${info.file.name} file upload failed.`);
