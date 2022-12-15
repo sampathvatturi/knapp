@@ -5,7 +5,7 @@
     </nz-breadcrumb-item>
     <nz-breadcrumb-item>Create Tender</nz-breadcrumb-item>
   </nz-breadcrumb>
-  
+
   <nz-content id="component-content">
     <div id="search-create">
       <nz-input-group [nzSuffix]="suffixIconSearch">
@@ -18,7 +18,7 @@
         Add &nbsp; <i class="fa-solid fa-plus"></i>
       </button>
     </div>
-  
+
     <nz-table #basicTable [nzData]="tenders" nzShowPagination nzShowSizeChanger [nzPageSizeOptions]="[5, 10, 15, 20]"
       nzSize="middle">
       <thead>
@@ -42,6 +42,7 @@
           ">
           <td>{{ i + 1 }}</td>
           <td>{{data.title}}</td>
+          <td>{{data.description}}</td>
           <td>{{ getWorknames(data.work_id) }}</td>
           <td>{{ data.location }}</td>
           <td>{{ data.tender_cost | currencyIn}}</td>
@@ -66,7 +67,7 @@
       <i (click)="close()" class="fa-solid fa-circle-xmark"></i>
     </ng-template>
     <form nz-form *nzDrawerContent [formGroup]="createTenderForm" class="drawer-form">
-  
+
       <div>
         <nz-form-item>
           <nz-form-label class="required" nz-col nzSpan="5">Title</nz-form-label>
@@ -76,16 +77,16 @@
               <ng-container *ngIf="control.hasError('pattern')">Please enter valid input</ng-container>
               <ng-container *ngIf="control.hasError('required')">Please enter title</ng-container>
             </ng-template>
-  
+
           </nz-form-control>
         </nz-form-item>
       </div>
-  
+
       <div>
         <nz-form-item>
           <nz-form-label class="required" nz-col nzSpan="5">Description</nz-form-label>
           <nz-form-control nz-col nzSpan="15" [nzErrorTip]="description">
-            <textarea formControlName="ticket_description" nz-input rows="2"
+            <textarea formControlName="description" nz-input rows="2"
               placeholder="Enter Ticket Description"></textarea>
             <ng-template #description let-control>
               <ng-container *ngIf="control.hasError('required')">Please enter ticket description</ng-container>
@@ -94,9 +95,9 @@
           </nz-form-control>
         </nz-form-item>
       </div>
-  
-  
-  
+
+
+
       <div>
         <nz-form-item>
           <nz-form-label class="required" nz-col nzSpan="5">Works</nz-form-label>
@@ -107,8 +108,8 @@
           </nz-form-control>
         </nz-form-item>
       </div>
-  
-  
+
+
       <div>
         <nz-form-item>
           <nz-form-label class="required" nz-col nzSpan="5">Location</nz-form-label>
@@ -118,11 +119,11 @@
               <ng-container *ngIf="control.hasError('required')">Please enter location</ng-container>
               <ng-container *ngIf="control.hasError('pattern')">Please enter valid location</ng-container>
             </ng-template>
-  
+
           </nz-form-control>
         </nz-form-item>
       </div>
-  
+
       <div nz-row>
         <div nz-col nzSpan="12">
           <nz-form-item>
@@ -136,8 +137,10 @@
             <nz-form-item>
               <nz-form-label class="required" nz-col nzSpan="7">Status</nz-form-label>
               <nz-select formControlName="status" nz-col nzSpan="9" nzPlaceHolder="Status" nzShowSearch>
-                <nz-option nzValue="active" nzLabel="Active"></nz-option>
-                <nz-option nzValue="inactive" nzLabel="Inactive"></nz-option>
+                <nz-option nzValue="open" nzLabel="Open"></nz-option>
+                <nz-option nzValue="close" nzLabel="Close"></nz-option>
+                <nz-option nzValue="accept" nzLabel="Accept"></nz-option>
+                <nz-option nzValue="reject" nzLabel="Reject"></nz-option>
               </nz-select>
             </nz-form-item>
           </div>
@@ -155,29 +158,33 @@
 
           <div nz-col nzSpan="12">
             <nz-form-item>
-              <nz-form-label class="required" nz-col nzSpan="7">Start Date</nz-form-label>
-              <nz-form-control nz-col nzSpan="9" nzErrorTip="Enter Start Date">
-                <nz-date-picker formControlName="start_date"></nz-date-picker>
+              <nz-form-label class="required" nz-col nzSpan="7">End Date</nz-form-label>
+              <nz-form-control nz-col nzSpan="9" nzErrorTip="Enter End Date">
+                <nz-date-picker formControlName="end_date"></nz-date-picker>
               </nz-form-control>
             </nz-form-item>
           </div>
       </div>
-  
-  
+
+
       <div nz-row>
         <div nz-col nzSpan="24">
-          <nz-form-label class="required" nz-col nzSpan="12">Upload File</nz-form-label>
-          <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            [nzHeaders]="{ authorization: 'authorization-text' }" (nzChange)="handleChange($event)">
-            <button nz-button class="b1">
-              <span nz-icon nzType="upload"></span>
-              Upload
-            </button>
-          </nz-upload>
+          <nz-form-label class="required" nz-col nzSpan="12">Attachments</nz-form-label>
+          <nz-upload
+            [nzAction] = uploadUrl
+            [nzRemove]="handleRemove"
+            [nzFileList]="files"
+              (nzChange)="handleChange($event)" nzMultiple="true">
+              <button nz-button>
+                <span nz-icon nzType="upload"></span>
+                Upload
+              </button>
+            </nz-upload>
         </div>
       </div>
+
     </form>
-  
+
     <ng-template #footerTpl>
       <div style="float: right">
         <button nz-button style="margin-right: 8px" (click)="close()">
@@ -192,4 +199,3 @@
       </div>
     </ng-template>
   </nz-drawer>
-  
