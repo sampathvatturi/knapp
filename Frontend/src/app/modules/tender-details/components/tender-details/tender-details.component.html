@@ -29,9 +29,9 @@
         <th>Works</th>
         <th>Location</th>
         <th>Tender Cost</th>
-        <th>Status</th>
-        <th>Start Date</th>
-        <th>End Date</th>
+        <th>Approval Status</th>
+        <!-- <th>Start Date</th>
+        <th>End Date</th> -->
         <th>Action</th>
       </tr>
     </thead>
@@ -47,8 +47,8 @@
         <td>{{ data.location }}</td>
         <td>{{ data.tender_cost | currencyIn}}</td>
         <td>{{ data.status | titlecase}}</td>
-        <td>{{ data.start_date | date : "dd-MM-YYYY" }}</td>
-        <td>{{ data.end_date | date : "dd-MM-YYYY" }}</td>
+        <!-- <td>{{ data.start_date | date : "dd-MM-YYYY" }}</td>
+        <td>{{ data.end_date | date : "dd-MM-YYYY" }}</td> -->
         <td>
           <div class="editbtn">
             <a nz-tooltip="Edit" (click)="edit(data)"><i class="fa-regular fa-pen-to-square"></i></a>
@@ -84,12 +84,12 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label class="required" nz-col nzSpan="5">Ticket Description</nz-form-label>
+        <nz-form-label class="required" nz-col nzSpan="5">Description</nz-form-label>
         <nz-form-control nz-col nzSpan="15" [nzErrorTip]="description">
-          <textarea formControlName="ticket_description" nz-input rows="2"
-            placeholder="Enter Ticket Description"></textarea>
+          <textarea formControlName="description" nz-input rows="2"
+            placeholder="Enter Description"></textarea>
           <ng-template #description let-control>
-            <ng-container *ngIf="control.hasError('required')">Please enter ticket description</ng-container>
+            <ng-container *ngIf="control.hasError('required')">Please enter description</ng-container>
             <ng-container *ngIf="control.hasError('pattern')">Please enter valid input</ng-container>
           </ng-template>
         </nz-form-control>
@@ -146,8 +146,6 @@
           </nz-form-control>
         </nz-form-item>
       </div>
-
-
       <div nz-col nzSpan="12">
         <nz-form-item>
           <nz-form-label class="required" nz-col nzSpan="7">Tender Cost</nz-form-label>
@@ -156,10 +154,7 @@
           </nz-form-control>
         </nz-form-item>
       </div>
-
     </div>
-
-
     <div nz-row>
       <div nz-col nzSpan="12">
         <nz-form-item>

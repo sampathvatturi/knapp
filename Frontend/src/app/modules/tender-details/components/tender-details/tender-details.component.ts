@@ -228,8 +228,8 @@ export class TenderDetailsComponent implements OnInit {
   }
   tendorsFormValidators() {
     this.tenderDetailsForm = this.fb.group({
-      ticket_description: [null, [Validators.required, Validators.pattern(GlobalConstants.addressRegex)]],
-      title: [null, [Validators.required, Validators.pattern(GlobalConstants.firstLastNameRegex)]],
+      description: [null, [Validators.required, Validators.pattern(GlobalConstants.addressRegex)]],
+      title: [null, [Validators.required, Validators.pattern(GlobalConstants.addressRegex)]],
       vendor_id: [null, [Validators.required]],
       work_id: [[], [Validators.required]],
       location: [null, [Validators.required, Validators.pattern(GlobalConstants.addressRegex)]],

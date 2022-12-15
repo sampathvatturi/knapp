@@ -1,0 +1,195 @@
+<nz-breadcrumb id="breadcrumb">
+    <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+      <a routerLink="../dashboard">Dashboard</a>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>Create Tender</nz-breadcrumb-item>
+  </nz-breadcrumb>
+  
+  <nz-content id="component-content">
+    <div id="search-create">
+      <nz-input-group [nzSuffix]="suffixIconSearch">
+        <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText" />
+      </nz-input-group>
+      <ng-template #suffixIconSearch>
+        <span nz-icon nzType="search"></span>
+      </ng-template>
+      <button nz-button nzType="default" (click)="create()">
+        Add &nbsp; <i class="fa-solid fa-plus"></i>
+      </button>
+    </div>
+  
+    <nz-table #basicTable [nzData]="tenders" nzShowPagination nzShowSizeChanger [nzPageSizeOptions]="[5, 10, 15, 20]"
+      nzSize="middle">
+      <thead>
+        <tr>
+          <th>S.No.</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Works</th>
+          <th>Location</th>
+          <th>Tender Cost</th>
+          <th>Status</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="
+            let data of basicTable.data | globalTablesearch : searchText;
+            let i = index
+          ">
+          <td>{{ i + 1 }}</td>
+          <td>{{data.title}}</td>
+          <td>{{ getWorknames(data.work_id) }}</td>
+          <td>{{ data.location }}</td>
+          <td>{{ data.tender_cost | currencyIn}}</td>
+          <td>{{ data.status | titlecase}}</td>
+          <td>{{ data.start_date | date : "dd-MM-YYYY" }}</td>
+          <td>{{ data.end_date | date : "dd-MM-YYYY" }}</td>
+          <td>
+            <div class="editbtn">
+              <a nz-tooltip="Edit" (click)="edit('edit',data)"><i class="fa-regular fa-pen-to-square"></i></a>
+              <b> / </b>
+              <a nz-tooltip="View" (click)="edit('view',data)"><i class="fa-regular fa-eye"></i></a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-content>
+  <nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzMaskClosable]="true" [nzWidth]="720" [nzVisible]="visible"
+    [nzTitle]="drawerTitle" [nzFooter]="footerTpl" (nzOnClose)="close()" [nzClosable]="false" [nzCloseIcon]="icon"
+    [nzExtra]="icon">
+    <ng-template #icon>
+      <i (click)="close()" class="fa-solid fa-circle-xmark"></i>
+    </ng-template>
+    <form nz-form *nzDrawerContent [formGroup]="createTenderForm" class="drawer-form">
+  
+      <div>
+        <nz-form-item>
+          <nz-form-label class="required" nz-col nzSpan="5">Title</nz-form-label>
+          <nz-form-control nz-col nzSpan="15" [nzErrorTip]="title1">
+            <input formControlName="title" nz-input placeholder="Enter Ticket Title" />
+            <ng-template #title1 let-control>
+              <ng-container *ngIf="control.hasError('pattern')">Please enter valid input</ng-container>
+              <ng-container *ngIf="control.hasError('required')">Please enter title</ng-container>
+            </ng-template>
+  
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+  
+      <div>
+        <nz-form-item>
+          <nz-form-label class="required" nz-col nzSpan="5">Description</nz-form-label>
+          <nz-form-control nz-col nzSpan="15" [nzErrorTip]="description">
+            <textarea formControlName="ticket_description" nz-input rows="2"
+              placeholder="Enter Ticket Description"></textarea>
+            <ng-template #description let-control>
+              <ng-container *ngIf="control.hasError('required')">Please enter ticket description</ng-container>
+              <ng-container *ngIf="control.hasError('pattern')">Please enter valid input</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+  
+  
+  
+      <div>
+        <nz-form-item>
+          <nz-form-label class="required" nz-col nzSpan="5">Works</nz-form-label>
+          <nz-form-control nzErrorTip="Please select a work">
+            <nz-select nz-col nzSpan="15" nzMode="multiple" formControlName="work_id" nzPlaceHolder="Select Works" nzShowSearch>
+              <nz-option *ngFor="let w of worksDetails" [nzLabel]="w.work_name" [nzValue]="w.work_id"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+  
+  
+      <div>
+        <nz-form-item>
+          <nz-form-label class="required" nz-col nzSpan="5">Location</nz-form-label>
+          <nz-form-control nz-col nzSpan="15" [nzErrorTip]="location">
+            <textarea formControlName="location" nz-input rows="2" placeholder="Enter Your location"></textarea>
+            <ng-template #location let-control>
+              <ng-container *ngIf="control.hasError('required')">Please enter location</ng-container>
+              <ng-container *ngIf="control.hasError('pattern')">Please enter valid location</ng-container>
+            </ng-template>
+  
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+  
+      <div nz-row>
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label class="required" nz-col nzSpan="10">Tender Cost</nz-form-label>
+            <nz-form-control nz-col nzSpan="10" nzErrorTip="Please enter cost">
+              <input type="number" formControlName="tender_cost" nz-input placeholder="Enter Ticket Est. Cost" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label class="required" nz-col nzSpan="7">Status</nz-form-label>
+              <nz-select formControlName="status" nz-col nzSpan="9" nzPlaceHolder="Status" nzShowSearch>
+                <nz-option nzValue="active" nzLabel="Active"></nz-option>
+                <nz-option nzValue="inactive" nzLabel="Inactive"></nz-option>
+              </nz-select>
+            </nz-form-item>
+          </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label class="required" nz-col nzSpan="10">Start Date</nz-form-label>
+            <nz-form-control nz-col nzSpan="10" nzErrorTip="Enter Start Date">
+              <nz-date-picker formControlName="start_date"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+          </div>
+
+          <div nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label class="required" nz-col nzSpan="7">Start Date</nz-form-label>
+              <nz-form-control nz-col nzSpan="9" nzErrorTip="Enter Start Date">
+                <nz-date-picker formControlName="start_date"></nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+      </div>
+  
+  
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-form-label class="required" nz-col nzSpan="12">Upload File</nz-form-label>
+          <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            [nzHeaders]="{ authorization: 'authorization-text' }" (nzChange)="handleChange($event)">
+            <button nz-button class="b1">
+              <span nz-icon nzType="upload"></span>
+              Upload
+            </button>
+          </nz-upload>
+        </div>
+      </div>
+    </form>
+  
+    <ng-template #footerTpl>
+      <div style="float: right">
+        <button nz-button style="margin-right: 8px" (click)="close()">
+          Cancel
+        </button>
+        <button nz-button *ngIf="submit" nzType="primary" (click)="onCreateSubmit()">
+          Submit
+        </button>
+        <button nz-button *ngIf="!submit" nzType="primary" (click)="onUpdateSubmit()">
+          Update
+        </button>
+      </div>
+    </ng-template>
+  </nz-drawer>
+  

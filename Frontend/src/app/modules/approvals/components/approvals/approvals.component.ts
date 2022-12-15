@@ -7,6 +7,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
   styleUrls: ['./approvals.component.css']
 })
 export class ApprovalsComponent implements OnInit {
+
   validateForm!: UntypedFormGroup;
   listOfData: any[] = [];
 
@@ -15,14 +16,16 @@ export class ApprovalsComponent implements OnInit {
   ngOnInit(): void {
     this.validateForm = this.fb.group({
       rangePicker: [null],
-      type: [null, [Validators.required]],
-      status: [null, [Validators.required]],
+      type: ['tenders', [Validators.required]],
+      status: ['open', [Validators.required]],
     })
   }
 
   submitForm(): void {
     console.log(this.validateForm.value);
-  }
-  
+    if(this.validateForm.value.type === 'tenders') {
+      
+    }
+  }  
 
 }
