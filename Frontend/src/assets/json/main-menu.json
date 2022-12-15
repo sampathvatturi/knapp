@@ -6,9 +6,19 @@
       "icon": "fa-solid fa-house"
     },
     {
-      "title": "Tender Details",
-      "route": "modules/tender-details",
-      "icon": "fa-solid fa-circle-info"
+      "title": "Tender",
+      "icon": "fa-solid fa-circle-info",
+      "children":[
+        {"title":"Create Tender",
+          "route":"modules/create-tender",
+          "icon": "fa-solid fa-file-circle-plus"
+        },
+        {
+          "title":"Assign Tender",
+          "route":"modules/tender-details",
+          "icon": "fa-solid fa-file-circle-exclamation"
+        }
+      ]
     },
     {
       "title": "Survey Report",

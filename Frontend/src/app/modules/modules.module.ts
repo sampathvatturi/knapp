@@ -22,6 +22,7 @@ import { WORK_ORDERS_COMPONENTS } from './work-orders';
 import { ACCOUNTING_DETAILS_COMPONENTS } from './accounting-details';
 import { TRANSACTION_DETAILS_COMPONENTS } from './transaction-details';
 import { UOM_COMPONENTS } from './masters';
+import { CREATE_TENDER_COMPONENTS } from './tender-details';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { UOM_COMPONENTS } from './masters';
     ...WORK_ORDERS_COMPONENTS,
     ...ACCOUNTING_DETAILS_COMPONENTS,
     ...TRANSACTION_DETAILS_COMPONENTS,
-    ...UOM_COMPONENTS
+    ...UOM_COMPONENTS,
+    ...CREATE_TENDER_COMPONENTS
   ],
   imports: [
     ModulesRoutingModule,
