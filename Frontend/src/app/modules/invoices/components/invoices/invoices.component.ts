@@ -42,6 +42,7 @@ export class InvoicesComponent implements OnInit {
   baseUrl = environment.apiUrl;
   uploadUrl = this.baseUrl+'/upload/uploadFiles';
   getUploadedFIlesUrl = this.baseUrl+'/upload/getUploadedFiles/';
+  invoiceId :any;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -93,25 +94,27 @@ export class InvoicesComponent implements OnInit {
     this.filesDetails.url='';
     this.files=[];
     this.invoiceFormValidators();
-    this.invoiceForm.get('vendor_id')?.setValue(data.vendor_id);
-    this.invoiceForm.get('tender_id')?.setValue(data.tender_id);
+    this.invoiceId = data.invoice_id
+    this.invoiceForm.get('vendor_id')?.setValue(data.vendor_id.toString());
+    this.invoiceForm.get('tender_id')?.setValue(data.tender_id.toString());
     this.invoiceForm.get('title')?.setValue(data.title);
     this.invoiceForm.get('remarks')?.setValue(data.remarks);
     this.invoiceForm.get('invoice_number')?.setValue(data.invoice_number);
-    this.invoiceForm.get('quantity')?.setValue(data.quantity);
     this.invoiceForm.get('status')?.setValue(data.status);
     this.invoiceForm.get('amount')?.setValue(data.amount);
     this.invoiceForm.get('tax')?.setValue(data.tax);
     this.invoiceForm.get('grand_total')?.setValue(data.total);
     this.invoiceForm.get('updated_by')?.setValue(this.user_data.user_id);
-    this.invoiceForm.get('inventory_details')?.patchValue(JSON.parse(data.inventory_details));
-    var fileNamesArray = data.attachments.split(',');
-    if(fileNamesArray.length > 0){
-      fileNamesArray.forEach((element:any) => {
-        this.filesDetails.name=element;
-        this.filesDetails.url=this.getUploadedFIlesUrl+element;
-        this.files.push(this.filesDetails);
-      });
+    this.invoiceForm.get('inventory_details')?.patchValue(data.inventory_details);
+    if(data.attachments != null && data.attachments !=''){
+      var fileNamesArray = data.attachments.split(',');
+      if(fileNamesArray.length > 0){
+        fileNamesArray.forEach((element:any) => {
+          this.filesDetails.name=element;
+          this.filesDetails.url=this.getUploadedFIlesUrl+element;
+          this.files.push(this.filesDetails);
+        });
+      }
     }
   }
 
@@ -169,11 +172,10 @@ export class InvoicesComponent implements OnInit {
     }
   }
   onUpdate() {
-    this.invoiceForm.value.department_id = this.invoiceForm.value.department_id.toString();
     if (this.invoiceForm.valid) {
       this.api
         .patchCall(
-          `/invoicedetails/updateInvoicelog/${this.invoiceForm.value.invoice_details_id}`,
+          `/invoice/updateInvoice/${this.invoiceId}`,
           this.invoiceForm.value
         )
         .subscribe((res) => {
