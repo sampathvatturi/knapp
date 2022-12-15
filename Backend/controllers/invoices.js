@@ -18,7 +18,7 @@ exports.createInvoice = async (req, res) => {
     [
       {
         vendor_id: data.vendor_id,
-        tender_id: data.vendor_id,
+        tender_id: data.tender_id,
         title: data.title,
         remarks: data.remarks,
         invoice_number: data.invoice_number,
@@ -27,6 +27,7 @@ exports.createInvoice = async (req, res) => {
         amount: data.amount,
         tax: data.tax,
         grand_total: data.grand_total,
+        attachments: data.attachments,
         created_by: data.created_by,
         updated_by: data.updated_by
       },
@@ -46,12 +47,13 @@ exports.createInvoice = async (req, res) => {
 
 exports.updateInvoice = async (req, res) => {
   data = req.body;
+  inventory_details = JSON.stringify(data.inventory_details);
   db.query(
     "update invoices set ? where invoice_id = ? ",
     [
       {
         vendor_id: data.vendor_id,
-        tender_id: data.vendor_id,
+        tender_id: data.tender_id,
         title: data.title,
         remarks: data.remarks,
         invoice_number: data.invoice_number,
