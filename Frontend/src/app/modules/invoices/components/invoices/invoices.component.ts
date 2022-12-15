@@ -34,14 +34,14 @@ export class InvoicesComponent implements OnInit {
   tot: any;
   globalConstants = GlobalConstants;
   inventoryDetailsArray: any = [];
-  files:any[]=[];
+  files: any[] = [];
   filesDetails = {
-    name : '',
-    url:''
+    name: '',
+    url: ''
   }
   baseUrl = environment.apiUrl;
-  uploadUrl = this.baseUrl+'/upload/uploadFiles';
-  getUploadedFIlesUrl = this.baseUrl+'/upload/getUploadedFiles/';
+  uploadUrl = this.baseUrl + '/upload/uploadFiles';
+  getUploadedFIlesUrl = this.baseUrl + '/upload/getUploadedFiles/';
   invoiceId :any;
 
   constructor(
@@ -78,9 +78,9 @@ export class InvoicesComponent implements OnInit {
         this.v_name[x.vendor_id] = x.vendor_name;
       }
     });
-    this.inventory.getInventoryItems().subscribe( res =>{
+    this.inventory.getInventoryItems().subscribe(res => {
       this.inventory_array = res;
-    this.updated_inventory = [...res];
+      this.updated_inventory = [...res];
     })
     this.user_data = sessionStorage.getItem('user_data');
     this.user_data = JSON.parse(this.user_data);
@@ -90,9 +90,9 @@ export class InvoicesComponent implements OnInit {
     this.submit = false;
     this.drawerTitle = 'Edit Invoice details';
     this.visible = true;
-    this.filesDetails.name='';
-    this.filesDetails.url='';
-    this.files=[];
+    this.filesDetails.name = '';
+    this.filesDetails.url = '';
+    this.files = [];
     this.invoiceFormValidators();
     this.invoiceId = data.invoice_id
     this.invoiceForm.get('vendor_id')?.setValue(data.vendor_id.toString());
@@ -108,10 +108,10 @@ export class InvoicesComponent implements OnInit {
     this.invoiceForm.get('inventory_details')?.patchValue(data.inventory_details);
     if(data.attachments != null && data.attachments !=''){
       var fileNamesArray = data.attachments.split(',');
-      if(fileNamesArray.length > 0){
-        fileNamesArray.forEach((element:any) => {
-          this.filesDetails.name=element;
-          this.filesDetails.url=this.getUploadedFIlesUrl+element;
+      if (fileNamesArray.length > 0) {
+        fileNamesArray.forEach((element: any) => {
+          this.filesDetails.name = element;
+          this.filesDetails.url = this.getUploadedFIlesUrl + element;
           this.files.push(this.filesDetails);
         });
       }
@@ -122,9 +122,9 @@ export class InvoicesComponent implements OnInit {
     this.submit = true;
     this.drawerTitle = 'Add New Invoice';
     this.visible = true;
-    this.filesDetails.name='';
-    this.filesDetails.url='';
-    this.files=[];
+    this.filesDetails.name = '';
+    this.filesDetails.url = '';
+    this.files = [];
     this.invoiceFormValidators();
     this.invoiceForm.get('status')?.setValue('open');
     this.invoiceForm.get('created_by')?.setValue(this.user_data.user_id);
@@ -139,12 +139,12 @@ export class InvoicesComponent implements OnInit {
   close(): void {
     this.visible = false;
     this.updated_inventory = [];
-    this.updated_inventory =[...this.inventory_array];
+    this.updated_inventory = [...this.inventory_array];
   }
   onSubmit() {
 
     if (this.invoiceForm.valid) {
-      var fileNames:any[] = [];
+      var fileNames: any[] = [];
       this.files.forEach(element => {
         fileNames.push(element.name);
       });
@@ -229,7 +229,14 @@ export class InvoicesComponent implements OnInit {
       updated_by: [''],
     });
   }
-
+  selectVendor() {
+    console.log(this.invoiceForm.value.tender_id);
+    this.tender_array.forEach((element: any) => {
+      if(element.id == this.invoiceForm.value.tender_id){
+    this.invoiceForm.get('vendor_id')?.setValue(element.vendor_name);
+      }
+    });
+  }
   //dynamic form fields
   get inventory_details() {
     return this.invoiceForm.get("inventory_details") as FormArray
@@ -247,11 +254,12 @@ export class InvoicesComponent implements OnInit {
     }));
   }
   removeInventory(i: any) {
-    let item= this.inventory_details.value[i].item;
-  this.inventory_array.forEach((elem: any) =>{
-    if( elem.item_id == item){
-      this.updated_inventory.push(elem)
-    }});
+    // let item = this.inventory_details.value[i].item;
+    // this.inventory_array.forEach((elem: any) => {
+    //   if (elem.item_id == item) {
+    //     this.updated_inventory.push(elem)
+    //   }
+    // });
 
     this.inventory_details.removeAt(i);
     let totalTax = 0;
@@ -285,18 +293,33 @@ export class InvoicesComponent implements OnInit {
     this.tot = Number(this.invoiceForm.value.amount) + Number(this.invoiceForm.value.tax);
     this.invoiceForm.get('grand_total')?.setValue(this.tot);
   }
-  autoselect(i:any){
-    let item= this.inventory_details.value[i].item;
-    let singleArr = [];
-    singleArr = this.inventory_array.filter((elem: any) => elem.item_id == item);
-    this.inventory_details.patchValue(this.setindex(i, { uom: singleArr[0].uom_code }));
-    this.inventory_details.patchValue(this.setindex(i, { price: singleArr[0].price }));
-    this.inventory_details.patchValue(this.setindex(i, { taxPercent: singleArr[0].tax }));
-    this.updated_inventory.forEach((elem: any,index: any )=> {
-      if(elem.item_id == item){
-        this.updated_inventory.splice(index, 1)
-      }
+  autoselect(i: any) {
+    let item = this.inventory_details.value[i].item;
+    let count =0;
+    this.inventory_details.value.forEach((elem: any) =>{
+      if(elem.item == item) count++;
     });
+    if(count > 1){
+      // this.inventory_details.patchValue(this.setindex(i, { item:'' }));
+      this.inventory_details.patchValue(this.setindex(i, { quantity:null }));
+       this.inventory_details.patchValue(this.setindex(i, { uom: null }));
+       this.inventory_details.patchValue(this.setindex(i, { price: null }));
+       this.inventory_details.patchValue(this.setindex(i, { taxPercent: null}));
+      return this.notification.createNotification('fail','Item already exists , please select another')
+     } else{
+       let singleArr: any = [];
+       singleArr = this.inventory_array.filter((elem: any) => elem.item_id == item);
+       this.inventory_details.patchValue(this.setindex(i, { quantity:null }));
+       this.inventory_details.patchValue(this.setindex(i, { uom: singleArr[0].uom_name }));
+       this.inventory_details.patchValue(this.setindex(i, { price: singleArr[0].price }));
+       this.inventory_details.patchValue(this.setindex(i, { taxPercent: singleArr[0].tax }));
+     }
+    
+    // this.updated_inventory.forEach((elem: any, index: any) => {
+    //   if (elem.item_id == item )  {
+    //     this.updated_inventory.splice(index, 1)
+    //   }
+    // });
   }
   setindex(i: any, data: any) {
     let arr = [];
@@ -333,11 +356,11 @@ export class InvoicesComponent implements OnInit {
     if (info.file.status === 'done') {
       this.msg.success(`${info.file.name} file uploaded successfully`);
       this.filesDetails.name = info.file.response.fileName;
-      this.filesDetails.url = this.getUploadedFIlesUrl+'/'+info.file.response.fileName;
+      this.filesDetails.url = this.getUploadedFIlesUrl + '/' + info.file.response.fileName;
       this.files.push(this.filesDetails);
     } else if (info.file.status === 'error') {
       this.msg.error(`${info.file.name} file upload failed.`);
-    } else if(info.file.status !== 'uploading'){
+    } else if (info.file.status !== 'uploading') {
       console.log(info.file, info.fileList);
     }
   }
@@ -348,8 +371,8 @@ export class InvoicesComponent implements OnInit {
 
 
 
-  handleRemove= (file: NzUploadFile) => new Observable<boolean>((obs) => {
-   // console.log(file);
+  handleRemove = (file: NzUploadFile) => new Observable<boolean>((obs) => {
+    // console.log(file);
     // console.log('this.handleRemove instanceof Observable', this.handleRemove instanceof Observable)
     console.log(obs)
     obs.next(false)

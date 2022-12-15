@@ -49,7 +49,7 @@
         <td>{{ data.amount | currencyIn}}</td>
         <!-- <td>{{ data.trnsx_type }}</td> -->
         <td>{{ data.tax | currencyIn}}</td>
-        <td>{{ data.total | currencyIn }}</td>
+        <td>{{ data.grand_total | currencyIn }}</td>
         <!-- <td>{{ d_name[data.department_id] }}</td> -->
         <td>{{ data.created_date | date : "dd-MM-YYYY" }}</td>
         <td>
@@ -70,28 +70,29 @@
     <i (click)="close()" class="fa-solid fa-circle-xmark"></i>
   </ng-template>
   <form nz-form *nzDrawerContent [formGroup]="invoiceForm" class="drawer-form">
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5">Vendor</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Select Vendor">
-          <nz-select formControlName="vendor_id" nzPlaceHolder="Vendor" nzShowSearch>
-            <nz-option *ngFor="let v of vendor_array" nzValue="{{ v.vendor_id }}"
-              nzLabel="{{ v.vendor_name }}"></nz-option>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
+
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Tender</nz-form-label>
         <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Select Tender">
-          <nz-select formControlName="tender_id" nzPlaceHolder="Tender" nzShowSearch>
+          <nz-select formControlName="tender_id" nzPlaceHolder="Tender" nzShowSearch (ngModelChange)="selectVendor()">
             <nz-option *ngFor="let t of tender_array" nzValue="{{ t.id }}" nzLabel="{{ t.title}}"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
     </div>
-
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="5">Vendor</nz-form-label>
+        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Select Vendor">
+          <input nz-input formControlName="vendor_id" (keyup)="selectVendor()" readonly/>
+          <!-- <nz-select formControlName="vendor_id" nzPlaceHolder="Vendor" nzShowSearch>
+            <nz-option *ngFor="let v of vendor_array" nzValue="{{ v.vendor_id }}"
+              nzLabel="{{ v.vendor_name }}"></nz-option>
+          </nz-select> -->
+        </nz-form-control>
+      </nz-form-item>
+    </div>
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Title</nz-form-label>
@@ -149,10 +150,7 @@
       <nz-form-item>
         <nz-form-label class="required" nz-col nzSpan="5">Attachments</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
-          <nz-upload
-          [nzAction] = uploadUrl
-          [nzRemove]="handleRemove"
-          [nzFileList]="files"
+          <nz-upload [nzAction]=uploadUrl [nzRemove]="handleRemove" [nzFileList]="files"
             (nzChange)="handleChange($event)" nzMultiple="true">
             <button nz-button>
               <span nz-icon nzType="upload"></span>
@@ -183,7 +181,7 @@
         <nz-form-item nz-col [nzSpan]="4">
           <nz-form-label *ngIf="i === 0">Item</nz-form-label>
           <nz-form-control nzErrorTip="Enter Item name">
-            <nz-select formControlName="item" nzPlaceHolder="Select Item" nzShowSearch (ngModelChange)="autoselect(i)" >
+            <nz-select formControlName="item" nzPlaceHolder="Select Item" nzShowSearch (ngModelChange)="autoselect(i)">
               <nz-option *ngFor="let inv of updated_inventory" nzValue="{{ inv.item_id }}"
                 nzLabel="{{ inv.item_name }}"></nz-option>
             </nz-select>
@@ -198,40 +196,40 @@
         </nz-form-item>
         <nz-form-item nz-col [nzSpan]="2">
           <nz-form-label *ngIf="i === 0">UOM</nz-form-label>
-          <nz-form-control >
-            <input nz-input formControlName="uom" placeholder="UOM"  />
+          <nz-form-control>
+            <input nz-input formControlName="uom" placeholder="UOM" (keyup)="autoselect(i)" readonly/>
           </nz-form-control>
         </nz-form-item>
 
         <nz-form-item nz-col [nzSpan]="3">
           <nz-form-label *ngIf="i === 0">Price(Rs.)</nz-form-label>
           <nz-form-control>
-            <input nz-input formControlName="price" placeholder="Price"  />
+            <input nz-input formControlName="price" placeholder="Price" (keyup)="autoselect(i)" readonly/>
           </nz-form-control>
         </nz-form-item>
 
         <nz-form-item nz-col [nzSpan]="2">
           <nz-form-label *ngIf="i === 0">Tax(%)</nz-form-label>
           <nz-form-control>
-            <input nz-input formControlName="taxPercent" placeholder="Tax" />
+            <input nz-input formControlName="taxPercent" placeholder="Tax" (keyup)="autoselect(i)" readonly/>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item nz-col [nzSpan]="3">
           <nz-form-label *ngIf="i === 0">Amt</nz-form-label>
           <nz-form-control>
-            <input nz-input formControlName="amt" placeholder="Amount" (keyup)="change(i)" />
+            <input nz-input formControlName="amt" placeholder="Amount" (keyup)="change(i)" readonly/>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item nz-col [nzSpan]="2">
           <nz-form-label *ngIf="i === 0">Tax Amount</nz-form-label>
           <nz-form-control>
-            <input nz-input formControlName="taxAmt" placeholder="Tax amount" (keyup)="change(i)" />
+            <input nz-input formControlName="taxAmt" placeholder="Tax amount" (keyup)="change(i)" readonly/>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item nz-col [nzSpan]="3">
           <nz-form-label *ngIf="i === 0">Total</nz-form-label>
           <nz-form-control>
-            <input nz-input formControlName="total" placeholder="Total" (keyup)="change(i)" />
+            <input nz-input formControlName="total" placeholder="Total" (keyup)="change(i)" readonly/>
           </nz-form-control>
         </nz-form-item>
 
@@ -244,7 +242,7 @@
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Total Amount</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
-          <input nz-input formControlName="amount" placeholder="Enter Amount" (keyup)="stable()" />
+          <input nz-input formControlName="amount" placeholder="Enter Amount" (keyup)="stable()" readonly/>
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -253,7 +251,7 @@
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Total Tax Amount</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
-          <input nz-input formControlName="tax" placeholder="Enter Tax" (keyup)="stable()" />
+          <input nz-input formControlName="tax" placeholder="Enter Tax" (keyup)="stable()" readonly/>
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -262,7 +260,7 @@
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5">Grand Total</nz-form-label>
         <nz-form-control nz-col nzSpan="10">
-          <input nz-input formControlName="grand_total" placeholder="Enter Total" (keyup)="stable()" />
+          <input nz-input formControlName="grand_total" placeholder="Enter Total" (keyup)="stable()" readonly/>
         </nz-form-control>
       </nz-form-item>
     </div>
