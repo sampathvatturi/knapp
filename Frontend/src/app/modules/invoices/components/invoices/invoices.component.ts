@@ -10,6 +10,7 @@ import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { InventoryItemsService } from './../../../../services/inventory-items.service';
 
 @Component({
   selector: 'app-invoices',
@@ -21,17 +22,16 @@ export class InvoicesComponent implements OnInit {
   submit = true;
   drawerTitle: string = '';
   invoiceForm!: FormGroup;
-
   invoice_info: any = [];
   vendor_array: any = [];
-  tender_array: any = [];
   v_name: any = {};
+  tender_array: any = [];
   t_name: any = {};
-  depts: any = [];
+  inventory_array: any = [];
+  updated_inventory: any;
   user_data: any = [];
   searchText = '';
   tot: any;
-  tx: any;
   globalConstants = GlobalConstants;
   inventoryDetailsArray: any = [];
   files:any[]=[];
@@ -50,6 +50,7 @@ export class InvoicesComponent implements OnInit {
     private invoice: InvoicesService,
     private tenders: TenderDetailsService,
     private vendors: VendorsService,
+    private inventory: InventoryItemsService,
     private msg: NzMessageService
   ) { }
 
@@ -76,7 +77,10 @@ export class InvoicesComponent implements OnInit {
         this.v_name[x.vendor_id] = x.vendor_name;
       }
     });
-
+    this.inventory.getInventoryItems().subscribe( res =>{
+      this.inventory_array = res;
+    this.updated_inventory = [...res];
+    })
     this.user_data = sessionStorage.getItem('user_data');
     this.user_data = JSON.parse(this.user_data);
   }
@@ -131,6 +135,8 @@ export class InvoicesComponent implements OnInit {
 
   close(): void {
     this.visible = false;
+    this.updated_inventory = [];
+    this.updated_inventory =[...this.inventory_array];
   }
   onSubmit() {
 
@@ -206,6 +212,7 @@ export class InvoicesComponent implements OnInit {
         this.fb.group({
           item: [''],
           quantity: [null],
+          uom: [null],
           price: [null],
           taxPercent: [null],
           amt: [0],
@@ -226,10 +233,10 @@ export class InvoicesComponent implements OnInit {
     return this.invoiceForm.get("inventory_details") as FormArray
   }
   addInvertory() {
-    console.log(this.inventory_details.value);
     this.inventory_details.push(this.fb.group({
       item: [''],
       quantity: [null],
+      uom: [null],
       price: [null],
       taxPercent: [null],
       amt: [0],
@@ -238,12 +245,18 @@ export class InvoicesComponent implements OnInit {
     }));
   }
   removeInventory(i: any) {
+    let item= this.inventory_details.value[i].item;
+  this.inventory_array.forEach((elem: any) =>{
+    if( elem.item_id == item){
+      this.updated_inventory.push(elem)
+    }});
+
     this.inventory_details.removeAt(i);
     let totalTax = 0;
     let totalAmt = 0;
-    for (let i of this.invoiceForm.value.inventory_details) {
-      totalTax += i.taxAmt;
-      totalAmt += i.amt
+    for (let inv of this.invoiceForm.value.inventory_details) {
+      totalTax += inv.taxAmt;
+      totalAmt += inv.amt
     }
     this.invoiceForm.get('tax')?.setValue(totalTax);
     this.invoiceForm.get('amount')?.setValue(totalAmt);
@@ -269,6 +282,19 @@ export class InvoicesComponent implements OnInit {
     this.invoiceForm.get('amount')?.setValue(totalAmt);
     this.tot = Number(this.invoiceForm.value.amount) + Number(this.invoiceForm.value.tax);
     this.invoiceForm.get('grand_total')?.setValue(this.tot);
+  }
+  autoselect(i:any){
+    let item= this.inventory_details.value[i].item;
+    let singleArr = [];
+    singleArr = this.inventory_array.filter((elem: any) => elem.item_id == item);
+    this.inventory_details.patchValue(this.setindex(i, { uom: singleArr[0].uom_code }));
+    this.inventory_details.patchValue(this.setindex(i, { price: singleArr[0].price }));
+    this.inventory_details.patchValue(this.setindex(i, { taxPercent: singleArr[0].tax }));
+    this.updated_inventory.forEach((elem: any,index: any )=> {
+      if(elem.item_id == item){
+        this.updated_inventory.splice(index, 1)
+      }
+    });
   }
   setindex(i: any, data: any) {
     let arr = [];

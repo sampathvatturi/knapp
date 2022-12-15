@@ -180,48 +180,57 @@
       <div *ngFor="let x of inventory_details.controls; let i = index" formGroupName="{{i}}" class="mb-1" nz-row
         nzJustify="space-between" nzAlign="bottom">
         <button nz-col [nzSpan]="1" type="button" nz-button nzType="default" (click)="removeInventory(i)">X</button>
-        <nz-form-item nz-col [nzSpan]="5">
+        <nz-form-item nz-col [nzSpan]="4">
           <nz-form-label *ngIf="i === 0">Item</nz-form-label>
           <nz-form-control nzErrorTip="Enter Item name">
-            <input nz-input formControlName="item" placeholder="Enter Item" type="text" />
+            <nz-select formControlName="item" nzPlaceHolder="Select Item" nzShowSearch (ngModelChange)="autoselect(i)" >
+              <nz-option *ngFor="let inv of updated_inventory" nzValue="{{ inv.item_id }}"
+                nzLabel="{{ inv.item_name }}"></nz-option>
+            </nz-select>
           </nz-form-control>
         </nz-form-item>
 
         <nz-form-item nz-col [nzSpan]="2">
           <nz-form-label *ngIf="i === 0">Qty</nz-form-label>
-          <nz-form-control nzErrorTip="Enter Item name">
+          <nz-form-control nzErrorTip="Enter Quantity">
             <input nz-input formControlName="quantity" placeholder="Quantity" (keyup)="change(i)" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-col [nzSpan]="2">
+          <nz-form-label *ngIf="i === 0">UOM</nz-form-label>
+          <nz-form-control >
+            <input nz-input formControlName="uom" placeholder="UOM"  />
           </nz-form-control>
         </nz-form-item>
 
         <nz-form-item nz-col [nzSpan]="3">
-          <nz-form-label *ngIf="i === 0">Price</nz-form-label>
-          <nz-form-control nzErrorTip="Enter price">
-            <input nz-input formControlName="price" placeholder="Price" (keyup)="change(i)" />
+          <nz-form-label *ngIf="i === 0">Price(Rs.)</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="price" placeholder="Price"  />
           </nz-form-control>
         </nz-form-item>
 
         <nz-form-item nz-col [nzSpan]="2">
-          <nz-form-label *ngIf="i === 0">Tax</nz-form-label>
-          <nz-form-control nzErrorTip="Enter tax">
-            <input nz-input formControlName="taxPercent" placeholder="Tax" (keyup)="change(i)" />
+          <nz-form-label *ngIf="i === 0">Tax(%)</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="taxPercent" placeholder="Tax" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item nz-col [nzSpan]="3">
           <nz-form-label *ngIf="i === 0">Amt</nz-form-label>
-          <nz-form-control nzErrorTip="Enter tax">
+          <nz-form-control>
             <input nz-input formControlName="amt" placeholder="Amount" (keyup)="change(i)" />
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item nz-col [nzSpan]="3">
+        <nz-form-item nz-col [nzSpan]="2">
           <nz-form-label *ngIf="i === 0">Tax Amount</nz-form-label>
-          <nz-form-control nzErrorTip="Enter tax">
+          <nz-form-control>
             <input nz-input formControlName="taxAmt" placeholder="Tax amount" (keyup)="change(i)" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item nz-col [nzSpan]="3">
           <nz-form-label *ngIf="i === 0">Total</nz-form-label>
-          <nz-form-control nzErrorTip="Enter tax">
+          <nz-form-control>
             <input nz-input formControlName="total" placeholder="Total" (keyup)="change(i)" />
           </nz-form-control>
         </nz-form-item>
