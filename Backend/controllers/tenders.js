@@ -4,7 +4,7 @@ const currdateTime = require("../middleware/currdate");
 //tickets
 exports.getTenders = async (req, res) => {
   db.query(
-    "select * from tenders",
+    "select t.*, v.vendor_name from tenders t, vendors v where t.vendor_id=v.vendor_id",
     (err, result, fields) => {
       if (!err) {
         if (result.length > 0) res.status(200).send(result);
@@ -18,7 +18,7 @@ exports.createTender = async (req, res) => {
   data = req.body;
   work_id = data.work_id.toString();
   tender_user_status=[];
-  data.assign_to.forEach(element => {
+  data.tender_user_status.forEach(element => {
     let temp = {
       "user_id" : element,
       "status" : false
