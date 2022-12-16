@@ -1,0 +1,151 @@
+<nz-breadcrumb id="breadcrumb">
+    <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+      <a routerLink="../dashboard">Dashboard</a>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>Assign Tender</nz-breadcrumb-item>
+  </nz-breadcrumb>
+
+  <nz-content id="component-content">
+    <div id="search-create">
+      <nz-input-group [nzSuffix]="suffixIconSearch">
+        <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText" />
+      </nz-input-group>
+      <ng-template #suffixIconSearch>
+        <span nz-icon nzType="search"></span>
+      </ng-template>
+      <button nz-button nzType="default" (click)="create()">
+        Add &nbsp; <i class="fa-solid fa-plus"></i>
+      </button>
+    </div>
+  
+    <nz-table #basicTable [nzData]="tender_info" nzShowPagination nzShowSizeChanger [nzPageSizeOptions]="[5, 10, 15, 20]"
+      nzSize="middle">
+      <thead>
+        <tr>
+          <th>S.No.</th>
+          <th>Tender</th>
+          <th>Tender Cost</th>
+          <th>Vendor</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="
+            let data of basicTable.data | globalTablesearch : searchText;
+            let i = index
+          ">
+          <td>{{ i + 1 }}</td>
+          <td>{{data.tender_id}}</td>
+          <td>{{ data.tender_cost | currencyIn}}</td>
+          <td>{{ data.vendor_name }}</td>
+          <td>{{ data.status | titlecase}}</td>
+          <td>
+            <div class="editbtn">
+              <a nz-tooltip="Edit" (click)="edit('edit',data)"><i class="fa-regular fa-pen-to-square"></i></a>
+              <b> / </b>
+              <a nz-tooltip="View" (click)="edit('view',data)"><i class="fa-regular fa-eye"></i></a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-content>
+  <nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzMaskClosable]="true" [nzWidth]="720" [nzVisible]="visible"
+  [nzTitle]="drawerTitle" [nzFooter]="footerTpl" (nzOnClose)="close()" [nzClosable]="false" [nzCloseIcon]="icon"
+  [nzExtra]="icon">
+  <ng-template #icon>
+    <i (click)="close()" class="fa-solid fa-circle-xmark"></i>
+  </ng-template>
+  <form nz-form *nzDrawerContent [formGroup]="assignTendersForm" class="drawer-form">
+
+    <div>
+        <nz-form-item>
+          <nz-form-label class="required" nz-col nzSpan="5">Tender</nz-form-label>
+          <nz-form-control nzErrorTip="Please select tender" nz-col nzSpan="10">
+          <nz-select formControlName="tender_id" nzPlaceHolder="Tender" nzShowSearch (ngModelChange)="showTender()">
+            <nz-option *ngFor="let t of tenders" nzValue="{{ t.id }}"
+              nzLabel="{{ t.title }}"></nz-option>
+          </nz-select>
+        </nz-form-control>
+        </nz-form-item>
+    </div>
+
+    <div>
+        <nz-form-item>
+          <nz-form-label class="required" nz-col nzSpan="5">Description</nz-form-label>
+          <nz-form-control nz-col nzSpan="15" [nzErrorTip]="description">
+            <textarea formControlName="description" nz-input rows="2"
+              placeholder="Enter Description" readonly></textarea>
+            <ng-template #description let-control>
+              <ng-container *ngIf="control.hasError('required')">Please enter description</ng-container>
+              <ng-container *ngIf="control.hasError('pattern')">Please enter valid input</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+    </div>
+
+    <div>
+        <nz-form-item>
+          <nz-form-label class="required" nz-col nzSpan="5">Tender Cost</nz-form-label>
+          <nz-form-control nz-col nzSpan="10" nzErrorTip="Please enter cost">
+            <input type="text" formControlName="tender_cost" nz-input placeholder="Enter Tender Cost" readonly/>
+          </nz-form-control>
+        </nz-form-item>
+    </div>
+
+    <div>
+        <nz-form-item>
+          <nz-form-label class="required" nz-col nzSpan="5">Vendor</nz-form-label>
+          <nz-form-control nzErrorTip="Please select vendor" nz-col nzSpan="10">
+            <nz-select formControlName="vendor_id"  nzPlaceHolder="Vendor" nzShowSearch>
+              <nz-option *ngFor="let v of vendors" nzValue="{{ v.vendor_id }}"
+                nzLabel="{{ v.vendor_name }}"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+    </div>
+
+    <div>
+        <nz-form-item>
+          <nz-form-label class="required" nz-col nzSpan="5">Assign to</nz-form-label>
+          <nz-form-control nzErrorTip="please select a user" nz-col nzSpan="15">
+            <nz-select  nzMode="multiple" formControlName="tender_user_status"
+              nzPlaceHolder="Select User to assign" [nzOptions]="departmentUsers">
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+    </div>
+
+    <div>
+          <nz-form-item>
+            <nz-form-label class="required" nz-col nzSpan="5">Status</nz-form-label>
+            <nz-form-control nz-col nzSpan="10">
+            <nz-select formControlName="status" nzPlaceHolder="Status" nzShowSearch>
+              <nz-option nzValue="open" nzLabel="Open"></nz-option>
+              <nz-option nzValue="close" nzLabel="Close"></nz-option>
+              <nz-option nzValue="accept" nzLabel="Accept"></nz-option>
+              <nz-option nzValue="reject" nzLabel="Reject"></nz-option>
+            </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+    </div>
+    
+      
+  </form>
+
+  <ng-template #footerTpl>
+    <div style="float: right">
+      <button nz-button style="margin-right: 8px" (click)="close()">
+        Cancel
+      </button>
+      <button nz-button *ngIf="submit" nzType="primary" (click)="onCreateSubmit()">
+        Submit
+      </button>
+      <button nz-button *ngIf="!submit && updateBtnDisable" nzType="primary" (click)="onUpdateSubmit()">
+        Update
+      </button>
+    </div>
+  </ng-template>
+</nz-drawer>

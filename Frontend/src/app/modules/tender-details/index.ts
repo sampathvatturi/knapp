@@ -1,11 +1,16 @@
 import { TenderDetailsComponent } from './components/tender-details/tender-details.component';
 import { CreateTenderComponent } from './components/create-tender/create-tender.component';
+import { AssignTenderComponent } from './components/assign-tender/assign-tender.component';
 
 export const TENDER_DETAILS_COMPONENTS = [
     TenderDetailsComponent,
 ];
 export const CREATE_TENDER_COMPONENTS = [
     CreateTenderComponent,
+];
+
+export const ASSIGN_TENDER_COMPONENTS = [
+    AssignTenderComponent,
 ];
 
 
@@ -30,5 +35,18 @@ export const CREATE_TENDER_ROUTES = [
     },
 ];
 
+export const ASSIGN_TENDER_ROUTES = [
+    {
+        path: 'assign-tender',
+        component: AssignTenderComponent,
+        data: {
+            title: 'Assign Tender',
+            breadcrumb: 'Assign Tender',
+        },
+    },
+];
+
 export * from './components/tender-details/tender-details.component';
 export * from './components/create-tender/create-tender.component';
+export * from './components/assign-tender/assign-tender.component';
+

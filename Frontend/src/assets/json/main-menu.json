@@ -10,12 +10,12 @@
       "icon": "fa-solid fa-circle-info",
       "children":[
         {"title":"Create Tender",
-          "route":"modules/create-tender",
+          "route":"modules/tender-details",
           "icon": "fa-solid fa-file-circle-plus"
         },
         {
           "title":"Assign Tender",
-          "route":"modules/tender-details",
+          "route":"modules/assign-tender",
           "icon": "fa-solid fa-file-circle-exclamation"
         }
       ]

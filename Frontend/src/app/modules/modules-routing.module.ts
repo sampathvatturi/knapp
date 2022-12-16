@@ -19,6 +19,7 @@ import { ACCOUNTING_DETAILS_ROUTES } from './accounting-details';
 import { TRANSACTION_DETAILS_ROUTES } from './transaction-details';
 import { UOM_ROUTES } from './masters';
 import { CREATE_TENDER_ROUTES } from './tender-details';
+import { ASSIGN_TENDER_ROUTES } from './tender-details';
 
 
 const routes: Routes = [
@@ -46,6 +47,7 @@ const routes: Routes = [
   ...TRANSACTION_DETAILS_ROUTES,
   ...UOM_ROUTES,
   ...CREATE_TENDER_ROUTES,
+  ...ASSIGN_TENDER_ROUTES,
   { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];
 
