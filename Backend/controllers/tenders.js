@@ -1,10 +1,10 @@
 const db = require("../config/connection");
 const currdateTime = require("../middleware/currdate");
 
-//tickets
+//"select t.*, v.vendor_name from tenders t, vendors v where t.vendor_id=v.vendor_id",
 exports.getTenders = async (req, res) => {
   db.query(
-    "select t.*, v.vendor_name from tenders t, vendors v where t.vendor_id=v.vendor_id",
+    "select * from tenders",
     (err, result) => {
       if (!err) {
         if (result.length > 0) res.status(200).send(result);
@@ -17,26 +17,20 @@ exports.getTenders = async (req, res) => {
 exports.createTender = async (req, res) => {
   data = req.body;
   work_id = data.work_id.toString();
-  tender_user_status=[];
-  data.tender_user_status.forEach(element => {
-    let temp = {
-      "user_id" : element,
-      "status" : false
-    };
-    tender_user_status.push(temp)
-  });
+  start_date = data.start_date.toString().replace(/T/, ' ').replace(/\..+/, '');
+  end_date = data.end_date.toString().replace(/T/, ' ').replace(/\..+/, '');
   db.query(
     "INSERT INTO `tenders` SET ? ",
     [
       {
         title: data.title,
         description: data.description,
-        vendor_id: data.vendor_id,
         work_id: work_id,
         location: data.location,
         tender_cost: data.tender_cost,
         status: data.status,
-        tender_user_status: JSON.stringify(tender_user_status),
+        start_date: start_date,
+        end_date: end_date,
         attachments: data.attachments,
         created_by: data.created_by,
         updated_by: data.updated_by
@@ -55,28 +49,21 @@ exports.createTender = async (req, res) => {
 exports.updateTender = async (req, res) => {
   data = req.body;
   work_id = data.work_id.toString();
-  tender_user_status=[];
-  data.assign_to.forEach(element => {
-    let temp = {
-      "user_id" : element,
-      "status" : false
-    };
-    tender_user_status.push(temp)
-  });
+  start_date = data.start_date.toString().replace(/T/, ' ').replace(/\..+/, '');
+  end_date = data.end_date.toString().replace(/T/, ' ').replace(/\..+/, '');
   db.query(
     "update tenders set ? where id = ? ",
     [
       {
         title: data.title,
         description: data.description,
-        vendor_id: data.vendor_id,
         work_id: work_id,
         location: data.location,
         tender_cost: data.tender_cost,
         status: data.status,
-        tender_user_status: JSON.stringify(tender_user_status),
+        start_date: start_date,
+        end_date: end_date,
         attachments: data.attachments,
-        updated_date: currdateTime,
         updated_by: data.updated_by
       },
       req.params.id,
@@ -137,6 +124,49 @@ exports.updateTenderUserStatus = async (req, res) => {
         res.status(200).json({ status: "success", message: "Updated successfully" });
       else 
         res.status(404).json({ status: "failed" });
+    }
+  );
+};
+
+exports.assignTender = async (req, res) => {
+  data = req.body;
+  work_id = data.work_id.toString();
+  start_date = data.start_date.toString().replace(/T/, ' ').replace(/\..+/, '');
+  end_date = data.end_date.toString().replace(/T/, ' ').replace(/\..+/, '');
+  tender_user_status=[];
+  data.tender_user_status.forEach(element => {
+    let temp = {
+      "user_id" : element,
+      "status" : "pending",
+      "remarks":""
+    };
+    tender_user_status.push(temp)
+  });
+  db.query(
+    "update `tenders` SET ? where tender_id = ? ",
+    [
+      {
+        title: data.title,
+        description: data.description,
+        vendor_id: data.vendor_id,
+        work_id: work_id,
+        location: data.location,
+        tender_cost: data.tender_cost,
+        status: data.status,
+        start_date: start_date,
+        end_date: end_date,
+        tender_user_status: JSON.stringify(tender_user_status),
+        attachments: data.attachments,
+        created_by: data.created_by,
+        updated_by: data.updated_by
+      },
+    ],
+    (err, result, fields) => {
+      if (!err) {
+        res
+          .status(200)
+          .json({ status: "success", message: "Tendor Assigned successfully" });
+      } else res.status(404).json({ status: "failed" });
     }
   );
 };

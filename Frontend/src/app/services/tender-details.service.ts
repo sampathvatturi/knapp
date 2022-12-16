@@ -36,7 +36,7 @@ export class TenderDetailsService {
   }
 
   getTenderDetailById(id: any): Observable<any>{
-    return this.apiService.getCall('/tender/getTender/:id'+id).pipe(
+    return this.apiService.getCall('/tender/getTender/'+id).pipe(
       map((response: any) => {
         return response;
       })
