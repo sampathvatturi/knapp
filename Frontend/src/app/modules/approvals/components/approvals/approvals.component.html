@@ -46,19 +46,83 @@
         <button nz-button nzType="primary" nz-col nzSpan="4" class="ml-2">Submit</button>        
     </form>
 
-    <nz-table #basicTable [nzData]="listOfData" nzShowPagination nzShowSizeChanger [nzPageSizeOptions] =[5,10,15,20]>
+    <nz-table #basicTable [nzData]="tendersData" nzShowPagination nzShowSizeChanger [nzPageSizeOptions] =[5,10,15,20]>
         <thead>
           <tr>
-            <th>Ticket ID</th>
-            <th>Ticket Description</th>
-            <th>Status</th>
-            <th>Department ID</th>
-            <th>Created Date</th>
+            <th>S.No.</th>
+            <th>Tender Title</th>
+            <th>Vendor Name</th>
+            <th>Amount</th>
+            <th>Status</th>            
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          
+          <tr *ngFor="let data of tendersData | globalTablesearch : searchText; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ data.title}}</td>
+              <td>{{ data.vendor_name }}</td>
+              <td>{{ data.tender_cost | currencyIn}}</td>
+              <td>{{ data.status | titlecase}}</td>
+              <td>
+                <button nz-button class="approveBtn" *ngIf="data.status === 'open'" nzType="primary" (click)="onClickApprove(data)">
+                  Approve
+                </button>
+              </td>
+            </tr>          
         </tbody>
-      </nz-table>
+    </nz-table>
 
+    <nz-modal [(nzVisible)]="isVisible" nzWidth="700px" nzTitle="User Approvals" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+      <ng-container *nzModalContent>
+        <div nz-row>
+          <div nz-col nzSpan="6">Tender Title: </div>
+          <div nz-col nzSpan="8">{{ selectedTenderData?.title }}</div>
+        </div>
+        <div nz-row>
+          <div nz-col nzSpan="6">Vendor Name: </div>
+          <div nz-col nzSpan="8">{{ selectedTenderData?.vendor_name }}</div>
+        </div>        
+        <div nz-row>
+          <div nz-col nzSpan="6">Tender Cost: </div>
+          <div nz-col nzSpan="8">{{ selectedTenderData?.tender_cost | currencyIn }}</div>
+        </div>
+        <div class="usersTable">
+          <nz-table #basicTable [nzData]="userStatusList" nzShowPagination nzShowSizeChanger [nzPageSizeOptions] =[5,10,15,20]>
+            <thead>
+              <tr>
+                <th>S.No.</th>
+                <th>User Name</th>
+                <th>Status</th>
+                <th></th>  
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of userStatusList | globalTablesearch : searchText; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ data?.user_full_name }}</td>
+                  <td >
+                    <nz-select [(ngModel)]="userStatus" *ngIf="data?.user_id === currentUserId">
+                      <nz-option nzValue="Pending" nzLabel="Pending"></nz-option>
+                      <nz-option nzValue="Approved" nzLabel="Approved"></nz-option>
+                      <nz-option nzValue="Rejected" nzLabel="Rejected"></nz-option>
+                    </nz-select>
+                    <div *ngIf="data?.user_id !== currentUserId"> {{ data?.status }} </div>
+                  </td>
+                  <td>{{ data?.reason }}</td>
+                </tr> 
+                <tr>
+                  <td colspan="3" *ngIf="userStatus==='Rejected'">
+                    <textarea
+                      nz-input [(ngModel)]="reason"
+                      placeholder="Please enter a reason"
+                      [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+                    ></textarea>
+                  </td>
+                </tr>         
+            </tbody>
+        </nz-table>
+        </div>
+      </ng-container>
+    </nz-modal>
 </nz-content>

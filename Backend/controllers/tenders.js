@@ -5,7 +5,7 @@ const currdateTime = require("../middleware/currdate");
 exports.getTenders = async (req, res) => {
   db.query(
     "select t.*, v.vendor_name from tenders t, vendors v where t.vendor_id=v.vendor_id",
-    (err, result, fields) => {
+    (err, result) => {
       if (!err) {
         if (result.length > 0) res.status(200).send(result);
         else res.status(200).json({ message: "Tenders Not found" });
@@ -42,7 +42,7 @@ exports.createTender = async (req, res) => {
         updated_by: data.updated_by
       },
     ],
-    (err, result, fields) => {
+    (err, result) => {
       if (!err) {
         res
           .status(200)
@@ -81,12 +81,12 @@ exports.updateTender = async (req, res) => {
       },
       req.params.id,
     ],
-    (err, result, fields) => {
+    (err, result) => {
       console.log(result);
       if (!err)
         res
           .status(200)
-          .json({ status: "success", message: "Ticket updated successfully" });
+          .json({ status: "success", message: "Tender updated successfully" });
       else res.status(404).json({ status: "failed" });
     }
   );
@@ -96,11 +96,11 @@ exports.deleteTender = async (req, res) => {
   db.query(
     "delete from tenders where id = ?",
     [req.params.id],
-    (err, result, fields) => {
+    (err, result) => {
       if (!err)
         res
           .status(200)
-          .json({ status: "success", message: "Ticket deleted successfully" });
+          .json({ status: "success", message: "Tender deleted successfully" });
       else res.status(404).json({ status: "failed" });
     }
   );
@@ -110,11 +110,33 @@ exports.getTender= async (req, res) => {
   db.query(
     "select * from tenders where id = ?",
     [req.params.id],
-    (err, result, fields) => {
+    (err, result) => {
       if (!err) {
         if (result.lenght === 1) res.status(200).send(result);
-        else res.status(200).json({ message: "No Ticket found" });
+        else res.status(200).json({ message: "No Tenders found" });
       } else res.status(404).json({ status: "failed" });
+    }
+  );
+};
+
+exports.updateTenderUserStatus = async (req, res) => {
+  data = req.body;
+  db.query(
+    "update tenders set ? where id = ? ",
+    [
+      {
+        tender_user_status: JSON.stringify(data.tender_user_status),
+        updated_date: currdateTime,
+        updated_by: data.updated_by
+      },
+      req.params.id,
+    ],
+    (err, result) => {
+      console.log(result, err);
+      if (!err)
+        res.status(200).json({ status: "success", message: "Updated successfully" });
+      else 
+        res.status(404).json({ status: "failed" });
     }
   );
 };

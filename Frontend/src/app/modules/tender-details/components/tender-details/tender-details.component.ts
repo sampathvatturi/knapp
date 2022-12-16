@@ -48,12 +48,10 @@ export class TenderDetailsComponent implements OnInit {
     this.getWork();
     this.getVendor();
     this.getUser();
-    this.getTendor();
+    this.getTendors();
   }
 
-  /*functions for works,vendors,tendors and users*/
-
-  getTendor() {
+  getTendors() {
     this.tenderService.getTenderDetails().subscribe((res) => {
       if (res.length > 0) {
         this.tenders = res;
@@ -62,6 +60,7 @@ export class TenderDetailsComponent implements OnInit {
       }
     })
   }
+
   getWork() {
     this.works.getWorks().subscribe((res: any) => {
       this.worksDetails = res;
@@ -150,7 +149,7 @@ export class TenderDetailsComponent implements OnInit {
       this.tenderDetailsForm.value.work_id = this.tenderDetailsForm.value.work_id.toString();
       this.tenderService.createTenderDetail(this.prepareTendorPayload(this.tenderDetailsForm.value)).subscribe((res) => {
         this.visible = false;
-        this.getTendor();
+        this.getTendors();
         this.notification.createNotification("success", res?.message);
       })
     }
@@ -186,7 +185,7 @@ export class TenderDetailsComponent implements OnInit {
       this.tenderService.updateTenderDetail(this.tenderId, this.prepareUpdatePayload(this.tenderDetailsForm.value)).subscribe((res) => {
         this.notification.createNotification("success", res?.message);
         this.visible = false;
-        this.getTendor();
+        this.getTendors();
       })
     }
     else {

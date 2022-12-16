@@ -17,7 +17,7 @@ nz-header {
   nz-form-label{
     margin-bottom:-10px;
   }
-button{
+button {
     margin-top:29px;
 }
 nz-form-label::after{
@@ -34,6 +34,16 @@ nz-form-label::after{
   justify-content: space-between;
   margin-bottom: 10px;
 }
-.searchInput{
+.searchInput {
   width: 200px;
+}
+.approveBtn {
+  margin-top: 0PX !important;
+}
+.usersTable {
+  margin-top: 20px;
+}
+nz-select {
+  margin: 0 8px 10px 0;
+  width: 120px;
 }

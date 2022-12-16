@@ -28,7 +28,7 @@ export class TenderDetailsService {
   }
 
   updateTenderDetail(id: any, postDataObj: any): Observable<any> {
-    return this.apiService.patchCall('/tender/updateTender' + id, postDataObj).pipe(
+    return this.apiService.patchCall('/tender/updateTender/' + id, postDataObj).pipe(
       map((response: any) => {
         return response;
       })
@@ -37,6 +37,14 @@ export class TenderDetailsService {
 
   getTenderDetailById(id: any): Observable<any>{
     return this.apiService.getCall('/tender/getTender/:id'+id).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
+
+  updateTenderUserStatus(id: any, postDataObj: any): Observable<any> {
+    return this.apiService.patchCall('/tender/updateTenderUserStatus/' + id, postDataObj).pipe(
       map((response: any) => {
         return response;
       })
