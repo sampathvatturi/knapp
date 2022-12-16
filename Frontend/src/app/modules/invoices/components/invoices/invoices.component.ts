@@ -230,10 +230,9 @@ export class InvoicesComponent implements OnInit {
     });
   }
   selectVendor() {
-    console.log(this.invoiceForm.value.tender_id);
     this.tender_array.forEach((element: any) => {
       if(element.id == this.invoiceForm.value.tender_id){
-    this.invoiceForm.get('vendor_id')?.setValue(element.vendor_id.toString());
+        this.invoiceForm.get('vendor_id')?.setValue(element.vendor_id.toString());
       }
     });
   }
@@ -317,7 +316,7 @@ export class InvoicesComponent implements OnInit {
        this.inventory_details.patchValue(this.setindex(i, { price: singleArr[0].price }));
        this.inventory_details.patchValue(this.setindex(i, { taxPercent: singleArr[0].tax }));
      }
-    
+
     // this.updated_inventory.forEach((elem: any, index: any) => {
     //   if (elem.item_id == item )  {
     //     this.updated_inventory.splice(index, 1)
