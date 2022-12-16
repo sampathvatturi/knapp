@@ -1,7 +1,6 @@
 const db = require("../config/connection");
 const currdateTime = require("../middleware/currdate");
 
-//"select t.*, v.vendor_name from tenders t, vendors v where t.vendor_id=v.vendor_id",
 exports.getTenders = async (req, res) => {
   db.query(
     "select * from tenders",
@@ -166,6 +165,18 @@ exports.assignTender = async (req, res) => {
         res
           .status(200)
           .json({ status: "success", message: "Tendor Assigned successfully" });
+      } else res.status(404).json({ status: "failed" });
+    }
+  );
+};
+
+exports.getVendorTenders = async (req, res) => {
+  db.query(
+    "select t.*, v.vendor_name from tenders t, vendors v where t.vendor_id=v.vendor_id",
+    (err, result) => {
+      if (!err) {
+        if (result.length > 0) res.status(200).send(result);
+        else res.status(200).json({ message: "Tenders Not found" });
       } else res.status(404).json({ status: "failed" });
     }
   );

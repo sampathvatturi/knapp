@@ -36,8 +36,7 @@ export class ApprovalsComponent implements OnInit {
     private userService: UserService,
   ) { }
 
-  ngOnInit(): void {
-    
+  ngOnInit(): void {    
     this.user_data = sessionStorage.getItem('user_data');
     this.user_data = JSON.parse(this.user_data);
     this.currentUserId = this.user_data?.user_id;
@@ -46,12 +45,12 @@ export class ApprovalsComponent implements OnInit {
       type: ['tenders', [Validators.required]],
       status: ['open', [Validators.required]],
     });
-    this.getTendors();
+    this.getVendorTenders();
     this.getUsers();
   }
 
-  getTendors(action?: any): void {
-    this.tenderService.getTenderDetails().subscribe((res) => {
+  getVendorTenders(action?: any): void {
+    this.tenderService.getVendorTenders().subscribe((res) => {
       this.tenders = res;
       if(action) {        
         this.getTendersData();
@@ -137,7 +136,7 @@ export class ApprovalsComponent implements OnInit {
       this.tenderService.updateTenderUserStatus(this.currentTenderId, this.prepareUpdatePayload()).subscribe((res) => {
         this.notification.createNotification("success", res?.message);
         this.isVisible = false;
-        this.getTendors('update');
+        this.getVendorTenders('update');
       })
     }
   }

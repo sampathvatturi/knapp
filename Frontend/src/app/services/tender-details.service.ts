@@ -50,4 +50,12 @@ export class TenderDetailsService {
       })
     );
   }
+
+  getVendorTenders(): Observable<any>{
+    return this.apiService.getCall('/tender/getVendorTenders').pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
 }
