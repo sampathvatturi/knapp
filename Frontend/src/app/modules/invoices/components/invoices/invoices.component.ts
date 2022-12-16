@@ -103,7 +103,7 @@ export class InvoicesComponent implements OnInit {
     this.invoiceForm.get('status')?.setValue(data.status);
     this.invoiceForm.get('amount')?.setValue(data.amount);
     this.invoiceForm.get('tax')?.setValue(data.tax);
-    this.invoiceForm.get('grand_total')?.setValue(data.total);
+    this.invoiceForm.get('grand_total')?.setValue(data.grand_total);
     this.invoiceForm.get('updated_by')?.setValue(this.user_data.user_id);
     this.invoiceForm.get('inventory_details')?.patchValue(data.inventory_details);
     if(data.attachments != null && data.attachments !=''){
@@ -212,9 +212,9 @@ export class InvoicesComponent implements OnInit {
       amount: ['', [Validators.required]],
       inventory_details: this.fb.array([
         this.fb.group({
-          item: [''],
-          quantity: [null],
-          uom: [null],
+          item: ['', [Validators.required]],
+          quantity: [null, [Validators.required]],
+          uom: [null,[Validators.required]],
           price: [null],
           taxPercent: [null],
           amt: [0],
@@ -233,7 +233,7 @@ export class InvoicesComponent implements OnInit {
     console.log(this.invoiceForm.value.tender_id);
     this.tender_array.forEach((element: any) => {
       if(element.id == this.invoiceForm.value.tender_id){
-    this.invoiceForm.get('vendor_id')?.setValue(element.vendor_name);
+    this.invoiceForm.get('vendor_id')?.setValue(element.vendor_id.toString());
       }
     });
   }
@@ -242,16 +242,19 @@ export class InvoicesComponent implements OnInit {
     return this.invoiceForm.get("inventory_details") as FormArray
   }
   addInvertory() {
+    if(this.inventory_details.valid){
     this.inventory_details.push(this.fb.group({
-      item: [''],
-      quantity: [null],
-      uom: [null],
+      item: ['', [Validators.required]],
+      quantity: [null, [Validators.required]],
+      uom: [null, [Validators.required]],
       price: [null],
       taxPercent: [null],
       amt: [0],
       taxAmt: [0],
       total: [0],
-    }));
+    }));} else {
+      this.notification.createNotification('error','Fill all the fields');
+    }
   }
   removeInventory(i: any) {
     // let item = this.inventory_details.value[i].item;
@@ -299,13 +302,13 @@ export class InvoicesComponent implements OnInit {
     this.inventory_details.value.forEach((elem: any) =>{
       if(elem.item == item) count++;
     });
-    if(count > 1){
+    if(count > 1 && !this.inventory_details.value.uom){
       // this.inventory_details.patchValue(this.setindex(i, { item:'' }));
       this.inventory_details.patchValue(this.setindex(i, { quantity:null }));
        this.inventory_details.patchValue(this.setindex(i, { uom: null }));
        this.inventory_details.patchValue(this.setindex(i, { price: null }));
        this.inventory_details.patchValue(this.setindex(i, { taxPercent: null}));
-      return this.notification.createNotification('fail','Item already exists , please select another')
+      return this.notification.createNotification('error','Item already exists, Please select another')
      } else{
        let singleArr: any = [];
        singleArr = this.inventory_array.filter((elem: any) => elem.item_id == item);

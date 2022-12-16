@@ -9,3 +9,17 @@
 .dynamicForm nz-form-label {
     margin-bottom: -10px;
   }
+
+::ng-deep .dynamicForm .ant-form-item-label>label::after{
+    content: none;
+}
+.dynamicForm .required::after {
+    display: inline-block;
+    margin-left: 3px;
+    color: #ff4d4f;
+    font-size: 14px;
+    vertical-align: super;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: "*";
+  }
