@@ -24,6 +24,7 @@ import { TRANSACTION_DETAILS_COMPONENTS } from './transaction-details';
 import { UOM_COMPONENTS } from './masters';
 import { CREATE_TENDER_COMPONENTS } from './tender-details';
 import { ASSIGN_TENDER_COMPONENTS } from './tender-details';
+import { ACCOUNTS_COMPONENTS } from './accounts';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { ASSIGN_TENDER_COMPONENTS } from './tender-details';
     ...TRANSACTION_DETAILS_COMPONENTS,
     ...UOM_COMPONENTS,
     ...CREATE_TENDER_COMPONENTS,
-    ...ASSIGN_TENDER_COMPONENTS
+    ...ASSIGN_TENDER_COMPONENTS,
+    ...ACCOUNTS_COMPONENTS
 
   ],
   imports: [
