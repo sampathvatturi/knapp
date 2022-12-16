@@ -11,7 +11,7 @@ import { FUNDS_COMPONENTS } from './funds';
 import { INVENTORY_ITEMS_COMPONENTS } from './inventory-items';
 import { INVOICES_COMPONENTS } from './invoices';
 import { PAYMENT_PROCEEDINGS_COMPONENTS } from './payment-proceedings';
-import { ASSIGN_TENDER_ROUTES, TENDER_DETAILS_COMPONENTS } from './tender-details';
+import { TENDER_DETAILS_COMPONENTS } from './tender-details';
 import { PROFILE_COMPONENTS } from '../layouts/user/profile';
 import { USER_ACCOUNTS_COMPONENTS } from './user-accounts';
 import { VENDORS_COMPONENTS } from './vendors';
@@ -25,6 +25,7 @@ import { UOM_COMPONENTS } from './masters';
 import { CREATE_TENDER_COMPONENTS } from './tender-details';
 import { ASSIGN_TENDER_COMPONENTS } from './tender-details';
 import { ACCOUNTS_COMPONENTS } from './accounts';
+import { TRANSACTIONS_COMPONENTS } from './transactions';
 
 @NgModule({
   declarations: [
@@ -48,8 +49,8 @@ import { ACCOUNTS_COMPONENTS } from './accounts';
     ...UOM_COMPONENTS,
     ...CREATE_TENDER_COMPONENTS,
     ...ASSIGN_TENDER_COMPONENTS,
-    ...ACCOUNTS_COMPONENTS
-
+    ...ACCOUNTS_COMPONENTS,
+    ...TRANSACTIONS_COMPONENTS,
   ],
   imports: [
     ModulesRoutingModule,

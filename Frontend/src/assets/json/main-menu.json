@@ -60,8 +60,8 @@
           "icon": "fa-solid fa-calculator"
         },
         {
-          "title": "Transaction Details",
-          "route": "modules/transaction-details",
+          "title": "Transactions",
+          "route": "modules/transactions",
           "icon": "fa-solid fa-hands"
         }
       ]
