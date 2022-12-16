@@ -46,7 +46,7 @@
         <button nz-button nzType="primary" nz-col nzSpan="4" class="ml-2">Submit</button>        
     </form>
 
-    <nz-table #basicTable [nzData]="tendersData" nzShowPagination nzShowSizeChanger [nzPageSizeOptions] =[5,10,15,20]>
+    <nz-table #basicTable *ngIf="tendersData?.length > 0" [nzData]="tendersData" nzShowPagination nzShowSizeChanger [nzPageSizeOptions] =[5,10,15,20]>
         <thead>
           <tr>
             <th>S.No.</th>
@@ -77,15 +77,15 @@
       <ng-container *nzModalContent>
         <div nz-row>
           <div nz-col nzSpan="6">Tender Title: </div>
-          <div nz-col nzSpan="8">{{ selectedTenderData?.title }}</div>
+          <div nz-col nzSpan="8">{{ currentTenderData?.title }}</div>
         </div>
         <div nz-row>
           <div nz-col nzSpan="6">Vendor Name: </div>
-          <div nz-col nzSpan="8">{{ selectedTenderData?.vendor_name }}</div>
+          <div nz-col nzSpan="8">{{ currentTenderData?.vendor_name }}</div>
         </div>        
         <div nz-row>
           <div nz-col nzSpan="6">Tender Cost: </div>
-          <div nz-col nzSpan="8">{{ selectedTenderData?.tender_cost | currencyIn }}</div>
+          <div nz-col nzSpan="8">{{ currentTenderData?.tender_cost | currencyIn }}</div>
         </div>
         <div class="usersTable">
           <nz-table #basicTable [nzData]="userStatusList" nzShowPagination nzShowSizeChanger [nzPageSizeOptions] =[5,10,15,20]>
@@ -94,7 +94,7 @@
                 <th>S.No.</th>
                 <th>User Name</th>
                 <th>Status</th>
-                <th></th>  
+                <th>Reason</th>  
               </tr>
             </thead>
             <tbody>
@@ -109,7 +109,7 @@
                     </nz-select>
                     <div *ngIf="data?.user_id !== currentUserId"> {{ data?.status }} </div>
                   </td>
-                  <td>{{ data?.reason }}</td>
+                  <td>{{ (userStatus==='Rejected') ? data?.reason : '' }}</td>
                 </tr> 
                 <tr>
                   <td colspan="3" *ngIf="userStatus==='Rejected'">

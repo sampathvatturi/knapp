@@ -20,13 +20,14 @@ export class ApprovalsComponent implements OnInit {
   isVisible = false;
   users: any = [];
   userStatusList: any = [];
-  selectedTenderData: any = [];
+  currentTenderData: any = [];
   userStatus: any;
   user_data: any;
   currentUserId: any;
   tenderUserStatusList: any=[];
   reason: any;
   currentTenderId: any;
+  allUsersApprovedStatus: boolean = false;
   
 
   constructor(
@@ -77,7 +78,7 @@ export class ApprovalsComponent implements OnInit {
   }
 
   onClickApprove(data: any): void {
-    this.selectedTenderData = data;
+    this.currentTenderData = data;
     this.userApprovalList(data);
   }
 
@@ -102,16 +103,17 @@ export class ApprovalsComponent implements OnInit {
 
   handleOk(): void {
     console.log('Button ok clicked!', this.userStatus, this.userStatusList);
-    this.tenderUserStatusList=[];
+    this.tenderUserStatusList=[]; 
     this.userStatusList.forEach((user: any) => {
       const obj = {
         user_id: user?.user_id,
         status: (user?.user_id === this.currentUserId) ? this.userStatus : user?.status,
-        reason: (user?.user_id === this.currentUserId && this.userStatus === 'Rejected') ? this.reason : user?.reason
+        reason: (user?.user_id === this.currentUserId && this.userStatus === 'Rejected') ? this.reason : ''
       }
       this.tenderUserStatusList.push(obj);      
     });
     console.log('tenderUserStatusList :: ', this.tenderUserStatusList);
+    this.tenderUserStatusList.filter((item: any) => (item?.status==='Pending' || item?.status==='Rejected'))
     this.updateTenderUserStatus();
   }
 
@@ -121,9 +123,12 @@ export class ApprovalsComponent implements OnInit {
   }
 
   prepareUpdatePayload() {
+    this.allUsersApprovedStatus = this.tenderUserStatusList.every((item: any) => item.status === 'Approved');
+    console.log("allUsersApprovedStatus", this.allUsersApprovedStatus);
     const payload = {
       tender_user_status: this.tenderUserStatusList,
-      updated_by: this.user_data?.user_id
+      updated_by: this.user_data?.user_id,
+      status: this.allUsersApprovedStatus ? 'accept' : this.currentTenderData?.status
     }
     return payload;
   }
