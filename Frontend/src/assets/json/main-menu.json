@@ -55,8 +55,8 @@
           "icon": "fa-solid fa-dollar-sign"
         },
         {
-          "title": "Accouting Details",
-          "route": "modules/accounting-details",
+          "title": "Accounts",
+          "route": "modules/accounts",
           "icon": "fa-solid fa-calculator"
         },
         {

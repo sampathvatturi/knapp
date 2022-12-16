@@ -1,11 +1,11 @@
-<nz-breadcrumb>
+<nz-breadcrumb id="breadcrumb">
   <nz-breadcrumb-item>Home</nz-breadcrumb-item>
   <nz-breadcrumb-item>
     <a routerLink="modules/dashboard">Dashboard</a>
   </nz-breadcrumb-item>
   <nz-breadcrumb-item>Approvals</nz-breadcrumb-item>
 </nz-breadcrumb>
-<nz-content>
+<nz-content id="component-content">
 
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" nz-row nzGutter="16">
         <!-- <nz-form-item nz-col nzSpan="6">
@@ -43,7 +43,7 @@
             </nz-select>
           </nz-form-control>          
         </nz-form-item>
-        <button nz-button nzType="primary" nz-col nzSpan="4" class="ml-2">Submit</button>        
+        <button nz-button nzType="primary" nz-col nzSpan="2" class="ml-2"><span nz-icon nzType="search" nzTheme="outline"></span>Search</button>        
     </form>
 
     <nz-table #basicTable *ngIf="tendersData?.length > 0" [nzData]="tendersData" nzShowPagination nzShowSizeChanger [nzPageSizeOptions] =[5,10,15,20]>
@@ -78,18 +78,36 @@
 
     <nz-modal [(nzVisible)]="isVisible" nzWidth="700px" nzTitle="User Approvals" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
       <ng-container *nzModalContent>
+
         <div nz-row>
-          <div nz-col nzSpan="6">Tender Title: </div>
-          <div nz-col nzSpan="8">{{ currentTenderData?.title }}</div>
+            <div nz-col nzSpan="12">
+                  <div nz-row>
+                    <div nz-col nzSpan="8" class="name">Tender Title: </div>
+                    <div nz-col nzSpan="8">{{ currentTenderData?.title }}</div>
+                  </div>
+                  <div nz-row>
+                    <div nz-col nzSpan="8" class="name">Vender Name: </div>
+                    <div nz-col nzSpan="8">{{ currentTenderData?.vendor_name }}</div>
+                  </div>        
+                  <div nz-row>
+                    <div nz-col nzSpan="8" class="name">Tender Cost: </div>
+                    <div nz-col nzSpan="8">{{ currentTenderData?.tender_cost | currencyIn }}</div>
+                  </div>
+            </div>
+            <div nz-col nzSpan="12">
+              <div nz-row>
+                <div nz-col nzSpan="8" class="name">Location: </div>
+                <div nz-col nzSpan="8">{{ currentTenderData?.location }}</div>
+              </div>
+              <div nz-row>
+                <div nz-col nzSpan="8" class="name">Works: </div>
+                <div nz-col nzSpan="14">{{ workIdToName(currentTenderData?.work_id) }}</div>
+              </div>        
+            </div>
         </div>
-        <div nz-row>
-          <div nz-col nzSpan="6">Vendor Name: </div>
-          <div nz-col nzSpan="8">{{ currentTenderData?.vendor_name }}</div>
-        </div>        
-        <div nz-row>
-          <div nz-col nzSpan="6">Tender Cost: </div>
-          <div nz-col nzSpan="8">{{ currentTenderData?.tender_cost | currencyIn }}</div>
-        </div>
+    
+        
+
         <div class="usersTable">
           <nz-table #basicTable [nzData]="userStatusList" nzShowPagination nzShowSizeChanger [nzPageSizeOptions] =[5,10,15,20]>
             <thead>

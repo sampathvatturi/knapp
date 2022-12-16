@@ -23,10 +23,8 @@
     <thead>
       <tr>
         <th>S.No.</th>
-        <th>Title</th>
         <th>Remarks</th>
         <th>Vendor</th>
-        <th>Tender</th>
         <th>Total Amount</th>
         <!-- <th>Transaction Type</th> -->
         <th>Total Tax</th>
@@ -42,10 +40,8 @@
           let i = index
         ">
         <td>{{ i + 1 }}</td>
-        <td>{{ data.title }}</td>
         <td>{{ data.remarks }}</td>
         <td>{{ v_name[data.vendor_id] }}</td>
-        <td>{{ t_name[data.tender_id] }}</td>
         <td>{{ data.amount | currencyIn}}</td>
         <!-- <td>{{ data.trnsx_type }}</td> -->
         <td>{{ data.tax | currencyIn}}</td>
@@ -73,11 +69,15 @@
 
     <div>
       <nz-form-item>
-        <nz-form-label nz-col nzSpan="5" class="required">Tender</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Select Tender">
-          <nz-select formControlName="tender_id" nzPlaceHolder="Tender" nzShowSearch (ngModelChange)="selectVendor()">
-            <nz-option *ngFor="let t of tender_array" nzValue="{{ t.id }}" nzLabel="{{ t.title}}"></nz-option>
-          </nz-select>
+        <nz-form-label nz-col nzSpan="5" class="required">Invoice Number</nz-form-label>
+        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="invoiceErrorTip3">
+          <input nz-input formControlName="invoice_number" placeholder="Enter Invoice Number" readonly />
+          <ng-template #invoiceErrorTip3 let-control>
+            <ng-container *ngIf="control.hasError('required')">Please Invoice Number</ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">{{
+              globalConstants.amountError
+              }}</ng-container>
+          </ng-template>
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -85,28 +85,14 @@
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5" class="required">Vendor</nz-form-label>
         <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Select Vendor">
-          <!-- <input nz-input formControlName="vendor_id" (keyup)="selectVendor()" readonly/> -->
           <nz-select formControlName="vendor_id" nzPlaceHolder="Vendor" nzShowSearch >
-            <nz-option *ngFor="let v of vendor_array" nzValue="{{ v.vendor_id }}" nzDisabled
+            <nz-option *ngFor="let v of vendor_array" nzValue="{{ v.vendor_id }}"
               nzLabel="{{ v.vendor_name }}"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
     </div>
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5" class="required">Title</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="invoiceErrorTip1">
-          <input nz-input formControlName="title" placeholder="Enter Title" />
-          <ng-template #invoiceErrorTip1 let-control>
-            <ng-container *ngIf="control.hasError('required')">Please enter invoice Title</ng-container>
-            <ng-container *ngIf="control.hasError('maxlength')">Maxlength exceeded<br /></ng-container>
-            <ng-container *ngIf="control.hasError('minlength')">Please enter atleast 10 characters<br /></ng-container>
-            <ng-container *ngIf="control.hasError('pattern')">Please enter valid input</ng-container>
-          </ng-template>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
+    
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5" class="required">Remarks</nz-form-label>
@@ -121,20 +107,7 @@
         </nz-form-control>
       </nz-form-item>
     </div>
-    <div>
-      <nz-form-item>
-        <nz-form-label nz-col nzSpan="5" class="required">Invoice Number</nz-form-label>
-        <nz-form-control nz-col nzSpan="10" [nzErrorTip]="invoiceErrorTip3">
-          <input nz-input formControlName="invoice_number" placeholder="Enter Invoice Number" />
-          <ng-template #invoiceErrorTip3 let-control>
-            <ng-container *ngIf="control.hasError('required')">Please Invoice Number</ng-container>
-            <ng-container *ngIf="control.hasError('pattern')">{{
-              globalConstants.amountError
-              }}</ng-container>
-          </ng-template>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
+    
     <div>
       <nz-form-item>
         <nz-form-label nz-col nzSpan="5" class="required">Status</nz-form-label>
@@ -173,7 +146,7 @@
     </div>
 
     <!-- dynaminc form fields -->
-    <nz-divider nzText="Inventory Details" nzOrientation="left"></nz-divider>
+    <nz-divider nzText="Item Details" nzOrientation="left"></nz-divider>
     <div formArrayName="inventory_details" class="dynamicForm">
       <div *ngFor="let x of inventory_details.controls; let i = index" formGroupName="{{i}}" class="mb-1" nz-row
         nzJustify="space-between" nzAlign="bottom">
@@ -181,10 +154,11 @@
         <nz-form-item nz-col [nzSpan]="4">
           <nz-form-label *ngIf="i === 0" class="required">Item</nz-form-label>
           <nz-form-control>
-            <nz-select formControlName="item" nzPlaceHolder="Select Item" nzShowSearch (ngModelChange)="autoselect(i)">
+            <!-- <nz-select formControlName="item" nzPlaceHolder="Select Item" nzShowSearch (ngModelChange)="autoselect(i)">
               <nz-option *ngFor="let inv of updated_inventory" nzValue="{{ inv.item_id }}"
                 nzLabel="{{ inv.item_name }}"></nz-option>
-            </nz-select>
+            </nz-select> -->
+            <input nz-input formControlName="item" placeholder="Item name" />
           </nz-form-control>
         </nz-form-item>
 
@@ -197,21 +171,21 @@
         <nz-form-item nz-col [nzSpan]="2">
           <nz-form-label *ngIf="i === 0">UOM</nz-form-label>
           <nz-form-control>
-            <input nz-input formControlName="uom" placeholder="UOM" (keyup)="autoselect(i)" readonly/>
+            <input nz-input formControlName="uom" placeholder="UOM"/>
           </nz-form-control>
         </nz-form-item>
 
         <nz-form-item nz-col [nzSpan]="3">
           <nz-form-label *ngIf="i === 0">Price</nz-form-label>
           <nz-form-control>
-            <input nz-input formControlName="price" placeholder="Price" (keyup)="autoselect(i)" readonly/>
+            <input nz-input formControlName="price" placeholder="Price" (keyup)="change(i)"/>
           </nz-form-control>
         </nz-form-item>
 
         <nz-form-item nz-col [nzSpan]="2">
           <nz-form-label *ngIf="i === 0">Tax</nz-form-label>
           <nz-form-control>
-            <input nz-input formControlName="taxPercent" placeholder="Tax" (keyup)="autoselect(i)" readonly/>
+            <input nz-input formControlName="taxPercent" placeholder="Tax" (keyup)="change(i)"/>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item nz-col [nzSpan]="3">

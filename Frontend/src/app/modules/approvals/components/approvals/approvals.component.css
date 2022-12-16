@@ -1,44 +1,15 @@
-nz-header {
-    background: none;
-    font-size: large;
-    font-weight: 500;
-  }
-  nz-content {
-    background: #fff;
-    padding: 24px;
-    min-height: 80vh;
-    padding-top: 12px;
-  
-  }
-  nz-breadcrumb {
-    padding-top: 2px;
-    padding-bottom: 5px;
-  }
+
   nz-form-label{
     margin-bottom:-10px;
   }
 button {
     margin-top:29px;
 }
-nz-form-label::after{
-    display: inline-block;
-    margin-left: -7px;
-    color: #ff4d4f;
-    font-size: 14px;
-    font-family: SimSun,sans-serif;
-    line-height: 1;
-    content: '*';
-}
-.cbutton {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-.searchInput {
-  width: 200px;
-}
+
 .approveBtn {
   margin-top: 0PX !important;
+  background-color: #52c41a;
+
 }
 .usersTable {
   margin-top: 20px;
@@ -49,4 +20,8 @@ nz-select {
 }
 .divCenter{
   text-align: center;
+}
+.name{
+  font-weight: 500;
+  font-size:14px;
 }

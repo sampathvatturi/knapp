@@ -20,6 +20,7 @@ import { TRANSACTION_DETAILS_ROUTES } from './transaction-details';
 import { UOM_ROUTES } from './masters';
 import { CREATE_TENDER_ROUTES } from './tender-details';
 import { ASSIGN_TENDER_ROUTES } from './tender-details';
+import { ACCOUNTS_ROUTES } from './accounts';
 
 
 const routes: Routes = [
@@ -48,6 +49,7 @@ const routes: Routes = [
   ...UOM_ROUTES,
   ...CREATE_TENDER_ROUTES,
   ...ASSIGN_TENDER_ROUTES,
+  ...ACCOUNTS_ROUTES,
   { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];
 

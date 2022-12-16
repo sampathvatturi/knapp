@@ -4,6 +4,7 @@ import { NotificationService } from 'src/app/services/auth/notification.service'
 import { TenderDetailsService } from 'src/app/services/tender-details.service';
 import { TransactionDetailsService } from 'src/app/services/transaction-details.service';
 import { UserService } from 'src/app/services/user.service';
+import { WorksService } from 'src/app/services/works.service';
 
 @Component({
   selector: 'app-approvals',
@@ -27,6 +28,7 @@ export class ApprovalsComponent implements OnInit {
   tenderUserStatusList: any=[];
   reason: any;
   currentTenderId: any;
+  works_info:any = [];
   allUsersApprovedStatus: boolean = false;
   noDataShow: boolean = false;
   
@@ -36,6 +38,7 @@ export class ApprovalsComponent implements OnInit {
     private notification: NotificationService,
     private tenderService: TenderDetailsService,
     private userService: UserService,
+    private works:WorksService
   ) { }
 
   ngOnInit(): void {    
@@ -49,8 +52,9 @@ export class ApprovalsComponent implements OnInit {
     });
     this.getVendorTenders();
     this.getUsers();
+    this.getWorks();
   }
-
+  
   getVendorTenders(action?: any): void {
     this.tenderService.getVendorTenders().subscribe((res) => {
       this.tenders = res;
@@ -64,6 +68,24 @@ export class ApprovalsComponent implements OnInit {
     this.userService.getAllUsers().subscribe((res) => {
       this.users = res;
     });
+  }
+  getWorks(){
+    this.works.getWorks().subscribe((res) => {
+      this.works_info = res;
+    })
+  }
+
+  workIdToName(id:any){
+    let arr = id.split(',');
+    for (let index = 0; index < arr.length; index++) {
+      this.works_info.forEach((element:any) => {
+        if (element.work_id == Number(arr[index])){
+          arr[index]= element.work_name;
+        }
+      })
+      
+    }
+    return arr.join(', ');
   }
 
   submitForm(): void {

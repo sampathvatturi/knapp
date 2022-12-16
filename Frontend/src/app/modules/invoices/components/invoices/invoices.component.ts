@@ -96,8 +96,6 @@ export class InvoicesComponent implements OnInit {
     this.invoiceFormValidators();
     this.invoiceId = data.invoice_id
     this.invoiceForm.get('vendor_id')?.setValue(data.vendor_id.toString());
-    this.invoiceForm.get('tender_id')?.setValue(data.tender_id.toString());
-    this.invoiceForm.get('title')?.setValue(data.title);
     this.invoiceForm.get('remarks')?.setValue(data.remarks);
     this.invoiceForm.get('invoice_number')?.setValue(data.invoice_number);
     this.invoiceForm.get('status')?.setValue(data.status);
@@ -126,6 +124,7 @@ export class InvoicesComponent implements OnInit {
     this.filesDetails.url = '';
     this.files = [];
     this.invoiceFormValidators();
+    this.invoiceForm.get('invoice_number')?.setValue(Math.floor(Math.random() * 100000));
     this.invoiceForm.get('status')?.setValue('open');
     this.invoiceForm.get('created_by')?.setValue(this.user_data.user_id);
     this.invoiceForm.get('updated_by')?.setValue(this.user_data.user_id);
@@ -142,7 +141,7 @@ export class InvoicesComponent implements OnInit {
     this.updated_inventory = [...this.inventory_array];
   }
   onSubmit() {
-
+    if(this.itemRepeat()) return this.notification.createNotification('error', 'Duplicate Items');
     if (this.invoiceForm.valid) {
       var fileNames: any[] = [];
       this.files.forEach(element => {
@@ -172,6 +171,7 @@ export class InvoicesComponent implements OnInit {
     }
   }
   onUpdate() {
+    if(this.itemRepeat()) return this.notification.createNotification('error', 'Duplicate Items');
     if (this.invoiceForm.valid) {
       this.api
         .patchCall(
@@ -204,10 +204,8 @@ export class InvoicesComponent implements OnInit {
   invoiceFormValidators() {
     this.invoiceForm = this.fb.group({
       vendor_id: ['', [Validators.required]],
-      tender_id: ['', [Validators.required]],
       invoice_number: ['', [Validators.required]],
       status: ['', [Validators.required]],
-      title: ['', [Validators.required]],
       remarks: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(200), Validators.pattern(GlobalConstants.nameRegex)]],
       amount: ['', [Validators.required]],
       inventory_details: this.fb.array([
@@ -215,8 +213,8 @@ export class InvoicesComponent implements OnInit {
           item: ['', [Validators.required]],
           quantity: [null, [Validators.required]],
           uom: [null,[Validators.required]],
-          price: [null],
-          taxPercent: [null],
+          price: [null,[Validators.required]],
+          taxPercent: [null,[Validators.required]],
           amt: [0],
           taxAmt: [0],
           total: [0],
@@ -229,25 +227,44 @@ export class InvoicesComponent implements OnInit {
       updated_by: [''],
     });
   }
-  selectVendor() {
-    this.tender_array.forEach((element: any) => {
-      if(element.id == this.invoiceForm.value.tender_id){
-        this.invoiceForm.get('vendor_id')?.setValue(element.vendor_id.toString());
-      }
+  itemRepeat(){
+    let itemArr:any = [];
+    let result = false
+    this.inventory_details.value.forEach((elem:any) => {
+      itemArr.push(elem.item);
     });
+    itemArr.forEach((elem:any) =>{
+      let count = 0;
+      for(let i = 0; i < itemArr.length;i++){
+        if(elem == itemArr[i]) {count++}
+        if(count>1) {
+          result = true; 
+          break;
+        }
+      }
+    })
+    return result;
   }
+  // selectVendor() {
+  //   this.tender_array.forEach((element: any) => {
+  //     if(element.id == this.invoiceForm.value.tender_id){
+  //       this.invoiceForm.get('vendor_id')?.setValue(element.vendor_id.toString());
+  //     }
+  //   });
+  // }
   //dynamic form fields
   get inventory_details() {
     return this.invoiceForm.get("inventory_details") as FormArray
   }
   addInvertory() {
+    if(this.itemRepeat()) return this.notification.createNotification('error', 'Duplicate Items');
     if(this.inventory_details.valid){
     this.inventory_details.push(this.fb.group({
       item: ['', [Validators.required]],
       quantity: [null, [Validators.required]],
       uom: [null, [Validators.required]],
-      price: [null],
-      taxPercent: [null],
+      price: [null,[Validators.required]],
+      taxPercent: [null,[Validators.required]],
       amt: [0],
       taxAmt: [0],
       total: [0],
@@ -295,34 +312,34 @@ export class InvoicesComponent implements OnInit {
     this.tot = Number(this.invoiceForm.value.amount) + Number(this.invoiceForm.value.tax);
     this.invoiceForm.get('grand_total')?.setValue(this.tot);
   }
-  autoselect(i: any) {
-    let item = this.inventory_details.value[i].item;
-    let count =0;
-    this.inventory_details.value.forEach((elem: any) =>{
-      if(elem.item == item) count++;
-    });
-    if(count > 1 && !this.inventory_details.value.uom){
-      // this.inventory_details.patchValue(this.setindex(i, { item:'' }));
-      this.inventory_details.patchValue(this.setindex(i, { quantity:null }));
-       this.inventory_details.patchValue(this.setindex(i, { uom: null }));
-       this.inventory_details.patchValue(this.setindex(i, { price: null }));
-       this.inventory_details.patchValue(this.setindex(i, { taxPercent: null}));
-      return this.notification.createNotification('error','Item already exists, Please select another')
-     } else{
-       let singleArr: any = [];
-       singleArr = this.inventory_array.filter((elem: any) => elem.item_id == item);
-       this.inventory_details.patchValue(this.setindex(i, { quantity:null }));
-       this.inventory_details.patchValue(this.setindex(i, { uom: singleArr[0].uom_name }));
-       this.inventory_details.patchValue(this.setindex(i, { price: singleArr[0].price }));
-       this.inventory_details.patchValue(this.setindex(i, { taxPercent: singleArr[0].tax }));
-     }
+  // autoselect(i: any) {
+  //   let item = this.inventory_details.value[i].item;
+  //   let count =0;
+  //   this.inventory_details.value.forEach((elem: any) =>{
+  //     if(elem.item == item) count++;
+  //   });
+  //   if(count > 1 && !this.inventory_details.value.uom){
+  //     // this.inventory_details.patchValue(this.setindex(i, { item:'' }));
+  //     this.inventory_details.patchValue(this.setindex(i, { quantity:null }));
+  //      this.inventory_details.patchValue(this.setindex(i, { uom: null }));
+  //      this.inventory_details.patchValue(this.setindex(i, { price: null }));
+  //      this.inventory_details.patchValue(this.setindex(i, { taxPercent: null}));
+  //     return this.notification.createNotification('error','Item already exists, Please select another')
+  //    } else{
+  //      let singleArr: any = [];
+  //      singleArr = this.inventory_array.filter((elem: any) => elem.item_id == item);
+  //      this.inventory_details.patchValue(this.setindex(i, { quantity:null }));
+  //      this.inventory_details.patchValue(this.setindex(i, { uom: singleArr[0].uom_name }));
+  //      this.inventory_details.patchValue(this.setindex(i, { price: singleArr[0].price }));
+  //      this.inventory_details.patchValue(this.setindex(i, { taxPercent: singleArr[0].tax }));
+  //    }
 
     // this.updated_inventory.forEach((elem: any, index: any) => {
     //   if (elem.item_id == item )  {
     //     this.updated_inventory.splice(index, 1)
     //   }
     // });
-  }
+  // }
   setindex(i: any, data: any) {
     let arr = [];
     arr[i] = data;
