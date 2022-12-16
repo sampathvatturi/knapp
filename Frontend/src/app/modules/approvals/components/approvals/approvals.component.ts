@@ -28,6 +28,7 @@ export class ApprovalsComponent implements OnInit {
   reason: any;
   currentTenderId: any;
   allUsersApprovedStatus: boolean = false;
+  noDataShow: boolean = false;
   
 
   constructor(
@@ -67,6 +68,7 @@ export class ApprovalsComponent implements OnInit {
 
   submitForm(): void {
     console.log(this.validateForm.value);
+    this.noDataShow = true;
     if(this.validateForm.value.type === 'tenders') {
       this.getTendersData();
     }

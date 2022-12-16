@@ -73,6 +73,9 @@
         </tbody>
     </nz-table>
 
+          
+    <div class="divCenter" *ngIf="(tendersData?.length===0 && noDataShow)">No data available</div>
+
     <nz-modal [(nzVisible)]="isVisible" nzWidth="700px" nzTitle="User Approvals" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
       <ng-container *nzModalContent>
         <div nz-row>
@@ -122,7 +125,7 @@
                 </tr>         
             </tbody>
         </nz-table>
-        </div>
+        </div> 
       </ng-container>
     </nz-modal>
 </nz-content>

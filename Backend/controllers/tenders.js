@@ -112,6 +112,7 @@ exports.updateTenderUserStatus = async (req, res) => {
     [
       {
         tender_user_status: JSON.stringify(data.tender_user_status),
+        status: data.status,
         updated_date: currdateTime,
         updated_by: data.updated_by
       },
