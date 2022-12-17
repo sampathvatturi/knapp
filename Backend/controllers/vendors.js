@@ -32,6 +32,7 @@ exports.createVendor = async (req, res) => {
     (err, result) => {      
       console.log("Error in Vendor Creation", err, result);
       if (!err) {
+        db.query("insert into account_heads set name = '"+data.vendor_name+"',ref_id="+result.insertId+" ");
         // res.status(200).json({status: "success", message: "Vendor added successfully",});
         db.query("INSERT INTO `users` SET ? ", 
         [{

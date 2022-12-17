@@ -112,7 +112,7 @@ exports.updateTenderUserStatus = async (req, res) => {
     [
       {
         tender_user_status: JSON.stringify(data.tender_user_status),
-        status: data.status,
+        status:data.status,
         updated_date: currdateTime,
         updated_by: data.updated_by
       },
@@ -130,9 +130,6 @@ exports.updateTenderUserStatus = async (req, res) => {
 
 exports.assignTender = async (req, res) => {
   data = req.body;
-  work_id = data.work_id.toString();
-  start_date = data.start_date.toString().replace(/T/, ' ').replace(/\..+/, '');
-  end_date = data.end_date.toString().replace(/T/, ' ').replace(/\..+/, '');
   tender_user_status=[];
   data.tender_user_status.forEach(element => {
     let temp = {
@@ -142,22 +139,14 @@ exports.assignTender = async (req, res) => {
     };
     tender_user_status.push(temp)
   });
+  
   db.query(
     "update `tenders` SET ? where tender_id = ? ",
     [
       {
-        title: data.title,
-        description: data.description,
         vendor_id: data.vendor_id,
-        work_id: work_id,
-        location: data.location,
-        tender_cost: data.tender_cost,
         status: data.status,
-        start_date: start_date,
-        end_date: end_date,
         tender_user_status: JSON.stringify(tender_user_status),
-        attachments: data.attachments,
-        created_by: data.created_by,
         updated_by: data.updated_by
       },
     ],
