@@ -18,9 +18,8 @@
         Add &nbsp; <i class="fa-solid fa-plus"></i>
       </button>
     </div>
-
     <nz-table #basicTable [nzData]="tenders" nzShowPagination nzShowSizeChanger [nzPageSizeOptions]="[5, 10, 15, 20]"
-      nzSize="middle">
+      nzSize="middle" [nzNoResult]= dataMessage [nzLoading]="isLoading">
       <thead>
         <tr>
           <th>S.No.</th>

@@ -5,6 +5,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { GlobalConstants } from 'src/app/shared/global_constants';
 import { UserService } from 'src/app/services/user.service';
 import { TenderDetailsService } from 'src/app/services/tender-details.service';
+import { NotificationService } from 'src/app/services/auth/notification.service';
 
 
 @Component({
@@ -31,7 +32,8 @@ export class AssignTenderComponent implements OnInit {
     private msg: NzMessageService,
     private vendor: VendorsService,
     private user: UserService,
-    private tender:TenderDetailsService
+    private tender:TenderDetailsService,
+    private notification :NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -110,6 +112,7 @@ export class AssignTenderComponent implements OnInit {
   showTender(){
     this.tenders.forEach((element:any) =>{
       if (element.id == this.assignTendersForm.value.tender_id){
+        this.tenderId = element.id
         this.assignTendersForm.get('description')?.setValue(element.description);
         this.assignTendersForm.get('tender_cost')?.setValue(element.tender_cost);
       }
@@ -133,13 +136,13 @@ export class AssignTenderComponent implements OnInit {
   onCreateSubmit() {
     if (this.assignTendersForm.valid) {
       //service
-      // this.tendersapi.createTenderDetail(this.createTenderForm.value).subscribe(res=>{
-      //   if(res.status == 'success')
-      //     this.notification.createNotification('success',res.message);
-      //   else
-      //     this.notification.createNotification('error',res.message);
-      // })
-    console.log(this.assignTendersForm.value)
+      this.tender.assignTender(this.tenderId,this.assignTendersForm.value).subscribe(res=>{
+        if(res.status == 'success')
+          this.notification.createNotification('success',res.message);
+        else
+          this.notification.createNotification('error',res.message);
+      })
+    // console.log(this.assignTendersForm.value)
 
     }
     else {

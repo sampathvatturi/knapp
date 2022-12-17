@@ -38,6 +38,8 @@ export class CreateTenderComponent implements OnInit {
   baseUrl = environment.apiUrl;
   uploadUrl = this.baseUrl+'/upload/uploadFiles';
   getUploadedFIlesUrl = this.baseUrl+'/upload/getUploadedFiles/';
+  isLoading : boolean = true ;
+  dataMessage = 'Loading';
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -67,7 +69,12 @@ export class CreateTenderComponent implements OnInit {
 
   getCreateTender(){
     this.tendersapi.getTenderDetails().subscribe((res)=>{
+      this.isLoading = true;
+      if(res.status = 204){
+        this.dataMessage = res.message
+      }
       this.tenders = res;
+      this.isLoading = false ;
     })
   }
 
