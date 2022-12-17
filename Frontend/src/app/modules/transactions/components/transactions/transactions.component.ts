@@ -3,6 +3,7 @@ import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
 import { TransactionDetailsService } from 'src/app/services/transaction-details.service';
+import { TransactionsService } from 'src/app/services/transactions.service';
 import { GlobalConstants } from 'src/app/shared/global_constants';
 
 @Component({
@@ -25,19 +26,26 @@ transactions = [];
   constructor(
     private fb: UntypedFormBuilder,
     private notification: NotificationService,
+    private transactionsservice:TransactionsService
   ) { }
 
   ngOnInit(): void {
     this.user_data = sessionStorage.getItem('user_data');
     this.user_data = JSON.parse(this.user_data);
     this.transactionsFormValidators();
-
+    this.getTransactions();
+  }
+  getTransactions(){
+    this.transactionsservice.getTransactions().subscribe(res =>{
+      this.transactions = res;
+    })
   }
   create(): void {
     this.submit = true;
     this.drawerTitle = 'Add Transaction';
     this.visible = true;
     this.transactionsFormValidators();
+    
   }
   
   prepareCreatePayload(data: any) {
@@ -56,7 +64,10 @@ transactions = [];
 
   onCreateSubmit() {
     if (this.transactionsForm.valid) {
-      //service
+      this.transactionsservice.createTransaction(this.prepareCreatePayload(this.transactionsForm.value)).subscribe( res =>{
+        this.notification.createNotification(res.status, res.message);
+        this.getTransactions();
+      });
     } else {
       Object.values(this.transactionsForm.controls).forEach((control) => {
         if (control.invalid) {
