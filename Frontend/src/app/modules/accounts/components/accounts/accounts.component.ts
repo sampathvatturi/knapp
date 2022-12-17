@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { NotificationService } from 'src/app/services/auth/notification.service';
 import { GlobalConstants } from 'src/app/shared/global_constants';
+import { AccountsService } from 'src/app/services/accounts.service';
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
@@ -21,7 +22,8 @@ export class AccountsComponent implements OnInit {
 
   constructor(
     private fb: UntypedFormBuilder,
-    private notification:NotificationService
+    private notification:NotificationService,
+    private accountHeadService:AccountsService
   ) { }
 
   ngOnInit(): void {
@@ -29,11 +31,13 @@ export class AccountsComponent implements OnInit {
     this.user_data = sessionStorage.getItem('user_data');
     this.user_data = JSON.parse(this.user_data);
     this.getAccounts();
-    this.accounts_info = [{account_name:"Electricity"},{account_name:"Salaries"}]
+    // this.accounts_info = [{account_name:"Electricity"},{account_name:"Salaries"}]
 
   }
   getAccounts():void{
-    //for service
+    this.accountHeadService.getAccountHeads().subscribe((res) =>{
+      this.accounts_info = res
+    });
   }
 
   create():void{
@@ -42,25 +46,27 @@ export class AccountsComponent implements OnInit {
       this.visible = true;
       this.accountsFormValidators();
   }
+
   edit(type:any,data: any){
     this.submit = false;
       this.drawerTitle = 'Edit Accounts';
       this.visible = true;
-      this.accountsId = data?.account_id;
+      this.accountsId = data?.id;
       this.accountsFormValidators();
-      this.accountsForm.get('account_name')?.setValue(data.account_name);
+      this.accountsForm.get('name')?.setValue(data.name);
       this.updateBtnDisable = true;
       if (type === 'view'){
         this.updateBtnDisable = false;
       }
   }
+
   close(){
     this.visible = false;
   }
 
   prepareaccountsPayload(data:any){
     const payload = {
-      account_name:data.account_name,
+      name:data.name,
       created_by:this.user_data.user_id,
       updated_by:this.user_data?.user_id
     }
@@ -69,7 +75,11 @@ export class AccountsComponent implements OnInit {
 
   onCreateSubmit() {
     if (this.accountsForm.valid){
-      //service
+      this.accountHeadService.createAccountHead(this.prepareaccountsPayload(this.accountsForm.value)).subscribe((res)=>{
+        this.visible = false;
+        this.getAccounts();
+        this.notification.createNotification("success", res?.message);
+    });
     }
     else {
       console.log('invalid')
@@ -83,14 +93,19 @@ export class AccountsComponent implements OnInit {
   }
   prepareUpdatePayload(data:any){
     const payload = {
-      account_name:data.account_name,
+      name:data.name,
       updated_by:this.user_data?.user_id
     }
     return payload;
   }
+  
   onUpdateSubmit() {
     if (this.accountsForm.valid) {
-      //service
+      this.accountHeadService.updateAccountHead(this.accountsId, this.prepareUpdatePayload(this.accountsForm.value)).subscribe((res) => {
+        this.notification.createNotification(res.status,res.message);        
+        this.visible = false;
+        this.getAccounts();
+      });
     } else {
         console.log('invalid')
         Object.values(this.accountsForm.controls).forEach(control => {
@@ -104,7 +119,7 @@ export class AccountsComponent implements OnInit {
 
   accountsFormValidators(){
     this.accountsForm = this.fb.group({
-      account_name:['',[Validators.required,Validators.pattern(GlobalConstants.nameRegex),Validators.minLength(3),Validators.maxLength(50)]]
+      name:['',[Validators.required,Validators.pattern(GlobalConstants.nameRegex),Validators.minLength(3),Validators.maxLength(50)]]
     })
   }
 }

@@ -9,8 +9,8 @@
       "title": "Tender",
       "icon": "fa-solid fa-circle-info",
       "children":[
-        {"title":"Create Tender",
-          "route":"modules/tender-details",
+        {"title":"Tender Details",
+          "route":"modules/create-tender",
           "icon": "fa-solid fa-file-circle-plus"
         },
         {

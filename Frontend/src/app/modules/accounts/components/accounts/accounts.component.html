@@ -32,7 +32,7 @@
             let i = index
           ">
           <td>{{ i + 1 }}</td>
-          <td>{{ data.account_name }}</td>
+          <td>{{ data.name }}</td>
           <td>
             <div id="editbtn">
               <a nz-tooltip="Edit" (click)="edit('edit',data)"><i class="fa-regular fa-pen-to-square"></i></a>
@@ -55,7 +55,7 @@
         <nz-form-item>
           <nz-form-label nz-col nzSpan="5" class="required">Account Name</nz-form-label>
           <nz-form-control nz-col nzSpan="10" [nzErrorTip]="worksErrorTip">
-            <input nz-input formControlName="account_name" type="text" nz-input placeholder="Please Enter Work Name" />
+            <input nz-input formControlName="name" type="text" nz-input placeholder="Please Enter Account Name" />
             <ng-template #worksErrorTip let-control>
               <ng-container *ngIf="control.hasError('required')">Please enter account name</ng-container>
               <ng-container *ngIf="control.hasError('pattern')">Please enter valid input<br /></ng-container>
