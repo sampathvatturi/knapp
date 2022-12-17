@@ -23,7 +23,6 @@ exports.createTransaction = async (req, res) => {
 
 exports.getTransactions = async (req, res) => {
   data = req.body;
-  console.log(data)
   if(data.type==='all'){
     query = "select * from transactions where (trsxcn_date between '"+data.start_date+"' and '"+data.end_date+"') and (acc_head  = "+data.acc_head+" or ref_acc_head = "+data.acc_head+") ";
   }else{
@@ -33,7 +32,7 @@ exports.getTransactions = async (req, res) => {
   db.query (query,(err, result) => {
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
-      else res.status(404).json({ message: "Transactions not found" });
+      else res.status(204).json({ message: "Transactions not found" });
     } else res.status(401).json({ status: "failed" });
   });
 };
