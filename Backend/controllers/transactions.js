@@ -5,10 +5,13 @@ const currdateTime = require('../middleware/currdate');
 
 exports.createTransaction = async (req, res) => {
   data = req.body;
+  trsxcn_date = currdateTime;
   //acc_head = to,ref_acc_head = from
-  credit_query = "insert into transactions set acc_head = "+data.acc_head+",type='credit',remarks="+data.remarks+",mode="+data.mode+",trsxcn_date="+data.trsxcn_date+",amount="+data.amount+",created_by="+data.created_by+",ref_acc_head="+data.ref_acc_head+" ";
+  credit_query = "insert into transactions set acc_head = "+data.acc_head+",type='credit',remarks='"+data.remarks+"',mode='"+data.mode+"',trsxcn_date='"+trsxcn_date+"',amount="+data.amount+",created_by="+data.created_by+",ref_acc_head="+data.ref_acc_head+" ";
 
-  debit_query = "insert into transactions set acc_head = "+data.ref_acc_head+",type='debit',remarks="+data.remarks+",mode="+data.mode+",trsxcn_date="+data.trsxcn_date+",amount="+data.amount+",created_by="+data.created_by+",ref_acc_head="+data.acc_head+" ";
+  debit_query = "insert into transactions set acc_head = "+data.ref_acc_head+",type='debit',remarks='"+data.remarks+"',mode='"+data.mode+"',trsxcn_date='"+trsxcn_date+"',amount='"+data.amount+"',created_by="+data.created_by+",ref_acc_head="+data.acc_head+" ";
+
+  // console.log(debit_query);
 
     db.query(debit_query,(err,result)=>{
       if(!err){
@@ -28,15 +31,15 @@ exports.getTransactions = async (req, res) => {
   end_date = data.end_date.toString().replace(/T/, ' ').replace(/\..+/, '');
 
   if(data.type==="%" && data.acc_head !="%"){
-    query = "select * from transactions where (trsxcn_date between '"+start_date+"' and '"+end_date+"') and (acc_head  = "+data.acc_head+" or ref_acc_head = "+data.acc_head+") ";
+    query = "select * from transactions where (trsxcn_date between '"+start_date+"' and '"+end_date+"') and (acc_head  = "+data.acc_head+" or ref_acc_head = "+data.acc_head+") order by trsxcn_date DESC";
   }else if(data.type !="%" && data.acc_head !="%"){
-    query = "select * from transactions where (trsxcn_date between '"+start_date+"' and '"+end_date+"') and (acc_head  = "+data.acc_head+" or ref_acc_head = "+data.acc_head+") and type IN('"+data.type+"')";
+    query = "select * from transactions where (trsxcn_date between '"+start_date+"' and '"+end_date+"') and (acc_head  = "+data.acc_head+" or ref_acc_head = "+data.acc_head+") and type IN('"+data.type+"') order by trsxcn_date DESC";
   }else if(data.type==="%" && data.acc_head !="%"){
-    query = "select * from transactions where (trsxcn_date between '"+start_date+"' and '"+end_date+"') and (acc_head  = "+data.acc_head+" or ref_acc_head = "+data.acc_head+")" ;
+    query = "select * from transactions where (trsxcn_date between '"+start_date+"' and '"+end_date+"') and (acc_head  = "+data.acc_head+" or ref_acc_head = "+data.acc_head+") order by trsxcn_date DESC" ;
   }else if(data.type !="%" && data.acc_head ==="%"){
-    query = "select * from transactions where (trsxcn_date between '"+start_date+"' and '"+end_date+"') and type IN('"+data.type+"')";
+    query = "select * from transactions where (trsxcn_date between '"+start_date+"' and '"+end_date+"') and type IN('"+data.type+"') order by trsxcn_date DESC";
   }else{
-    query = "select * from transactions where (trsxcn_date between '"+start_date+"' and '"+end_date+"')";
+    query = "select * from transactions where (trsxcn_date between '"+start_date+"' and '"+end_date+"') order by trsxcn_date DESC";
   }
 
   db.query (query,(err, result) => {

@@ -45,7 +45,7 @@
           </nz-form-control>
         </nz-form-item>
 
-        <button nz-button nzType="primary" (click)="filterSubmit()" nz-col nzSpan="4">
+        <button nz-button nzType="primary" (click)="getTransactions()" nz-col nzSpan="4">
           Submit
       </button>
       </form>
@@ -80,7 +80,7 @@
         <tr>
           <!-- <th nzWidth="100px">S.No.</th> -->
           <th nzWidth="150px">Date</th>
-          <th>Particulars</th>
+          <th nzAlign="left">Particulars</th>
           <th>Credit</th>
           <th>Debit</th>
           <!-- <th>Date</th> -->
@@ -96,12 +96,13 @@
         >
           <!-- <td>{{ i + 1 }}</td> -->
           <td>{{ data.trsxcn_date | date : "dd-MM-YYYY" }}</td>
-          <td><b>{{ accountName[data.ref_acc_head] }}</b><br><i>{{data.remarks}}</i></td>
+          <td nzAlign="left"><b>{{ accountName[data.ref_acc_head] }}</b><br><i>{{data.remarks}}</i></td>
           <!-- <td [ngClass]="data.type === 'credit' ? 'creditColor' : 'debitColor'">
             {{ data.amount  | currencyIn  }}
           </td> -->
-          <td *ngIf="data.type === 'credit',else creditContent " class='creditColor'></td>
-          <td *ngIf="data.type === 'debit',else debitContent" class= 'debitColor'></td>
+          <td  class='creditColor'><div *ngIf="data.type === 'credit'">{{ data.amount  | currencyIn  }}</div></td>
+          <td  class='debitColor'><div *ngIf="data.type === 'debit'">{{ data.amount  | currencyIn  }}</div></td>
+          <!-- <td *ngIf="data.type === 'debit',else debitContent" class= 'debitColor'>{{ data.amount  | currencyIn  }}</td> -->
           <!-- <td>{{ data.trsxcn_date | date : "dd-MM-YYYY hh:mm aaa" }}</td> -->
           <!-- <td>
             <div id="editbtn">
@@ -114,8 +115,6 @@
               ></a>
             </div>
           </td> -->
-          <ng-template #creditContent>{{ data.amount  | currencyIn  }}</ng-template>
-          <ng-template #debitContent>{{ data.amount  | currencyIn  }}</ng-template>
         </tr>
       </tbody>
     </nz-table>

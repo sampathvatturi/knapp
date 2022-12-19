@@ -46,30 +46,13 @@ transactions = [];
     this.transactionsFilterFormValidators();
     this.getAccounts();
     setTimeout(() => 
-    this.filterSubmit(), 1000);
-    // ;
-    // console.log(this.accountName['5']);
-    // this.getTransactions();
+    this.getTransactions(), 1000);
   }
-  // getTransactions(){
-  //   this.transactionsservice.getTransactions().subscribe(res =>{
-  //     this.transactions = res;
-  //   })
-  // }
   
-  filterSubmit(){
+  getTransactions(){
     console.log(this.transactionsFilterForm.value)
     this.transactionsservice.getTransactions(this.transactionsFilterForm.value).subscribe((res) => {
       this.transactions = res;
-      // let data={
-      //   date:'',
-      //   particulars:'',
-      //   credit:'',
-      //   debit:''
-      // }
-      // res.forEach((resData:any) => {
-        
-      // });
     })
   }
 
@@ -97,22 +80,24 @@ transactions = [];
   prepareCreatePayload(data: any) {
     const payload = {
       acc_head:data.acc_head,
-        remarks:data.remarks,
-        mode:data.mode,
-        amount:data.amount,
-        trsxcn_date:data.trsxcn_date,
-        ref_acc_head:data.ref_acc_head,
+      remarks:data.remarks,
+      mode:data.mode,
+      amount:data.amount,
+      trsxcn_date:data.trsxcn_date,
+      ref_acc_head:data.ref_acc_head,
       created_by: this.user_data?.user_id,
-      updated_by: this.user_data?.user_id
     }
     return payload;
   }
 
   onCreateSubmit() {
     if (this.transactionsForm.valid) {
+      console.log(this.transactionsForm.value)
       this.transactionsservice.createTransaction(this.prepareCreatePayload(this.transactionsForm.value)).subscribe( res =>{
-        this.notification.createNotification(res.status, res.message);
-        // this.getTransactions();
+        if(res.status === 'success'){
+          this.visible = false;
+         this.notification.createNotification(res.status, res.message);
+        }
       });
     } else {
       Object.values(this.transactionsForm.controls).forEach((control) => {
@@ -174,7 +159,6 @@ transactions = [];
       remarks: ['', [Validators.required]],
       mode: ['electricity' , [Validators.required] ],
       amount: ['', [Validators.required]],
-      trsxcn_date: ['', [Validators.required]],
       ref_acc_head:['',[Validators.required]]
     });
   }
