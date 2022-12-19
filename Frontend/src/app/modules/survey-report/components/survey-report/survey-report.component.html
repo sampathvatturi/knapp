@@ -1,3 +1,90 @@
-<nz-content id="n1">
-    <img  src="https://www.lawrenceprospera.org/images/quintana/Page_Under_Construction.jpg" class="i1"/>
+<nz-breadcrumb id="breadcrumb">
+    <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+        <a routerLink="/app/modules/dashboard">Dashboard</a>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>Survey Report</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<nz-content id="component-content">
+    <div id="search-create">
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+            <input type="text" nz-input placeholder="Search" [(ngModel)]="searchText" />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+            <span nz-icon nzType="search"></span>
+        </ng-template>
+        <button nz-button nzType="default" (click)="create()">
+            Add &nbsp; <i class="fa-solid fa-plus"></i>
+        </button>
+    </div>
+    <nz-table #basicTable [nzData]="works_info" nzShowPagination nzShowSizeChanger
+        [nzPageSizeOptions]="[5, 10, 15, 20]">
+        <thead>
+            <tr>
+                <th nzWidth="100px">S.No.</th>
+                <th>Works</th>
+                <th>Vendor</th>
+                <th>Tender</th>
+                <th>Tender Location</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="
+            let data of basicTable.data | globalTablesearch : searchText;
+            let i = index
+          ">
+                <td>{{ i + 1 }}</td>
+                <td>{{ data.work_name }}</td>
+                <td>{{ data.vendor }}</td>
+                <td>{{ data.tender }}</td>
+                <td>{{ data.tender_location }}</td>
+                <td>{{ data.status }}</td>
+                <td>
+                    <div id="editbtn">
+                        <a nz-tooltip="Edit" (click)="edit('edit',data)"><i class="fa-regular fa-pen-to-square"></i></a>
+                        <b> / </b>
+                        <a nz-tooltip="View" (click)="edit('view',data)"><i class="fa-regular fa-eye"></i></a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
 </nz-content>
+<nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzMaskClosable]="true" [nzWidth]="720" [nzVisible]="visible"
+    [nzTitle]="drawerTitle" [nzFooter]="footerTpl" (nzOnClose)="close()" [nzClosable]="false" [nzCloseIcon]="icon"
+    [nzExtra]="icon">
+    <ng-template #icon>
+        <i (click)="close()" class="fa-solid fa-circle-xmark"></i>
+    </ng-template>
+    <form nz-form *nzDrawerContent [formGroup]="surveyForm" class="drawer-form">
+        <div>
+            <nz-form-item>
+              <nz-form-label nz-col nzSpan="5" class="required">Status</nz-form-label>
+              <nz-form-control nz-col nzSpan="10" nzErrorTip="Please Select Status">
+                <nz-select formControlName="status" nzPlaceHolder="Status" nzShowSearch>
+                  <nz-option nzValue="inprogress" nzLabel="In Progress"></nz-option>
+                  <nz-option nzValue="done" nzLabel="Done"></nz-option>
+                  <nz-option nzValue="open" nzLabel="Open"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>   
+    </form>
+
+    <ng-template #footerTpl>
+        <div style="float: right">
+            <button nz-button style="margin-right: 8px" (click)="close()">
+                Cancel
+            </button>
+            <button nz-button *ngIf="submit" nzType="primary" (click)="onCreateSubmit()">
+                Submit
+            </button>
+            <button nz-button *ngIf="!submit && updateBtnDisable" nzType="primary" (click)="onUpdateSubmit()">
+                Update
+            </button>
+        </div>
+    </ng-template>
+</nz-drawer>
