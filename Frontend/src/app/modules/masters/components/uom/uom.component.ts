@@ -21,6 +21,8 @@ export class UomComponent implements OnInit {
   searchText = '';
   uomId: any;
   updateBtnDisable:boolean = true;
+  isLoading : boolean = true ;
+
   
 
   constructor(private fb: UntypedFormBuilder, private notification: NotificationService,private uomService:UomService) { }
@@ -34,6 +36,7 @@ export class UomComponent implements OnInit {
   getUom(): void {
     this.uomService.getUoms().subscribe((res) => {
       this.uom_info = res
+      this.isLoading = false ;
     });
   }
   create(): void {

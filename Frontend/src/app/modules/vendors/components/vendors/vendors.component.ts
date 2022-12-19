@@ -24,6 +24,7 @@ export class VendorsComponent implements OnInit {
   mode:any = '';
   vendorId: any;
   updateBtnDisable:boolean = true;
+  isLoading:boolean = true;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -42,7 +43,8 @@ export class VendorsComponent implements OnInit {
 
   getVendors(): void {
     this.vendorService.getVendors().subscribe((res) => {
-      this.vendor_info = res
+      this.vendor_info = res;
+      this.isLoading = false;
     });
   }
 

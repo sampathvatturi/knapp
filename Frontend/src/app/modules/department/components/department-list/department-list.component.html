@@ -19,7 +19,7 @@
     </button>
   </div>
 
-  <nz-table #basicTable [nzData]="departments" nzShowPagination nzShowSizeChanger [nzPageSizeOptions]="[5, 10, 15, 20]">
+  <nz-table #basicTable [nzData]="departments" nzShowPagination nzShowSizeChanger [nzPageSizeOptions]="[5, 10, 15, 20]" [nzLoading]="isLoading" nzSize="middle">
     <thead>
       <tr>
         <th nzWidth="100px">S.No.</th>

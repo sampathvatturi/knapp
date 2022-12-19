@@ -24,6 +24,7 @@ export class FundsComponent implements OnInit {
   currentDate = new Date();
   editAmount: any;
   updateBtnDisable:boolean = true;
+  isLoading:boolean = true;
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
@@ -45,6 +46,7 @@ export class FundsComponent implements OnInit {
   getFunds(): void {
     this.fundService.getFunds().subscribe((res) => {
       this.fund_info = res;
+      this.isLoading = false;
     })
   }
 

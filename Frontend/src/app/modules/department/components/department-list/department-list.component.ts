@@ -25,6 +25,7 @@ export class DepartmentListComponent implements OnInit {
   searchText = '';
   departmentId: any;
   updateBtnDisable:boolean = true;
+  isLoading:boolean = true;
 
   sort = {
     compareStatus: (a: DataItem, b: DataItem) =>
@@ -50,6 +51,7 @@ export class DepartmentListComponent implements OnInit {
   getDepartment() {
     this.departmentService.getDepartments().subscribe((res) => {
       this.departments = res;
+      this.isLoading = false;
     })
   }
 

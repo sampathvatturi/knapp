@@ -46,7 +46,7 @@
         <button nz-button nzType="primary" nz-col nzSpan="2" class="ml-2"><span nz-icon nzType="search" nzTheme="outline"></span>Search</button>        
     </form>
 
-    <nz-table #basicTable *ngIf="tendersData?.length > 0" [nzData]="tendersData" nzShowPagination nzShowSizeChanger [nzPageSizeOptions] =[5,10,15,20]>
+    <nz-table #basicTable *ngIf="tendersData?.length > 0" [nzData]="tendersData" nzShowPagination nzShowSizeChanger [nzPageSizeOptions] =[5,10,15,20] [nzLoading]="isLoading">
         <thead>
           <tr>
             <th>S.No.</th>

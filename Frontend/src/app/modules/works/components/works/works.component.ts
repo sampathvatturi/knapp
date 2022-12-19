@@ -20,6 +20,7 @@ export class WorksComponent implements OnInit {
   errTip = '';
   workId:any;
   updateBtnDisable:boolean = true;
+  isLoading:boolean = true;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -36,7 +37,9 @@ export class WorksComponent implements OnInit {
 
     getWorks():void{
       this.workService.getWorks().subscribe((res) =>{
-        this.works_info = res
+        this.works_info = res;
+        this.isLoading = false;
+
       });
     }
 

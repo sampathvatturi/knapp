@@ -19,7 +19,7 @@
     </button>
   </div>
   <nz-table #basicTable [nzData]="invoice_info" nzShowPagination nzShowSizeChanger
-    [nzPageSizeOptions]="[5, 10, 15, 20]">
+    [nzPageSizeOptions]="[5, 10, 15, 20]" [nzLoading]="isLoading" nzSize="middle">
     <thead>
       <tr>
         <th>S.No.</th>

@@ -43,6 +43,7 @@ export class InvoicesComponent implements OnInit {
   uploadUrl = this.baseUrl + '/upload/uploadFiles';
   getUploadedFIlesUrl = this.baseUrl + '/upload/getUploadedFiles/';
   invoiceId :any;
+  isLoading:boolean = true;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -64,7 +65,11 @@ export class InvoicesComponent implements OnInit {
     //   }
     // });
 
-    this.invoice.getInvoices().subscribe((res) => (this.invoice_info = res));
+    this.invoice.getInvoices().subscribe((res) => {
+      this.invoice_info = res;
+      this.isLoading = false;
+    })
+    
     this.tenders.getTenderDetails().subscribe(res => {
       this.tender_array = res;
       for (let x of this.tender_array) {

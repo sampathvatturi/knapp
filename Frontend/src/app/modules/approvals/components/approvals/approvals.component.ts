@@ -31,6 +31,7 @@ export class ApprovalsComponent implements OnInit {
   works_info:any = [];
   allUsersApprovedStatus: boolean = false;
   noDataShow: boolean = false;
+  isLoading = false;
   
 
   constructor(
@@ -53,6 +54,8 @@ export class ApprovalsComponent implements OnInit {
     this.getVendorTenders();
     this.getUsers();
     this.getWorks();
+    
+    
   }
   
   getVendorTenders(action?: any): void {
@@ -89,16 +92,20 @@ export class ApprovalsComponent implements OnInit {
   }
 
   submitForm(): void {
+    this.isLoading = true;
     console.log(this.validateForm.value);
     this.noDataShow = true;
     if(this.validateForm.value.type === 'tenders') {
       this.getTendersData();
+      
     }
+    this.isLoading = false;
   } 
 
   getTendersData(): void {
     this.tendersData = this.tenders.filter((item) => item.status === this.validateForm.value.status);
     console.log("this.tendersData:", this.tendersData);
+    
   }
 
   onClickApprove(data: any): void {

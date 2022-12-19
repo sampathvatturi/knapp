@@ -31,6 +31,7 @@ export class UserAccountsComponent implements OnInit {
   updateUserId: any;
   userRole: any;
   updateBtnDisable:boolean = true;
+  isLoading:boolean = true;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -59,6 +60,7 @@ export class UserAccountsComponent implements OnInit {
   getUsers(): void {
     this.userService.getAllUsers().subscribe((res: any) => {
       this.users = res;
+      this.isLoading = false;
     });
   }
 

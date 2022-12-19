@@ -39,8 +39,8 @@
 /* view and edit links in tables*/
 #editbtn {
   width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
+  /* margin-left: auto;
+  margin-right: auto; */
 }
 #editbtn i {
   font-size: 15px;
@@ -67,10 +67,10 @@
 }
 
 /*center all table items*/
-#component-content th,
+/* #component-content th,
 #component-content td {
   text-align: center;
-}
+} */
 .i1{
   height:300px;
   width:300px;

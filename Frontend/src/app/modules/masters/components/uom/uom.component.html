@@ -18,7 +18,7 @@
         Add &nbsp; <i class="fa-solid fa-plus"></i>
       </button>
     </div>
-    <nz-table #basicTable [nzData]="uom_info" nzShowPagination nzShowSizeChanger [nzPageSizeOptions]="[5, 10, 15, 20]">
+    <nz-table #basicTable [nzData]="uom_info" nzShowPagination nzShowSizeChanger [nzPageSizeOptions]="[5, 10, 15, 20]" [nzLoading]="isLoading" nzSize="middle">
       <thead>
         <tr>
           <th nzWidth="100px">S.No.</th>
@@ -30,8 +30,8 @@
       <tbody>
         <tr *ngFor="
             let data of basicTable.data | globalTablesearch : searchText;
-            let i = index
-          ">
+            let i = index 
+          " style="text-align:left;">
           <td>{{ i + 1 }}</td>
           <td>{{ data.uom_code}}</td>
           <td>{{ data.uom_name}}</td>
