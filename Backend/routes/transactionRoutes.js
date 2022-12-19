@@ -7,7 +7,7 @@ const{
     createTransaction,
 } = require('../controllers/transactions');
 
-router.get('/getTransactions', getTransactions);
+router.post('/getTransactions', getTransactions);
 router.post('/createTransaction', auth.authenticateToken, createTransaction);
 
 module.exports = router ;

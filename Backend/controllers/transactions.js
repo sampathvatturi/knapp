@@ -23,10 +23,20 @@ exports.createTransaction = async (req, res) => {
 
 exports.getTransactions = async (req, res) => {
   data = req.body;
-  if(data.type==='all'){
-    query = "select * from transactions where (trsxcn_date between '"+data.start_date+"' and '"+data.end_date+"') and (acc_head  = "+data.acc_head+" or ref_acc_head = "+data.acc_head+") ";
+  console.log(data)
+  start_date = data.start_date.toString().replace(/T/, ' ').replace(/\..+/, '');
+  end_date = data.end_date.toString().replace(/T/, ' ').replace(/\..+/, '');
+
+  if(data.type==="%" && data.acc_head !="%"){
+    query = "select * from transactions where (trsxcn_date between '"+start_date+"' and '"+end_date+"') and (acc_head  = "+data.acc_head+" or ref_acc_head = "+data.acc_head+") ";
+  }else if(data.type !="%" && data.acc_head !="%"){
+    query = "select * from transactions where (trsxcn_date between '"+start_date+"' and '"+end_date+"') and (acc_head  = "+data.acc_head+" or ref_acc_head = "+data.acc_head+") and type IN('"+data.type+"')";
+  }else if(data.type==="%" && data.acc_head !="%"){
+    query = "select * from transactions where (trsxcn_date between '"+start_date+"' and '"+end_date+"') and (acc_head  = "+data.acc_head+" or ref_acc_head = "+data.acc_head+")" ;
+  }else if(data.type !="%" && data.acc_head ==="%"){
+    query = "select * from transactions where (trsxcn_date between '"+start_date+"' and '"+end_date+"') and type IN('"+data.type+"')";
   }else{
-    query = "select * from transactions where (trsxcn_date between '"+data.start_date+"' and '"+data.end_date+"') and (acc_head  = "+data.acc_head+" or ref_acc_head = "+data.acc_head+") and type IN('"+data.type+"')";
+    query = "select * from transactions where (trsxcn_date between '"+start_date+"' and '"+end_date+"')";
   }
 
   db.query (query,(err, result) => {

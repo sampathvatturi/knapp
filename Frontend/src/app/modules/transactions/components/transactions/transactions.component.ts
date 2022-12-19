@@ -1,3 +1,4 @@
+import { compileNgModule } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { AccountsService } from 'src/app/services/accounts.service';
@@ -25,6 +26,9 @@ transactions = [];
   updateBtnDisable: boolean = false;
   editAmount: any;
   accounts_info:any = [];
+  currDate = new Date();
+  accountName: any[] = [];
+  
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -39,7 +43,10 @@ transactions = [];
     this.transactionsFormValidators();
     this.transactionsFilterFormValidators();
     this.getAccounts();
-
+    setTimeout(() => 
+    this.filterSubmit(), 1000);
+    // ;
+    // console.log(this.accountName['5']);
     // this.getTransactions();
   }
   // getTransactions(){
@@ -49,9 +56,19 @@ transactions = [];
   // }
   
   filterSubmit(){
-    // this.transactionsservice.getTransactions(this.transactionsFilterForm.value).subscribe((res) => {
-    //   this.transactions = res;
-    // })
+    console.log(this.transactionsFilterForm.value)
+    this.transactionsservice.getTransactions(this.transactionsFilterForm.value).subscribe((res) => {
+      this.transactions = res;
+      // let data={
+      //   date:'',
+      //   particulars:'',
+      //   credit:'',
+      //   debit:''
+      // }
+      // res.forEach((resData:any) => {
+        
+      // });
+    })
   }
 
   create(): void {
@@ -68,6 +85,9 @@ transactions = [];
         id:'%',
         name:'All'
       })
+      res.forEach((data: any) => {
+        this.accountName[data.id] = data.name;
+      });
     });
   }
   
@@ -157,11 +177,15 @@ transactions = [];
   }
 
   transactionsFilterFormValidators(){
+    let lastYear = this.currDate.getFullYear()-1;
+    let currYear = this.currDate.getFullYear();
+    let startDate = lastYear+'/04/01';
+    let endDate = currYear+'/12/31';
     this.transactionsFilterForm = this.fb.group({
-      acc_head: ['', [Validators.required]],
-      start_date: ['', [Validators.required]],
-      end_date: ['', [Validators.required]],
-      type: ['', [Validators.required]],
+      acc_head: ['%', [Validators.required]],
+      start_date: [startDate, [Validators.required]],
+      end_date: [endDate, [Validators.required]],
+      type: ['%', [Validators.required]],
     })
   }
 

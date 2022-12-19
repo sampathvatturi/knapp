@@ -58,4 +58,12 @@ export class TenderDetailsService {
       })
     );
   }
+  
+  assignTender(id: any, postDataObj: any): Observable<any>{
+    return this.apiService.postCall('/tender/assignTender/'+id,postDataObj).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
 }

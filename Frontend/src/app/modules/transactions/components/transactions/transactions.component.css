@@ -5,3 +5,10 @@
 nz-form-label{
     margin-bottom: -10px;
 }
+
+.creditColor {
+    color: rgb(107, 221, 107);
+}
+.debitColor {
+    color: red;
+}

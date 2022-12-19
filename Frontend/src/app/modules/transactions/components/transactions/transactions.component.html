@@ -28,6 +28,7 @@
           <nz-form-label>Type</nz-form-label>
             <nz-form-control  nzErrorTip="Please Select Type">
               <nz-select formControlName="type" nzPlaceHolder="Type" nzShowSearch>
+                <nz-option nzValue="%" nzLabel="All" nzSelected></nz-option>
                 <nz-option nzValue="debit" nzLabel="Debit"></nz-option>
                 <nz-option nzValue="credit" nzLabel="Credit"></nz-option>
               </nz-select>
@@ -77,13 +78,13 @@
     >
       <thead>
         <tr>
-          <th nzWidth="100px">S.No.</th>
-          <th>From</th>
-          <th>To</th>
-          <th>Amount</th>
-          <th>Mode</th>
-          <th>Date</th>
-          <th>Actions</th>
+          <!-- <th nzWidth="100px">S.No.</th> -->
+          <th nzWidth="150px">Date</th>
+          <th>Particulars</th>
+          <th>Credit</th>
+          <th>Debit</th>
+          <!-- <th>Date</th> -->
+          <!-- <th>Actions</th> -->
         </tr>
       </thead>
       <tbody>
@@ -93,15 +94,16 @@
             let i = index
           "
         >
-          <td>{{ i + 1 }}</td>
-          <td>{{ data.acc_head }}</td>
-          <td>{{ data.ref_acc_head }}</td>
-          <td [ngClass]="data.type === 'credit' ? 'creditColor' : 'debitColor'">
+          <!-- <td>{{ i + 1 }}</td> -->
+          <td>{{ data.trsxcn_date | date : "dd-MM-YYYY" }}</td>
+          <td><b>{{ accountName[data.ref_acc_head] }}</b><br><i>{{data.remarks}}</i></td>
+          <!-- <td [ngClass]="data.type === 'credit' ? 'creditColor' : 'debitColor'">
             {{ data.amount  | currencyIn  }}
-          </td>
-          <td>{{ data.mode }}</td>
-          <td>{{ data.trsxcn_date | date : "dd-MM-YYYY hh:mm aaa" }}</td>
-          <td>
+          </td> -->
+          <td *ngIf="data.type === 'credit',else creditContent " class='creditColor'></td>
+          <td *ngIf="data.type === 'debit',else debitContent" class= 'debitColor'></td>
+          <!-- <td>{{ data.trsxcn_date | date : "dd-MM-YYYY hh:mm aaa" }}</td> -->
+          <!-- <td>
             <div id="editbtn">
               <a nz-tooltip="Edit" (click)="edit(data)"
                 ><i class="fa-regular fa-pen-to-square"></i
@@ -111,10 +113,13 @@
                 ><i class="fa-regular fa-eye"></i
               ></a>
             </div>
-          </td>
+          </td> -->
+          <ng-template #creditContent>{{ data.amount  | currencyIn  }}</ng-template>
+          <ng-template #debitContent>{{ data.amount  | currencyIn  }}</ng-template>
         </tr>
       </tbody>
     </nz-table>
+   
   </nz-content>
   <nz-drawer
     [nzBodyStyle]="{ overflow: 'auto' }"
