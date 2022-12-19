@@ -28,6 +28,8 @@ transactions = [];
   accounts_info:any = [];
   currDate = new Date();
   accountName: any[] = [];
+  acconts_heads:any =[];
+  ref_acc_head:any =[];
   
 
   constructor(
@@ -81,6 +83,7 @@ transactions = [];
   getAccounts():void{
     this.accountHeadService.getAccountHeads().subscribe((res) =>{
       this.accounts_info = res;
+      this.acconts_heads = [...res];
       this.accounts_info.unshift({
         id:'%',
         name:'All'
@@ -187,6 +190,17 @@ transactions = [];
       end_date: [endDate, [Validators.required]],
       type: ['%', [Validators.required]],
     })
+  }
+  fromTo(){
+    this.ref_acc_head = [];
+    this.transactionsForm.get('ref_acc_head')?.setValue('');
+    console.log(this.transactionsForm.value);
+    this.acconts_heads.forEach((elem: any) => {
+      if(elem.id != Number(this.transactionsForm.value.acc_head)){
+        this.ref_acc_head.push(elem)
+      }
+    })
+    console.log(this.ref_acc_head);
   }
 
 }

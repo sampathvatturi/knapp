@@ -53,17 +53,17 @@
 
 
     <div id="search-create">
-      <nz-input-group [nzSuffix]="suffixIconSearch">
+      <!-- <nz-input-group [nzSuffix]="suffixIconSearch">
         <input
           type="text"
           nz-input
           placeholder="Search"
           [(ngModel)]="searchText"
         />
-      </nz-input-group>
-      <ng-template #suffixIconSearch>
+      </nz-input-group> -->
+      <!-- <ng-template #suffixIconSearch>
         <span nz-icon nzType="search"></span>
-      </ng-template>
+      </ng-template> -->
       <button nz-button nzType="default" (click)="create()">
         Add &nbsp; <i class="fa-solid fa-plus"></i>
       </button>
@@ -142,7 +142,40 @@
       [formGroup]="transactionsForm"
       class="drawer-form"
     >
-      <div>
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="10" class="required"
+          >From</nz-form-label
+        >
+        <nz-form-control nz-col nzSpan="12" nzErrorTip="Select From A/C" >
+          <nz-select
+          formControlName="acc_head"
+          nzPlaceHolder="From"
+          (ngModelChange)="fromTo()"
+          nzShowSearch>
+          <nz-option *ngFor="let a of acconts_heads" nzValue="{{ a.id }}"
+                nzLabel="{{ a.name }}"></nz-option>
+        </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div> 
+    <div>
+      <nz-form-item>
+        <nz-form-label nz-col nzSpan="10" class="required"
+          >To</nz-form-label
+        >
+        <nz-form-control nz-col nzSpan="12" nzErrorTip="Select To A/C">
+          <nz-select
+          formControlName="ref_acc_head"
+          nzPlaceHolder="To"
+          nzShowSearch>
+          <nz-option *ngFor="let a of ref_acc_head" nzValue="{{ a.id }}"
+                nzLabel="{{ a.name }}"></nz-option>
+        </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div> 
+      <!-- <div>
         <nz-form-item>
           <nz-form-label nz-col nzSpan="10" class="required"
             >From</nz-form-label
@@ -211,7 +244,7 @@
             </ng-template>
           </nz-form-control>
         </nz-form-item>
-      </div>
+      </div> -->
   
       <!-- <div>
         <nz-form-item>
