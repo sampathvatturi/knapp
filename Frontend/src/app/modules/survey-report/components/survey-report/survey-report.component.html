@@ -14,11 +14,11 @@
         <ng-template #suffixIconSearch>
             <span nz-icon nzType="search"></span>
         </ng-template>
-        <button nz-button nzType="default" (click)="create()">
+        <!-- <button nz-button nzType="default" (click)="create()">
             Add &nbsp; <i class="fa-solid fa-plus"></i>
-        </button>
+        </button> -->
     </div>
-    <nz-table #basicTable [nzData]="works_info" nzShowPagination nzShowSizeChanger
+    <nz-table #basicTable [nzData]="tenders" nzShowPagination nzShowSizeChanger  nzSize="middle" [nzLoading]="isLoading"
         [nzPageSizeOptions]="[5, 10, 15, 20]">
         <thead>
             <tr>
@@ -37,10 +37,10 @@
             let i = index
           ">
                 <td>{{ i + 1 }}</td>
-                <td>{{ data.work_name }}</td>
-                <td>{{ data.vendor }}</td>
-                <td>{{ data.tender }}</td>
-                <td>{{ data.tender_location }}</td>
+                <td>{{ workIdToName(data.work_id) }}</td>
+                <td>{{ v_name[data.vendor_id] }}</td>
+                <td>{{ data.title }}</td>
+                <td>{{ data.location }}</td>
                 <td>{{ data.status }}</td>
                 <td>
                     <div id="editbtn">

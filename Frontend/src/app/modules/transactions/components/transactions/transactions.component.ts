@@ -30,7 +30,8 @@ transactions = [];
   accountName: any[] = [];
   acconts_heads:any =[];
   ref_acc_head:any =[];
-  
+  debitTotal = 0;
+  creditTotal = 0 ;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -53,6 +54,7 @@ transactions = [];
     console.log(this.transactionsFilterForm.value)
     this.transactionsservice.getTransactions(this.transactionsFilterForm.value).subscribe((res) => {
       this.transactions = res;
+      this.getsum();
     })
   }
 
@@ -75,6 +77,12 @@ transactions = [];
         this.accountName[data.id] = data.name;
       });
     });
+  }
+  getsum(){
+    this.transactions.forEach((elem:any) =>{
+      if(elem.type == 'debit'){this.debitTotal += Number(elem.amount)}
+      if(elem.type == 'credit'){this.creditTotal += Number(elem.amount)}
+    })
   }
   
   prepareCreatePayload(data: any) {
