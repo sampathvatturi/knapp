@@ -18,6 +18,7 @@ export class AccountsService {
         })
       );
     }
+    
     createAccountHead(postDataObj: any):Observable<any>{
       return this.apiService.postCall('/account/createAccountHead', postDataObj).pipe(
         map((response: any) => {

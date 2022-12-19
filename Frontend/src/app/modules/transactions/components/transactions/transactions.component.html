@@ -7,6 +7,51 @@
   </nz-breadcrumb>
   
   <nz-content id="component-content">
+
+    <div>
+      <form class="forms" [formGroup]="transactionsFilterForm">
+        <nz-form-item>
+          <nz-form-label>Start Date</nz-form-label>
+          <nz-form-control>
+            <nz-date-picker formControlName="start_date"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label>End Date</nz-form-label>
+          <nz-form-control>
+            <nz-date-picker formControlName="end_date"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label>Type</nz-form-label>
+            <nz-form-control  nzErrorTip="Please Select Type">
+              <nz-select formControlName="type" nzPlaceHolder="Type" nzShowSearch>
+                <nz-option nzValue="debit" nzLabel="Debit"></nz-option>
+                <nz-option nzValue="credit" nzLabel="Credit"></nz-option>
+              </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label>Account</nz-form-label>
+          <nz-form-control nzErrorTip="Please select account" nz-col nzSpan="10">
+            <nz-select formControlName="acc_head"  nzPlaceHolder="Account" nzShowSearch>
+              <nz-option *ngFor="let a of accounts_info" nzValue="{{ a.id }}"
+                nzLabel="{{ a.name }}"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
+        <button nz-button nzType="primary" (click)="filterSubmit()">
+          Submit
+      </button>
+      </form>
+    </div>
+
+
+
     <div id="search-create">
       <nz-input-group [nzSuffix]="suffixIconSearch">
         <input

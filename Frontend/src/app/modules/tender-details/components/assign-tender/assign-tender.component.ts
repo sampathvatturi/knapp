@@ -136,12 +136,12 @@ export class AssignTenderComponent implements OnInit {
   onCreateSubmit() {
     if (this.assignTendersForm.valid) {
       //service
-      this.tender.assignTender(this.tenderId,this.assignTendersForm.value).subscribe(res=>{
-        if(res.status == 'success')
-          this.notification.createNotification('success',res.message);
-        else
-          this.notification.createNotification('error',res.message);
-      })
+      // this.tender.assignTender(this.tenderId,this.assignTendersForm.value).subscribe(res=>{
+      //   if(res.status == 'success')
+      //     this.notification.createNotification('success',res.message);
+      //   else
+      //     this.notification.createNotification('error',res.message);
+      // })
     // console.log(this.assignTendersForm.value)
 
     }

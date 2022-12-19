@@ -7,15 +7,20 @@ import { ApiService } from './api.service';
 })
 export class TransactionsService {
 
-  constructor(private apiService:ApiService) { }
-  getTransactions(): Observable<any> {
-    return this.apiService.getCall('/transaction/getTransactions').pipe(
+  constructor(private apiService: ApiService) { }
+  getTransactions(postDataObj: any): Observable<any> {
+    // return this.apiService.getCall('/transaction/getTransactions').pipe(
+    //   map((response: any) => {
+    //     return response;
+    //   })
+    // );
+    return this.apiService.postCall('/transaction/getTransactions', postDataObj).pipe(
       map((response: any) => {
         return response;
       })
     );
   }
-  
+
   createTransaction(postDataObj: any): Observable<any> {
     return this.apiService.postCall('/transaction/createTransaction', postDataObj).pipe(
       map((response: any) => {

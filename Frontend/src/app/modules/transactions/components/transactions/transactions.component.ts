@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { AccountsService } from 'src/app/services/accounts.service';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/auth/notification.service';
 import { TransactionDetailsService } from 'src/app/services/transaction-details.service';
@@ -17,35 +18,57 @@ transactions = [];
   submit = true;
   drawerTitle: string = '';
   transactionsForm!: FormGroup;
+  transactionsFilterForm!:FormGroup;
   user_data: any;
   searchText = '';
   transId: any;
   updateBtnDisable: boolean = false;
   editAmount: any;
+  accounts_info:any = [];
 
   constructor(
     private fb: UntypedFormBuilder,
     private notification: NotificationService,
-    private transactionsservice:TransactionsService
+    private transactionsservice:TransactionsService,
+    private accountHeadService:AccountsService
   ) { }
 
   ngOnInit(): void {
     this.user_data = sessionStorage.getItem('user_data');
     this.user_data = JSON.parse(this.user_data);
     this.transactionsFormValidators();
-    this.getTransactions();
+    this.transactionsFilterFormValidators();
+    this.getAccounts();
+
+    // this.getTransactions();
   }
-  getTransactions(){
-    this.transactionsservice.getTransactions().subscribe(res =>{
-      this.transactions = res;
-    })
+  // getTransactions(){
+  //   this.transactionsservice.getTransactions().subscribe(res =>{
+  //     this.transactions = res;
+  //   })
+  // }
+  
+  filterSubmit(){
+    // this.transactionsservice.getTransactions(this.transactionsFilterForm.value).subscribe((res) => {
+    //   this.transactions = res;
+    // })
   }
+
   create(): void {
     this.submit = true;
     this.drawerTitle = 'Add Transaction';
     this.visible = true;
     this.transactionsFormValidators();
     
+  }
+  getAccounts():void{
+    this.accountHeadService.getAccountHeads().subscribe((res) =>{
+      this.accounts_info = res;
+      this.accounts_info.unshift({
+        id:'%',
+        name:'All'
+      })
+    });
   }
   
   prepareCreatePayload(data: any) {
@@ -66,7 +89,7 @@ transactions = [];
     if (this.transactionsForm.valid) {
       this.transactionsservice.createTransaction(this.prepareCreatePayload(this.transactionsForm.value)).subscribe( res =>{
         this.notification.createNotification(res.status, res.message);
-        this.getTransactions();
+        // this.getTransactions();
       });
     } else {
       Object.values(this.transactionsForm.controls).forEach((control) => {
@@ -131,6 +154,15 @@ transactions = [];
       trsxcn_date: ['', [Validators.required]],
       ref_acc_head:['',[Validators.required]]
     });
+  }
+
+  transactionsFilterFormValidators(){
+    this.transactionsFilterForm = this.fb.group({
+      acc_head: ['', [Validators.required]],
+      start_date: ['', [Validators.required]],
+      end_date: ['', [Validators.required]],
+      type: ['', [Validators.required]],
+    })
   }
 
 }

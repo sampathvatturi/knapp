@@ -20,44 +20,44 @@ export class DashboardComponent implements OnInit {
 
 
 
-  Person= [
-    {
-      desc: 'I ve an issue with lungs',
-      name: 'John Brown',
-      date: '25-04-2022',
-      status: 'Active'
-    },
-    {
-      desc: 'I ve an issue with legs',
-      name: 'Jim Green',
-      date: '25-04-2022',
-      status: 'Active'
-    },
-    {
-      desc: 'I ve an issue with hair',
-      name: 'Joe Black',
-      date: '25-04-2022',
-      status: 'Inactive'
-    },
-    {
-      desc: 'I ve an issue with lungs',
-      name: 'John Brown',
-      date: '25-04-2022',
-      status: 'Active'
-    },
-    {
-      desc: 'I ve an issue with legs',
-      name: 'Jim Green',
-      date: '25-04-2022',
-      status: 'Active'
-    },
-    {
-      desc: 'I ve an issue with hair',
-      name: 'Joe Black',
-      date: '25-04-2022',
-      status: 'Inactive'
-    }
-  ];
+  // Person= [
+  //   {
+  //     desc: 'I ve an issue with lungs',
+  //     name: 'John Brown',
+  //     date: '25-04-2022',
+  //     status: 'Active'
+  //   },
+  //   {
+  //     desc: 'I ve an issue with legs',
+  //     name: 'Jim Green',
+  //     date: '25-04-2022',
+  //     status: 'Active'
+  //   },
+  //   {
+  //     desc: 'I ve an issue with hair',
+  //     name: 'Joe Black',
+  //     date: '25-04-2022',
+  //     status: 'Inactive'
+  //   },
+  //   {
+  //     desc: 'I ve an issue with lungs',
+  //     name: 'John Brown',
+  //     date: '25-04-2022',
+  //     status: 'Active'
+  //   },
+  //   {
+  //     desc: 'I ve an issue with legs',
+  //     name: 'Jim Green',
+  //     date: '25-04-2022',
+  //     status: 'Active'
+  //   },
+  //   {
+  //     desc: 'I ve an issue with hair',
+  //     name: 'Joe Black',
+  //     date: '25-04-2022',
+  //     status: 'Inactive'
+  //   }
+  // ];
 
   public lineChartData: ChartConfiguration<'line'>['data'] = {
     labels: [
@@ -89,10 +89,10 @@ export class DashboardComponent implements OnInit {
     ]
   };
 
-  data = [
-    {name:'Surya Sampath',desc:'Racing car sprays burning fuel into crowd.',color:'#87d068'},
-    {name:'Sai Kumar',desc:'Japanese princess to wed commoner.',color:'#78cee6'}
-  ];
+  // data = [
+  //   {name:'Surya Sampath',desc:'Racing car sprays burning fuel into crowd.',color:'#87d068'},
+  //   {name:'Sai Kumar',desc:'Japanese princess to wed commoner.',color:'#78cee6'}
+  // ];
 
 //to get first letters
   getstring(x:string){
@@ -110,11 +110,6 @@ export class DashboardComponent implements OnInit {
   constructor(private api:ApiService) { }
 
   ngOnInit(): void {
-
-    // this.api.getCall('//').subscribe((res) => {
-    //   this.tenders = res;
-    //   this.tender_count = this.tenders.length;
-    // })
   }
 
 }

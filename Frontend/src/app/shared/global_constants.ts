@@ -15,6 +15,7 @@ export class GlobalConstants {
     public static addressRegex: string = "[-a-zA-z0-9 /:,.\n]*";
     public static firstLastNameRegex: string = "[a-zA-z ]*";    
     public static amountRegex = /^\d{0,10}(\.?\d{0,2})$/;
+    public static accountsRegex:string = "[a-zA-z0-9&.,-/ ]*";
 
     public static error: string = "error";
 
