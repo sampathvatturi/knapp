@@ -1,4 +1,7 @@
-.forms{
+/* .forms{
     display: flex;
     justify-content:space-between;
+} */
+nz-form-label{
+    margin-bottom: -10px;
 }
